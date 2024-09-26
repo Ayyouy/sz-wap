@@ -26,7 +26,7 @@ RUN npm run build
 FROM nginx:stable-alpine
 
 # 从Node镜像复制构建好的应用到Nginx的html目录
-COPY --from=0 /app/dist /usr/share/nginx/html
+COPY --from=0 /wapapp/dist /usr/share/nginx/html
 
 # 暴露9900端口
 EXPOSE 9900
