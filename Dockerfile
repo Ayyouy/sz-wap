@@ -10,6 +10,9 @@ COPY package*.json ./
 # 先清理一遍
 RUN npm cache clean --force
 
+# 证书过期
+RUN npm config set strict-ssl false
+
 # 安装项目依赖
 RUN npm install
 
