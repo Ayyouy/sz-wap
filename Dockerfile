@@ -7,6 +7,9 @@ WORKDIR /wapapp
 # 复制package.json文件和package-lock.json文件到工作目录
 COPY package*.json ./
 
+# 先清理一遍
+RUN npm cache clean --force
+
 # 安装项目依赖
 RUN npm install
 
