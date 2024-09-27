@@ -28,8 +28,8 @@ FROM nginx:stable-alpine
 # 从Node镜像复制构建好的应用到Nginx的html目录
 COPY --from=0 /wapapp/dist /usr/share/nginx/html
 
-# 暴露9900端口
-EXPOSE 9900
+# 暴露80端口
+EXPOSE 80
 
 # 启动Nginx，并且Nginx会持续运行
 CMD ["nginx", "-g", "daemon off;"]
