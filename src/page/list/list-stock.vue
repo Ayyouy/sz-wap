@@ -1,9 +1,5 @@
 <template>
   <div :class="`list-content-wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
-    <!-- <mt-header  title="">
-        <router-link to="/list" slot="left"></router-link>
-        <mt-button slot="left" icon="search" @click="toSearch"></mt-button>
-    </mt-header> -->
     <div class="list-table-title">
       <mt-search
         style="height:auto;"
@@ -38,7 +34,7 @@
                 @click='toDetail(item)'>
               <li class="li-title">
                 <p class="name">
-                  <img 
+                  <img
                   @click.stop="toDeleteMy(item)"
                   v-if="item.isOption == '1'" :src="require(`../../../static/img/list/${$state.theme === 'red' ? 'red-' : ''}loved-icon.png`)" alt="">
                   <img v-else
@@ -48,7 +44,7 @@
                 </p>
                 <p class="code">
                   <span class="code-wra">{{item.code}}</span>
-                  <i 
+                  <i
                     v-if="item.stock_plate != '科创'"
                     class="iconfont shen-mark hushen-mark"
                   >
@@ -56,7 +52,7 @@
                   </i>
                   <i v-else class="iconfont kechuang-mark">科创</i>
                 </p>
-                  
+
               </li>
               <li class="li-base">
                 <span>{{item.nowPrice?Number(item.nowPrice).toFixed(2):'-'}}</span>

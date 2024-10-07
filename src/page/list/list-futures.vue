@@ -1,11 +1,6 @@
 <template>
   <div :class="`list-content-wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
-    <!-- <mt-header fixed  title="期货">
-        <router-link to="/list" slot="left">
-            <mt-button icon="back">返回</mt-button>
-        </router-link>
-    </mt-header> -->
-    <ul class="table-list list-table-title">
+       <ul class="table-list list-table-title">
       <li class="title">
         <div>
           <ul class='clearfix'>
@@ -26,9 +21,9 @@
             <ul class="clearfix" :class="item.floatPoint<0?'green':item.floatPoint==0?'':'red'" @click='toDetail(item)'>
               <li class="li-title">
                 <p class="name">
-                  <img 
-                  v-if="item.isOption == '1'" 
-                  :src="require(`../../../static/img/list/${$state.theme === 'red' ? 'red-' : ''}loved-icon.png`)" 
+                  <img
+                  v-if="item.isOption == '1'"
+                  :src="require(`../../../static/img/list/${$state.theme === 'red' ? 'red-' : ''}loved-icon.png`)"
                   @click.stop="toDeleteMy(item)"
                   alt="">
                   <img v-else

@@ -109,7 +109,7 @@ export default {
   components: {
     Foot
   },
-  data() {
+  data () {
     return {
       loading: false, // 是否正在加载更多
       isRefresh: false, // 是否正在刷新
@@ -128,16 +128,17 @@ export default {
       selected: '4' // 选中
     }
   },
-  mounted() {
+  mounted () {
     this.getList()
   },
   methods: {
-    submit() {
+    submit () {
       this.pageNum = 1
       this.getList()
       this.dialogVisible = false
     },
-    async getList() {
+    async getList () {
+      console.log('invite:', this.pageNum)
       let opts = {
         pageSize: this.pageSize,
         pageNum: this.pageNum
@@ -157,7 +158,7 @@ export default {
         Toast(data.msg)
       }
     },
-    async loadMore() {
+    async loadMore () {
       if (this.list.length < this.pageSize || this.loading || this.total <= this.currentNum) {
         return
       }

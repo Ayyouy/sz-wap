@@ -1,21 +1,16 @@
 <template>
   <div class="wrapper">
-    <!-- <div class="header">
-            <mt-header :title="detail.name+' ('+detail.code+')'">
-                <router-link to="/list" slot="left">
-                    <mt-button icon="back">行情</mt-button>
-                </router-link>
-            </mt-header>
-        </div> -->
-    <!-- <mt-search
-                style="height:auto;"
-                fixed
-                @click.enter.native="toSearch"
-                placeholder="可输入股票代码或简拼"
-        >
-        </mt-search> -->
     <div class="page-part detail-part">
       <!-- 明细 -->
+      <div class="header-bg">
+        <div class="header-title">
+          <span class="header-name">{{ detail.name }}</span>
+        </div>
+        <div class="header-code">
+          <span class="header-code-tip"></span>
+          <span class="header-code-txt">{{ detail.code }}</span>
+        </div>
+      </div>
       <div class="clearfix">
         <div class="pull-left col-xs-7">
           <p
@@ -107,11 +102,11 @@
     </div>
     <div class="page-part box-part">
       <!-- 图 -->
-      <imgBox :code="$route.query.code" :imgList="detail" />
+      <imgBox :code="$route.query.code" :imgList="detail"/>
     </div>
     <div class="explain">
       <p class="title">说明:</p>
-      <div class="content" v-html="detail.remark" />
+      <div class="content" v-html="detail.remark"/>
     </div>
     <div class="agree-footer text-center">
       <div class="btn-box clearfix">
@@ -120,17 +115,17 @@
           class="pull-left bottom-btn"
           href="javascript:;"
           @click="addOptions"
-          >添加自选</a
+        >添加自选</a
         >
         <a
           v-if="isOptionOpt"
           class="pull-left bottom-btn"
           href="javascript:;"
           @click="deteleOptions"
-          >删除自选</a
+        >删除自选</a
         >
         <a class="pull-left bottom-btn on" href="javascript:;" @click="toBuy"
-          >马上下单</a
+        >马上下单</a
         >
         <!-- <mt-button :class="agree?'btn btn-red':'btn btn-default'" size="small" @click="toBuy()">确定</mt-button> -->
         <!-- <mt-button class="btn btn-cancel" size="small" @click="toBuy">取消</mt-button> -->
@@ -140,172 +135,162 @@
 </template>
 
 <script>
-import imgBox from "./compontent/img";
-import { Toast } from "mint-ui";
-import * as api from "@/axios/api";
+import imgBox from './compontent/img'
+import {Toast} from 'mint-ui'
+import * as api from '@/axios/api'
 
 export default {
   components: {
     imgBox
   },
   props: {},
-  data() {
+  data () {
     return {
       detail: {
         id: 1,
-        name: "浦发银行",
-        code: "600000",
-        spell: "pfyx,pfyh",
-        gid: "sh600000",
-        nowPrice: "8.670",
-        hcrate: 1.05,
-        today_max: "8.690",
-        today_min: "8.600",
-        business_balance: "195033875.000",
-        business_amount: "22534489",
-        preclose_px: "8.580",
-        open_px: "8.620",
-        buy1: "8.670",
-        buy2: "8.660",
-        buy3: "8.650",
-        buy4: "8.640",
-        buy5: "8.630",
+        name: '',
+        code: '',
+        spell: 'pfyx,pfyh',
+        gid: '',
+        nowPrice: '',
+        hcrate: 0,
+        today_max: '',
+        today_min: '',
+        business_balance: '',
+        business_amount: '',
+        preclose_px: '',
+        open_px: '',
+        buy1: '',
+        buy2: '',
+        buy3: '',
+        buy4: '',
+        buy5: '',
         ticker: null,
         volume: null,
-        sell1: "8.680",
-        sell2: "8.690",
-        sell3: "8.700",
-        sell4: "8.710",
-        sell5: "8.720",
-        buy1_num: "22400",
-        buy2_num: "103200",
-        buy3_num: "139700",
-        buy4_num: "175400",
-        buy5_num: "192200",
-        sell1_num: "186617",
-        sell2_num: "694040",
-        sell3_num: "613506",
-        sell4_num: "409700",
-        sell5_num: "233100",
-        minImg: "http://image.sinajs.cn/newchart/min/n/sh600000.jpg",
-        dayImg: "http://image.sinajs.cn/newchart/daily/n/sh600000.jpg",
-        weekImg: "http://image.sinajs.cn/newchart/weekly/n/sh600000.jpg",
-        monthImg: "http://image.sinajs.cn/newchart/monthly/n/sh600000.jpg",
+        sell1: '',
+        sell2: '',
+        sell3: '',
+        sell4: '',
+        sell5: '',
+        buy1_num: '',
+        buy2_num: '',
+        buy3_num: '',
+        buy4_num: '',
+        buy5_num: '',
+        sell1_num: '',
+        sell2_num: '',
+        sell3_num: '',
+        sell4_num: '',
+        sell5_num: '',
+        minImg: '',
+        dayImg: '',
+        weekImg: '',
+        monthImg: '',
         depositAmt: 0,
         amount: null,
         average: null,
         zf: null,
         zd: null,
-        remark: "<p>说明说明说明说明说明说明说明说明说明说明说明说明说明说明</p>" //#  富文本，折扣说明
+        remark: '' // #  富文本，折扣说明
       }, // 详情
-      buyList: [
-        { price: 33.5, price2: 14323.5 },
-        { price: 33.5, price2: 14323.5 },
-        { price: 33.5, price2: 14323.5 },
-        { price: 33.5, price2: 14323.5 },
-        { price: 33.5, price2: 14323.5 }
-      ],
       isOptionOpt: false, // 是否已经添加自选
       timer: null,
       loading: false
-      // qhinfo: {},
-      // zsinfo: {},
-    };
+    }
   },
   watch: {},
   computed: {},
-  created() {
-    this.timer = setInterval(this.refreshList, 5000);
+  created () {
+    this.timer = setInterval(this.refreshList, 5000)
   },
-  beforeDestroy() {
-    clearInterval(this.timer);
+  beforeDestroy () {
+    clearInterval(this.timer)
   },
-  mounted() {
-    this.getDetail();
+  mounted () {
+    this.getDetail()
     if (this.$store.state.userInfo.phone) {
       // 判断是否登录
-      this.getOpation();
+      this.getOpation()
     } else {
       // 获取用户信息
-      this.getUserInfo();
+      this.getUserInfo()
     }
     // this.qhinfo = this.$route.query.qhinfo;
     // this.zsinfo = this.$route.query.zsinfo;
   },
   methods: {
-    toSearch() {
-      this.$router.push("/searchlist");
+    toSearch () {
+      this.$router.push('/searchlist')
     },
-    async getUserInfo() {
+    async getUserInfo () {
       // 获取用户信息
-      let data = await api.getUserInfo();
+      let data = await api.getUserInfo()
       if (data.status === 0) {
-        this.$store.state.userInfo = data.data;
-        this.getOpation();
+        this.$store.state.userInfo = data.data
+        this.getOpation()
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
-      this.$store.state.user = this.user;
+      this.$store.state.user = this.user
     },
-    async refreshList() {
+    async refreshList () {
       if (this.loading) {
-        return;
+        return
       }
-      this.getDetail();
+      this.getDetail()
     },
-    async getOpation() {
+    async getOpation () {
       let opts = {
         code: this.$route.query.code
-      };
-      let data = await api.isOption(opts);
+      }
+      let data = await api.isOption(opts)
       if (data.status === 0) {
         // 0 --> 未添加
-        this.isOptionOpt = false;
+        this.isOptionOpt = false
       } else {
-        this.isOptionOpt = true;
+        this.isOptionOpt = true
       }
     },
-    async getDetail() {
+    async getDetail () {
       let opts = {
-        code: this.$route.query.code,
-      };
-      this.loading = true;
-      let data = await api.getSingleStock(opts);
-      this.loading = false;
+        code: this.$route.query.code
+      }
+      this.loading = true
+      let data = await api.getSingleStock(opts)
+      this.loading = false
       if (data.status === 0) {
-        this.detail = data.data;
-        console.log(data.data);
+        this.detail = data.data
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     },
-    async addOptions() {
+    async addOptions () {
       //   if(!this.$store.state.userInfo.phone){
       //     MessageBox.confirm('您还未登录，是否去登录?').then(action => {
       //         this.$router.push('/login')
       //     });
       //     return
       //   }
-      let data = await api.addOption({ code: this.$route.query.code });
+      let data = await api.addOption({code: this.$route.query.code})
       if (data.status === 0) {
-        Toast("添加自选成功");
-        this.isOptionOpt = true;
+        Toast('添加自选成功')
+        this.isOptionOpt = true
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     },
-    async deteleOptions() {
-      let data = await api.delOption({ code: this.$route.query.code });
+    async deteleOptions () {
+      let data = await api.delOption({code: this.$route.query.code})
       if (data.status === 0) {
-        Toast("删除自选股成功");
-        this.isOptionOpt = false;
+        Toast('删除自选股成功')
+        this.isOptionOpt = false
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     },
-    toBuy() {
+    toBuy () {
       // 期货
-      //if (
+      // if (
       //   this.$route.query.code != undefined &&
       //   this.$route.query.code.indexOf("hf_") != -1
       // ) {
@@ -328,7 +313,7 @@ export default {
       //   });
       // } else {
       this.$router.push({
-        name: "fourCountryBuy",
+        name: 'fourCountryBuy',
         params: {
           gid: this.detail.id,
           name: this.detail.name,
@@ -338,11 +323,11 @@ export default {
           discount: this.detail.discount,
           areaId: this.$route.query.areaId
         }
-      });
+      })
       // }
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .btn-box {
@@ -411,11 +396,54 @@ export default {
     font-size: 0.3rem;
     margin: 0.5rem 0 0 0.2rem;
   }
+
   .content {
     min-height: 3rem;
     margin-top: 0.2rem;
     background-color: #555555;
     padding: 0.5rem 0.3rem;
+  }
+}
+
+.header-bg {
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-items: flex-start;
+
+  .header-title {
+    margin-left: 15px;
+    width: auto;
+  }
+
+  .header-name {
+    font-size: 20px;
+  }
+
+  .header-code {
+    width: 55px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    background-color: #1ba6d0;
+    margin-left: 0.1rem;
+    position: relative;
+    border-radius: 2px;
+  }
+
+  .header-code-tip {
+    position: absolute;
+    top: 5px;
+    left: -3px;
+    width: 6px;
+    height: 6px;
+    background-color: #1ba6d0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  .header-code-txt {
+    font-size: 12px;
   }
 }
 </style>

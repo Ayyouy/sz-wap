@@ -71,6 +71,7 @@ Vue.prototype.getCookie = function (name) {
   // document.cookie = name + "=" + escape(value);
 }
 Vue.prototype.clearCookie = function () {
+  localStorage.clear()
   this.setCookie('USER_TOKEN', '', -1)
 }
 Vue.prototype.checkCookie = function () {

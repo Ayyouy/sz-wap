@@ -139,13 +139,12 @@
 import Foot from '@/components/foot/foot'
 import {Toast} from 'mint-ui'
 import * as api from '@/axios/api'
-import {financial} from "../../axios/api";
 
 export default {
   components: {
     Foot
   },
-  data() {
+  data () {
     return {
       loading: false, // 是否正在加载更多
       isRefresh: false, // 是否正在刷新
@@ -165,22 +164,20 @@ export default {
       selected: '3' // 选中
     }
   },
-  mounted() {
+  mounted () {
     this.getTypes()
     this.getList()
   },
   methods: {
-    showDialog() {
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', this.dialogVisible)
+    showDialog () {
       this.dialogVisible = true
-      console.log('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy', this.dialogVisible)
     },
-    submit() {
+    submit () {
       this.pageNum = 1
       this.dialogVisible = false
       this.getList()
     },
-    async getTypes() {
+    async getTypes () {
       let data = await api.getFinancialTypes()
       if (data.status === 0) {
         this.types = data.data
@@ -188,7 +185,8 @@ export default {
         this.$message.error(data.msg)
       }
     },
-    async getList() {
+    async getList () {
+      console.log('financial:', this.pageNum)
       let opts = {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
@@ -211,7 +209,7 @@ export default {
         Toast(data.msg)
       }
     },
-    async loadMore() {
+    async loadMore () {
       if (this.list.length < this.pageSize || this.loading || this.total <= this.currentNum) {
         return
       }

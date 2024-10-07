@@ -1,5 +1,23 @@
 <template>
   <div class="wrapper">
+    <div class="account-box">
+      <div class="content">
+        <div class="box page-part">
+          <div class="box-contain clearfix">
+            <div :class="i.floatPoint<0?'tab greenBg':'tab redBg'" v-for="(i,index) in market" v-if="index < 3"
+                 :key="i.key">
+              <p :index='index' class="name">{{i.indexName}}</p>
+              <p :class="changeTextClass[index] == true?'price heartBeat':'price'">
+                {{Number(i.currentPoint).toFixed(2)}}</p>
+              <div class="status">
+                <span :class="i.floatPoint<0?'pifting green':'pifting red'">{{Number(i.floatPoint).toFixed(2)}}</span>
+                <span :class="i.floatRate<0?'Percentage green':'Percentage red'">{{i.floatRate}}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <ul class="table-list">
       <li class="title">
         <div>
@@ -23,25 +41,20 @@
           <ul class="clearfix" :class="item.nowPrice-item.preclose_px<0?'green':'red'">
             <li @click='toDetail(item)' :class="item.stock_plate == '科创'?'li-title li-title-kc':'li-title'">
               <p class="name">
-                {{ item.stockCode }}
+                {{item.stockName}}
               </p>
-              <p class="code">
-                {{ item.stockName }}
+              <p v-if="item.stock_plate == '科创'" class="code">{{item.stockCode}}
+              </p>
+              <p v-else class="code">
+                {{item.stockCode}}
               </p>
             </li>
             <li @click='toDetail(item)' class="li-base">
-              <span :style="item.nowPrice>0?'green':'red'">{{
-                  item.nowPrice ? Number(item.nowPrice).toFixed(2) : '-'
-                }}</span>
+              <span>{{item.nowPrice?Number(item.nowPrice).toFixed(2):'-'}}</span>
             </li>
             <li @click='toDetail(item)' class="li-base">
               <span v-if="item.nowPrice == 0">-</span>
-              <span
-                v-else :style="(item.nowPrice - item.preclose_px)>0?'green':'red'">{{
-                  item.nowPrice - item.preclose_px > 0 ? '+' : ''
-                }}{{
-                  item.hcrate ? item.hcrate : '-'
-                }}%</span>
+              <span v-else>{{item.nowPrice-item.preclose_px>0?'+':''}}{{item.hcrate?item.hcrate:'-'}}%</span>
             </li>
             <li class="li-base text-center">
               <mt-button plain @click="toDeleteMy(item)"><i class="iconfont icon-shanchucopy"></i></mt-button>
@@ -50,12 +63,12 @@
         </div>
       </li>
     </ul>
-    <div v-if="list.length<=0 && getStatus" class="text-center" style="margin-top: 1rem;">
+    <div v-if="list.length<=0 && getStatus" class="load-all text-center">
       <mt-spinner type="fading-circle"></mt-spinner>
     </div>
-    <div v-show="loading" class="text-center" style="margin-top: 1rem;">
+    <div v-show="loading" class="load-all text-center">
       <mt-spinner type="fading-circle"></mt-spinner>
-      <span style="margin-top: 0.1rem;">加载中...</span>
+      加载中...
     </div>
     <div v-show="!loading && !getStatus" class="load-all text-center">
       已全部加载
@@ -66,7 +79,7 @@
 
 <script>
 import foot from '../../components/foot/foot'
-import {Toast} from 'mint-ui'
+import { Toast } from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
@@ -149,7 +162,7 @@ export default {
       this.loading = false
     },
     async toDeleteMy (val) {
-      let data = await api.delOption({code: val.stockCode})
+      let data = await api.delOption({ code: val.stockCode })
       if (data.status === 0) {
         Toast('删除自选股成功')
         this.getStock()
@@ -157,7 +170,7 @@ export default {
         Toast(data.msg)
       }
     },
-    async getQhDetail (code, stockGid) {
+    async getQhDetail (code,stockGid) {
       let opts = {
         futuresCode: code
       }
@@ -180,10 +193,10 @@ export default {
       //     Toast('系统正在升级，暂关闭交易！')
       //     return
       // }
-      let code = val.stockCode
-      if (val.stockGid !== undefined && val.stockGid.indexOf('hf_') != -1) {
-        this.getQhDetail(val.stockCode, val.stockGid)
-      } else if (val.stockCode !== undefined && val.stockCode.substring(0, 3) == '000') {
+      let code =val.stockCode
+      if(val.stockGid !== undefined && val.stockGid.indexOf('hf_')!=-1){
+        this.getQhDetail(val.stockCode,val.stockGid)
+      } else if(val.stockCode !== undefined && val.stockCode.substring(0,3)=='000'){
         code = val.stockGid
         // this.$router.push({
         //   path: '/listdetail',
@@ -198,7 +211,7 @@ export default {
           path: '/listdetail2',
           query: {
             code: code,
-            stock_type: val.stock_type,
+            stock_type:val.stock_type,
             zsinfo: val
           }
         })
@@ -217,7 +230,7 @@ export default {
           path: '/listdetail2',
           query: {
             code: code,
-            stock_type: val.stock_type,
+            stock_type:val.stock_type,
             zsinfo: val
           }
         })
@@ -231,102 +244,93 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.table-list-body {
-  // padding-top:0.62rem;
-  // margin-top: 40px;
-}
-
-.wrapper {
-  padding-top: 0.2rem;
-  background-color: #16171d;
-}
-
-.account-box {
-  margin-top: 0.5rem;
-  background-color: #16171d;
-
-  .box-contain {
-    background-color: #16171d;
-  }
-}
-
-.red-bg .table-list .title {
-  //   top: 2.5rem;
-}
-
-/*大盘指数*/
-.box-contain {
-  min-height: 1.3rem;
-
-  .more {
-    position: absolute;
-    right: 0;
-    padding-top: 0.5rem;
-    padding-right: 0.2rem;
-    cursor: pointer;
-  }
-
-  .tab {
-    float: left;
-    width: 31%;
-    margin: 0.05rem 1%;
-    margin-top: 0;
-    text-align: center;
-    padding: 0.1rem 0;
-    background: none !important;
-
-    p {
-      margin-top: 0.1rem;
-    }
-
-    .name {
-      font-size: .22rem;
-    }
-
-    .price {
-      font-size: 0.34rem;
-    }
-
-    .status {
-      margin-top: 0.1rem;
-      font-size: .22rem;
-    }
-  }
-}
-
-.table-list .title {
-  top: 1rem;
-}
-
-.red-theme {
-  .table-list .title {
-    background-color: #E9E9E9;
-    color: #222;
+  .table-list-body {
+    // padding-top:0.62rem;
+    // margin-top: 40px;
   }
 
   .wrapper {
-    background-color: #E9E9E9;
+    padding-top: 0.2rem;
+    background-color: #16171d;
   }
 
-  .table-list ul li {
-    border-bottom-color: #E9E9E9;
-    background-color: #fff;
+  .account-box {
+    margin-top: 0.5rem;
+    background-color: #16171d;
+    .box-contain {
+    background-color: #16171d;
+    }
   }
 
-  .account-box .box-contain {
-    background-color: #E9E9E9;
+  .red-bg .table-list .title {
+    //   top: 2.5rem;
   }
 
-  .box-contain .tab .name {
-    color: #222;
+  /*大盘指数*/
+  .box-contain {
+    min-height: 1.3rem;
+
+    .more {
+      position: absolute;
+      right: 0;
+      padding-top: 0.5rem;
+      padding-right: 0.2rem;
+      cursor: pointer;
+    }
+
+    .tab {
+      float: left;
+      width: 31%;
+      margin: 0.05rem 1%;
+      margin-top: 0;
+      text-align: center;
+      padding: 0.1rem 0;
+      background: none !important;
+
+      p {
+        margin-top: 0.1rem;
+      }
+
+      .name {
+        font-size: .22rem;
+      }
+
+      .price {
+        font-size: 0.34rem;
+      }
+
+      .status {
+        margin-top: 0.1rem;
+        font-size: .22rem;
+      }
+    }
+  }
+  .table-list .title {
+    top: 1rem;
   }
 
-  .table-list ul .li-title .name {
-    color: #222;
+  .red-theme {
+    .table-list .title {
+      background-color: #E9E9E9;
+      color: #222;
+    }.wrapper {
+      background-color: #E9E9E9;
+    }
+    .table-list ul li {
+      border-bottom-color: #E9E9E9;
+      background-color: #fff;
+    }
+    .account-box .box-contain {
+      background-color: #E9E9E9;
+    }
+    .box-contain .tab .name {
+      color: #222;
+    }
+    .table-list ul .li-title .name {
+      color: #222;
+    }
+    .load-all{
+      background-color: #E9E9E9;
+    }
   }
-
-  .load-all {
-    //background-color: #E9E9E9;
-  }
-}
 </style>

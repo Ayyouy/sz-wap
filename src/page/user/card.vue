@@ -1,13 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <div class="header">
-      <mt-header title="银行卡">
-        <router-link to="/user" slot="left">
-          <mt-button icon="back">我的</mt-button>
-        </router-link>
-        <mt-button icon="more" slot="right"></mt-button>
-      </mt-header>
-    </div> -->
     <div class="box page-part transaction">
       <div class="box-contain clearfix">
         <div v-if="cardInfo.length <= 0" class="empty text-center">
@@ -15,11 +7,11 @@
         </div>
         <div v-if="cardInfo.length > 0" class="back-info">
           <!-- 银行卡信息 -->
-          <p class="name">银行账户</p>
+<!--          <p class="name">银行账户</p>-->
           <ul>
             <li class="clearfix" v-for="i in cardInfo" :key="i.key">
               <div class="col-xs-3">
-                <img src="../../../static/img/pay.png" alt="pay" />
+                <img src="../../../static/img/pay.png" alt="pay"/>
               </div>
               <div class="col-xs-9">
                 <p v-if="i.countryId != 5">{{ i.bankName }}</p>
@@ -32,77 +24,73 @@
       </div>
     </div>
     <div v-if="cardInfo.length <= 0" class="btnbox">
-      <span class="text-center btnok" @click="addCard"
-        >添加银行卡和泰达币钱包</span
-      >
+      <span class="text-center btnok" @click="addCard">添加银行卡和泰达币钱包</span>
     </div>
     <div v-else class="btnbox">
-      <span class="text-center btnok" @click="addCard('edit')"
-        >修改银行卡和泰达币钱包</span
-      >
+      <span class="text-center btnok" @click="addCard('edit')">修改银行卡和泰达币钱包</span>
     </div>
   </div>
 </template>
 
 <script>
-import * as api from "@/axios/api";
-import { Toast } from "mint-ui";
+import * as api from '@/axios/api'
+import {Toast} from 'mint-ui'
 
 export default {
   components: {},
   props: {},
-  data() {
+  data () {
     return {
       cardInfo: [],
-    };
+    }
   },
   watch: {},
   computed: {},
-  created() {},
-  beforeDestroy() {
-    if (this.$state.theme == "red") {
-      document.body.classList.remove("red-bg");
-      document.body.classList.add("black-bg");
+  created () {
+  },
+  beforeDestroy () {
+    if (this.$state.theme == 'red') {
+      document.body.classList.remove('red-bg')
+      document.body.classList.add('black-bg')
     }
   },
-  mounted() {
-    if (this.$state.theme == "red") {
-      document.body.classList.remove("black-bg");
-      document.body.classList.add("red-bg");
+  mounted () {
+    if (this.$state.theme == 'red') {
+      document.body.classList.remove('black-bg')
+      document.body.classList.add('red-bg')
     }
-    this.getCardDetail();
+    this.getCardDetail()
   },
   methods: {
     // 添加银行卡
-    addCard(val) {
-      if (val === "edit") {
+    addCard (val) {
+      if (val === 'edit') {
         this.$router.push({
-          path: "/addCard",
+          path: '/addCard',
           query: {
-            type: val,
-          },
-        });
+            type: val
+          }
+        })
       } else {
-        this.$router.push("/addCard");
+        this.$router.push('/addCard')
       }
     },
-
-    async getCardDetail() {
+    async getCardDetail () {
       // 获取银行卡信息
       let opts = {
         code: this.$route.query.code,
-      };
-      let data = await api.getBankCard(opts);
-      if (data.status === 0) {
-        this.cardInfo = [];
-        this.cardInfo.push(data.data);
-        this.$store.state.bankInfo = data.data;
-      } else {
-        Toast(data.msg);
       }
-    },
-  },
-};
+      let data = await api.getBankCard(opts)
+      if (data.status === 0) {
+        this.cardInfo = []
+        this.cardInfo.push(data.data)
+        this.$store.state.bankInfo = data.data
+      } else {
+        Toast(data.msg)
+      }
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .back-info {

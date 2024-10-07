@@ -18,7 +18,9 @@
               <div class="order-info-box" @click="btnFundDetailView(item.id)">
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-center">
-                    <span style="font-size: 30px;color: #1b8e5d;line-height: 30px;height: 30px;">{{ (item.oneIncome / item.blackoutPeriod).toFixed(2) * 365 }}%</span>
+                    <span style="font-size: 30px;color: #1b8e5d;line-height: 30px;height: 30px;">{{
+                        (item.oneIncome / item.blackoutPeriod).toFixed(2) * 365
+                      }}%</span>
                   </el-col>
                   <el-col :span="16" class="text-center" style="font-size: 20px;line-height: 30px;height: 30px;">
                     {{ item.name }}
@@ -59,7 +61,7 @@ export default {
     Foot
   },
   props: {},
-  data() {
+  data () {
     return {
       loading: false, // 是否正在加载更多
       isRefresh: false, // 是否正在刷新
@@ -74,13 +76,14 @@ export default {
   },
   watch: {},
   computed: {},
-  created() {
+  created () {
   },
-  mounted() {
+  mounted () {
     this.getList()
   },
   methods: {
-    async getList() {
+    async getList () {
+      console.log('funds:', this.pageNum)
       let opts = {
         pageSize: this.pageSize,
         pageNum: this.pageNum
@@ -100,7 +103,7 @@ export default {
         Toast(data.msg)
       }
     },
-    async loadMore() {
+    async loadMore () {
       if (this.list.length < this.pageSize || this.loading || this.total <= this.currentNum) {
         return
       }
@@ -110,7 +113,7 @@ export default {
       this.currentNum = this.pageNum * this.pageSize
       this.loading = false
     },
-    btnFundDetailView(val) {
+    btnFundDetailView (val) {
       this.$router.push({
         path: '/fundsdetail?id=' + val
       })

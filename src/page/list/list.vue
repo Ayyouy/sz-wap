@@ -1,103 +1,38 @@
 <template>
-  <div
-    :class="`wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`"
-  >
-    <!-- <mt-header v-if="selected == '2'" fixed  title="">
-        <router-link to="/" slot="left">
-        </router-link>
-        <mt-button slot="right" icon="search" @click="toSearch"></mt-button>
-    </mt-header> -->
-    <mt-navbar
-      class="top-navbar"
-      v-model="selected"
-      :style="selected != '2' ? '' : ''"
-      :fixed="selected != '2' ? true : false"
-    >
-      <!-- <mt-tab-item id="0">全部</mt-tab-item> -->
-      <mt-tab-item
-        class="long"
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="5"
-        >香港股市</mt-tab-item
-      >
-      <mt-tab-item
-        class="long"
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="6"
-        >美国股市</mt-tab-item
-      >
-      <mt-tab-item
-        class="long"
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="7"
-        >印度股市</mt-tab-item
-      >
-      <mt-tab-item
-        class="long"
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="8"
-        >日本股市</mt-tab-item
-      >
-      <mt-tab-item v-if="this.$store.state.settingForm.futuresDisplay" id="4"
-        >期货</mt-tab-item
-      >
-      <mt-tab-item v-if="this.$store.state.settingForm.indexDisplay" id="1"
-        >指数</mt-tab-item
-      >
-      <!-- <mt-tab-item v-if="this.$store.state.settingForm.stockDisplay" id="2">沪深</mt-tab-item>
-      <mt-tab-item v-if="this.$store.state.settingForm.kcStockDisplay" id="3">科创</mt-tab-item> -->
+  <div :class="`wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
+    <!--    :fixed="selected != '2' ? true : false"-->
+    <mt-navbar class="top-navbar" v-model="selected" :fixed="selected != '2' ? true : false">
+      <mt-tab-item class="long" v-if="stockDisplay" id="6">美国股市</mt-tab-item>
+      <mt-tab-item class="long" v-if="stockDisplay" id="8">日本股市</mt-tab-item>
+      <mt-tab-item class="long" v-if="stockDisplay" id="5">香港股市</mt-tab-item>
+      <mt-tab-item class="long" v-if="stockDisplay" id="7">印度股市</mt-tab-item>
+      <mt-tab-item v-if="futureDisplay" id="4">期货</mt-tab-item>
+      <mt-tab-item v-if="indexDisplay" id="1">指数</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
-      <!-- <mt-tab-container-item id="0">
-          <List0 :changeNavOptions='changeNavOptions'/>
-      </mt-tab-container-item> -->
-      <mt-tab-container-item
-        v-if="this.$store.state.settingForm.indexDisplay"
-        id="1"
-      >
-        <List1 :selectedNumber="selected" />
+      <mt-tab-container-item v-if="indexDisplay" id="1">
+        <List1 :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="2"
-      >
-        <List2 :selectedNumber="selected" />
+      <mt-tab-container-item v-if="stockDisplay" id="2">
+        <List2 :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item
-        v-if="this.$store.state.settingForm.kcStockDisplay"
-        id="3"
-      >
-        <List3 :selectedNumber="selected" />
+      <mt-tab-container-item v-if="kcDisplay" id="3">
+        <List3 :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item
-        v-if="this.$store.state.settingForm.futuresDisplay"
-        id="4"
-      >
-        <List4 :selectedNumber="selected" />
+      <mt-tab-container-item v-if="futureDisplay" id="4">
+        <List4 :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="5"
-      >
-        <List4country selectedNumber="1" />
+      <mt-tab-container-item v-if="stockDisplay" id="5">
+        <List5 selectedNumber="1"/>
       </mt-tab-container-item>
-      <mt-tab-container-item
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="6"
-      >
-        <List4country selectedNumber="2" />
+      <mt-tab-container-item v-if="stockDisplay" id="6">
+        <List5 selectedNumber="2"/>
       </mt-tab-container-item>
-      <mt-tab-container-item
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="7"
-      >
-        <List4country selectedNumber="4" />
+      <mt-tab-container-item v-if="stockDisplay" id="7">
+        <List5 selectedNumber="4"/>
       </mt-tab-container-item>
-      <mt-tab-container-item
-        v-if="this.$store.state.settingForm.stockDisplay"
-        id="8"
-      >
-        <List4country selectedNumber="3" />
+      <mt-tab-container-item v-if="stockDisplay" id="8">
+        <List5 selectedNumber="3"/>
       </mt-tab-container-item>
     </mt-tab-container>
     <foot></foot>
@@ -105,83 +40,89 @@
 </template>
 
 <script>
-import foot from "@/components/foot/foot";
-// import '@/assets/style/common.less'
-import List0 from "./list-all";
-import List1 from "./list-index";
-import List2 from "./list-stock";
-import List3 from "./list-kechuang";
-import List4 from "./list-futures";
-import List4country from "./list-4country";
-import * as api from "@/axios/api";
-import { Toast } from "mint-ui";
+import foot from '@/components/foot/foot'
+// import List0 from './list-all'
+import List1 from './list-index'
+import List2 from './list-stock'
+import List3 from './list-kechuang'
+import List4 from './list-futures'
+import List5 from './list-4country'
+import * as api from '@/axios/api'
+import {Toast} from 'mint-ui'
 
 export default {
   components: {
     foot,
-    List0,
     List1,
     List2,
     List3,
     List4,
-    List4country,
+    List5
   },
   props: {},
-  data() {
+  data () {
     return {
-      selected: "", // 选中
-    };
-  },
-  watch: {},
-  computed: {},
-  created() {
-    this.getProductSetting();
-    if (!this.$store.state.userInfo.phone) {
-      this.getUserInfo();
+      selected: '', // 选中
+      stockDisplay: this.$store.state.settingForm.stockDisplay,
+      futureDisplay: this.$store.state.settingForm.futuresDisplay,
+      indexDisplay: this.$store.state.settingForm.indexDisplay,
+      kcDisplay: this.$store.state.settingForm.kcStockDisplay
     }
   },
-  mounted() {
+  created () {
+    console.log(this.stockDisplay)
+    console.log(this.futureDisplay)
+    console.log(this.indexDisplay)
+    console.log(this.kcDisplay)
+    this.getProductSetting()
+    if (!this.$store.state.userInfo.phone) {
+      this.getUserInfo()
+    }
+    console.log('xxxxxxxxxxxxx')
+    console.log(this.stockDisplay)
+    console.log(this.futureDisplay)
+    console.log(this.indexDisplay)
+    console.log(this.kcDisplay)
+  },
+  mounted () {
     if (this.$route.query.index) {
-      this.selected = this.$route.query.index;
+      this.selected = this.$route.query.index
     }
   },
   methods: {
-    toSearch() {
-      this.$router.push("/searchlist");
-    },
-    changeNavOptions(opts) {
-      this.selected = opts;
-    },
-    async getUserInfo() {
+    async getUserInfo () {
       // 获取用户信息
-      let data = await api.getUserInfo();
+      let data = await api.getUserInfo()
       if (data.status === 0) {
-        this.$store.state.userInfo = data.data;
+        this.$store.state.userInfo = data.data
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     },
-    async getProductSetting() {
-      let data = await api.getProductSetting();
+    async getProductSetting () {
+      let data = await api.getProductSetting()
       if (data.status === 0) {
-        this.$store.state.settingForm = data.data;
+        this.$store.state.settingForm = data.data
+        this.stockDisplay = this.$store.state.settingForm.stockDisplay
+        this.futureDisplay = this.$store.state.settingForm.futuresDisplay
+        this.indexDisplay = this.$store.state.settingForm.indexDisplay
+        this.kcDisplay = this.$store.state.settingForm.kcStockDisplay
         // 1 指数 2 沪深 3科创 4 期货
-        if (this.$store.state.settingForm.stockDisplay) {
-          this.selected = "5";
-        }
-        else if (this.$store.state.settingForm.indexDisplay) {
-          this.selected = "1";
-        } else if (this.$store.state.settingForm.kcStockDisplay) {
-          this.selected = "3";
+        if (this.stockDisplay) {
+          this.selected = '5'
+        } else if (this.indexDisplay) {
+          this.selected = '1'
+        } else if (this.kcDisplay) {
+          this.selected = '3'
         } else {
-          this.selected = "4";
+          this.selected = '4'
         }
       } else {
-        this.$message.error(data.msg);
+        this.$message.error(data.msg)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .is-selected .mint-tab-item-label:hover {
@@ -249,36 +190,40 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 0.01rem;
+
     &.long {
       flex: 2;
     }
   }
 }
+
 .wrapper {
   width: 100%;
   height: 100%;
   position: relative;
   box-sizing: border-box;
   padding-top: 1rem;
+
   .top-navbar {
     position: absolute;
     top: 0;
     background: none;
     box-shadow: none;
-    /deep/.mint-tab-item {
+
+    /deep/ .mint-tab-item {
       .mint-tab-item-label {
         font-size: 0.28rem;
         font-family: MicrosoftYaHeiLight;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
       }
+
       &.is-selected {
         position: relative;
-        background: linear-gradient(
-          0deg,
-          rgba(27, 166, 208, 1),
-          rgba(2, 116, 150, 1)
-        );
+        background: linear-gradient(0deg,
+        rgba(27, 166, 208, 1),
+        rgba(2, 116, 150, 1));
+
         &::after {
           position: absolute;
           content: "";
@@ -294,17 +239,21 @@ export default {
       }
     }
   }
+
   .order-list {
     width: 100%;
     height: 100%;
-    /deep/.mint-tab-container-wrap {
+
+    /deep/ .mint-tab-container-wrap {
       width: 100%;
       height: 100%;
     }
   }
 }
+
 .top-search {
   padding: 0.2rem;
+
   .top-search-btn {
     background-color: #16171d;
     padding: 0.1rem 0.2rem;
@@ -316,20 +265,25 @@ export default {
     margin: 0 auto;
   }
 }
+
 .red-theme {
   .top-search-btn {
     border-color: #000;
     color: #000;
     background-color: #fff;
   }
+
   .top-navbar {
-    /deep/.mint-tab-item {
+    /deep/ .mint-tab-item {
       background-color: #cbcbcb;
+
       .mint-tab-item-label {
         color: #000;
       }
+
       &.is-selected {
         background: #bb1715;
+
         .mint-tab-item-label {
           color: #fff;
         }

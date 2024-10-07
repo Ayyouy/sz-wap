@@ -1,10 +1,5 @@
 <template>
   <div :class="`list-content-wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
-    <!-- <mt-header fixed  title="行情">
-        <router-link to="/list" slot="left"></router-link>
-        <mt-button slot="right" icon="search" @click="toSearch"></mt-button>
-    </mt-header> -->
-
     <ul class="table-list list-table-title">
       <li class="title">
         <div>

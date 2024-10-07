@@ -1,10 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <mt-header fixed title="">
-      <router-link to="/home" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
-    </mt-header> -->
     <div class="login-form">
       <div class="login-avatar">
         <img class="login-ico" src="../assets/ico/wogerenziliao.png" alt=""/>
@@ -13,25 +8,12 @@
         <img v-show="$state.theme != 'red'" class="login-ico" src="../assets/ico/loginuser.png" alt=""/>
         <img v-show="$state.theme == 'red'" class="login-ico" src="../assets/ico/loginuser-red.png" alt=""/>
         <el-select v-model="select" slot="prepend" placeholder="请选择" class="select" size="mini">
-          <el-option label="+1" value="+1"></el-option>
-          <el-option label="+852" value="+852"></el-option>
-          <el-option label="+91" value="+91"></el-option>
-          <el-option label="+81" value="+81"></el-option>
+          <el-option label="+1" class="option" value="+1"></el-option>
+          <el-option label="+852" class="option" value="+852"></el-option>
+          <el-option label="+91" class="option" value="+91"></el-option>
+          <el-option label="+81" class="option" value="+81"></el-option>
         </el-select>
         <input class="login-input" placeholder="用户名" type="tel" pattern="[0-9]*" v-model="phone"/>
-        <!-- <el-input
-          type="tel"
-          placeholder="用户名"
-          v-model="phone"
-          pattern="[0-9]*"
-          class="login-input"
-        >
-          <el-select v-model="select" slot="prepend" placeholder="请选择">
-            <el-option label="+1" value="+1"></el-option>
-            <el-option label="+852" value="+852"></el-option>
-            <el-option label="+92" value="+92"></el-option>
-          </el-select>
-        </el-input> -->
       </div>
       <div class="login-form-item input-model">
         <img v-show="$state.theme != 'red'" class="login-ico" src="../assets/ico/loginpwd.png" alt=""/>
@@ -51,52 +33,15 @@
         </div>
       </div>
     </div>
-    <!-- <div class="text-center">
-      <img class="banenr" :src="logo" alt="logo">
-    </div> -->
-    <!-- <div class="forms"> -->
-    <!-- <div class="form-view">
-        <icon class="form-ic" name="phone" slot="icon"></icon>
-        <i class="iconfont icon-yonghu"></i>
-        <input type="tel" pattern="[0-9]*" placeholder="手机号码" v-model="phone">
-      </div> -->
-    <!-- <div class="form-view">
-          <i class="iconfont icon-yanzhengma"></i>
-          <input type="number" pattern="[0-9]*" placeholder="验证码" v-model="code">
-          <span v-if="codeshow" class="getcode" @click="getcode">获取验证码</span>
-          <span v-if="!codeshow" class="getcode">{{count}}s</span>
-      </div> -->
-    <!-- <div class="form-view"> -->
-    <!-- <icon class="form-ic" name="safe" slot="icon"></icon> -->
-    <!-- <i class="iconfont icon-lr_password"></i> -->
-    <!-- <input type="password" autocomplete="new-password" pattern="[0-9]*" placeholder="请输入密码" v-model="psd"> -->
-    <!-- </div> -->
-    <!-- </div> -->
-    <!-- <div class="chebox">
-        <span class="checked">
-            <input id="checkcode" type="checkbox" :checked="isChecked" @click="handleDisabled"/>
-            <label for="checkcode"></label>一天内自动登陆
-        </span>
-    </div> -->
-    <!-- <div class="btnbox">
-        <span class="btnok" @click="gook">
-            确定
-            <i v-show="isloading" style="color:#fff;" class="iconfont icon-jiazaizhong"></i>
-        </span>
-    </div>
-    <div>
-      <mt-button class="text-btn fl" type="default" @click="toForget">忘记密码</mt-button>
-      <mt-button class="text-btn fr" type="default" @click="toRegister">注册</mt-button>
-    </div> -->
   </div>
 </template>
 <script>
 import {Toast} from 'mint-ui'
-import {isNull, isPhone} from '@/utils/utils'
+import {isNull, pwdReg2} from '@/utils/utils'
 import * as api from '@/axios/api'
 
 export default {
-  data() {
+  data () {
     return {
       isloading: false,
       phone: '',
@@ -149,7 +94,7 @@ export default {
     }
   },
   methods: {
-    async getInfoSite() {
+    async getInfoSite () {
       // 获取 logo
       let data = await api.getInfoSite()
       if (data.status === 0) {
@@ -158,33 +103,33 @@ export default {
         Toast(data.msg)
       }
     },
-    async checkPhone() {
+    async checkPhone () {
       // 先验证是否已经注册
       let data = await api.checkPhone({phoneNum: this.select + this.phone})
       if (data.status === 0) {
         // 如果用户已存在返回 0
-        this.loginIN()
+        await this.loginIN()
       } else {
         Toast('用户还未注册,请先注册')
         // this.$router.push('/register')
       }
     },
-    gook() {
+    gook () {
       // 登录
       if (this.clickFalg !== 0) {
-        this.clickFalg = 0;
+        this.clickFalg = 0
         return
       }
       this.clickFalg++
-      if (isNull(this.phone)) {
-        Toast('请输入手机号码')
-      } else if (isNull(this.psd)) {
-        Toast('请输入密码')
+      if (isNull(this.phone) || this.phone.length < 7) {
+        Toast('请输入正确的手机号码')
+      } else if (isNull(this.psd) || !pwdReg2(this.psd)) {
+        Toast('密码为6~12位，数字、字母或符号')
       } else {
         this.checkPhone()
       }
     },
-    async loginIN() {
+    async loginIN () {
       let opts = {
         phone: this.select + this.phone,
         userPwd: this.psd
@@ -201,36 +146,25 @@ export default {
         // this.clearCookie()
         // this.setCookie(data.data.key,data.data.token,0)
         // this.$router.push('/home')
-        this.$router.push('/list')
+        await this.$router.push('/list')
       } else {
         Toast(data.msg)
       }
       this.isloading = false
     },
-    handleDisabled: function () {
-      this.isChecked = !this.isChecked
-      if (this.isChecked === true) {
-        this.isDisabled = true
-      } else {
-        this.isDisabled = false
-      }
-    },
-    toForget() {
+    toForget () {
       // 忘记密码
       this.$router.push('/forget')
     },
-    toRegister() {
+    toRegister () {
       // 注册
       this.$router.push('/register')
     },
-    toHome() {
-      this.$router.push('/home')
-    },
-    goBack() {
+    goBack () {
       if (this.$route.query.goindex === 'true') {
         this.$router.push('/')
       } else {
-        this.$router.back(-1)
+        this.$router.back()
       }
     }
   }
@@ -334,9 +268,26 @@ body {
     input {
       width: 1.3rem;
       background: #121319;
+      border: 1px solid #121319;
     }
   }
+
+  //
+  ///deep/ .option {
+  //  li {
+  //    width: 1.3rem;
+  //    font-size: 13px;
+  //  }
+  //}
 }
+
+//
+//.selected {
+//  height: 38px;
+//  overflow: hidden;
+//  //text-align: center;
+//  //float:left;
+//}
 
 .red-theme {
   .login-avatar {

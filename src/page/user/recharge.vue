@@ -240,7 +240,7 @@ export default {
     this.getPayInfo()
   },
   beforeDestroy () {
-    if (this.$state.theme =='red') {
+    if (this.$state.theme ==='red') {
       document.body.classList.remove('red-bg')
         document.body.classList.add('black-bg')
     }

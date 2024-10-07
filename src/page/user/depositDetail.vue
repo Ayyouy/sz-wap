@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="item">
-      <img :src="detail.iconUrl" />
+      <img :src="detail.iconUrl"/>
       <span class="name">{{ detail.channelType }}</span>
       <span class="min">最低: {{ detail.channelMinLimit }}</span>
       <span class="max">最高: {{ detail.channelMaxLimit }}</span>
@@ -23,7 +23,7 @@
         type="number"
         v-model="formData.amt"
       />
-      <p class="num1">{{ detail.code }}：{{ formData.amt * detail.rate }}</p>
+      <p class="num1">{{ detail.code }}：{{ Number(formData.amt * detail.rate).toFixed(2) }}</p>
       <p class="num2">USD/{{ detail.code }}=1:{{ detail.rate }}</p>
       <div class="upload-box clearfix">
         <p class="left">截图凭证</p>
@@ -45,7 +45,7 @@
             />
             <i v-else class="iconfont icon-zhaopian"></i>
             <span v-if="!formData.rechargeImg && !imgStatus" class="btn-title"
-              >截图凭证</span
+            >截图凭证</span
             >
             <span v-if="imgStatus" class="btn-title">正在上传中...</span>
           </el-upload>
@@ -130,9 +130,9 @@
       </p>
       <p class="tip-text">
         <i class="iconfont icon-jingpaibuzhou2"></i>为确保入金及时到账，<span
-          class="red"
-          >请确认您输入的金额和提交的充值金额一致</span
-        >.
+        class="red"
+      >请确认您输入的金额和提交的充值金额一致</span
+      >.
       </p>
       <p class="tip-text">
         <i class="iconfont icon-jingpaibuzhou1"></i
@@ -140,7 +140,8 @@
       </p>
     </div>
     <div class="btnbox">
-      <span class="text-center btnok" @click="toSure">提交</span>
+      <span class="text-center btnok" :style="doubleSubmit?'color:#eee;background:#676b6f':''"
+            @click="toSure">提交</span>
     </div>
 
     <el-dialog
@@ -152,10 +153,10 @@
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
     >
-      <p><i class="el-icon-success" />您的入金申请已提交</p>
+      <p><i class="el-icon-success"/>您的入金申请已提交</p>
       <span slot="footer">
         <el-button type="primary" @click="$router.push('moneyList')"
-          >确 定</el-button
+        >确 定</el-button
         >
       </span>
     </el-dialog>
@@ -163,17 +164,17 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import APIUrl from "../../axios/api.url"; // 引入api.url.js
+import {Toast} from 'mint-ui'
+import APIUrl from '../../axios/api.url' // 引入api.url.js
+import * as api from '@/axios/api'
 
-import * as api from "@/axios/api";
 export default {
-  data() {
+  data () {
     return {
       detail: {},
-      number: "",
-      card: "",
-      phone: "",
+      number: '',
+      card: '',
+      phone: '',
       settingInfo: {
         withMinAmt: 1000,
         withTimeBegin: 13, // 提现开始时间
@@ -182,42 +183,44 @@ export default {
         withFeePercent: 0.008, // 提现单笔手续费
       },
       payInfo: {},
-      payId: "",
+      payId: '',
       formData: {
-        amt: "", // 转账金额（美元）
-        payType: "", // 渠道类型 #0：支付包 1：银行转账 2：虚拟货币
-        currency: "", // 货币简称
-        rechargeImg: "", // 转账凭证截图
+        amt: '', // 转账金额（美元）
+        payType: '', // 渠道类型 #0：支付包 1：银行转账 2：虚拟货币
+        currency: '', // 货币简称
+        rechargeImg: '', // 转账凭证截图
       },
       dialogVisible: false,
-      imgSrc: "",
+      imgSrc: '',
       imgStatus: false,
-      url: "",
-    };
+      url: '',
+      doubleSubmit: false,
+      doubleTitle: '禁止重复提交' // 第一遍时提示此消息，第二遍时就提示返回重拾，这种是应对服务器异常，而导致doubleSubmit值没变过来的情况
+    }
   },
-  mounted() {
-    this.payId = this.$route.query.payId;
-    this.getDetail();
-    this.url = APIUrl.baseURL;
+  mounted () {
+    this.payId = this.$route.query.payId
+    this.getDetail()
+    this.url = APIUrl.baseURL
   },
   methods: {
     // 获取支付渠道详情数据
-    async getDetail() {
-      let data = await api.getPayInfoDetail({ payId: this.payId })
-      console.log('data:',data)
+    async getDetail () {
+      let data = await api.getPayInfoDetail({payId: this.payId})
+      console.log('data:', data)
       if (data.status === 0) {
-        this.detail = data.data;
-        this.imgSrc = data.data.formUrl;
+        this.detail = data.data
+        this.imgSrc = data.data.formUrl
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     },
-    handleAvatarSuccess(res, file) {
-      this.imgStatus = false;
-      this.formData.rechargeImg = res.data.url;
+    handleAvatarSuccess (res, file) {
+      this.imgStatus = false
+      this.formData.rechargeImg = res.data.url
     },
-    beforeAvatarUpload(file) {
-      this.imgStatus = true;
+    beforeAvatarUpload (file) {
+      this.imgStatus = true
       //     const isJPG = file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/png';
       //     const isLt2M = file.size / 1024 / 1024 < 20;
       //     if (!isJPG) {
@@ -228,50 +231,57 @@ export default {
       // // }
       //     return isJPG && isLt2M;
     },
-    handleError() {
-      this.imgStatus = false;
+    handleError () {
+      this.imgStatus = false
     },
     // 提交
-    async toSure() {
-      this.formData.payType = this.detail.ctype;
-      this.formData.currency = this.detail.code;
-      if (
-        this.formData.amt <= 0 
-      ) {
-        Toast("请输入正确的金额");
-        return;
+    async toSure () {
+      if (this.doubleSubmit) {
+        Toast(this.doubleTitle)
+        this.doubleTitle = '返回重试，或联系管理员'
+        return
       }
-      if (
-        this.formData.amt < this.detail.channelMinLimit || this.formData.amt > this.detail.channelMaxLimit
-      ) {
-        Toast("金额超出可充值范围");
-        return;
+      this.doubleSubmit = true
+      this.formData.payType = this.detail.ctype
+      this.formData.currency = this.detail.code
+      if (this.formData.amt <= 0) {
+        this.doubleSubmit = false
+        Toast('请输入正确的金额')
+        return
+      }
+      if (this.formData.amt < this.detail.channelMinLimit || this.formData.amt > this.detail.channelMaxLimit) {
+        this.doubleSubmit = false
+        Toast('金额超出可充值范围')
+        return
       }
       if (
         ![0, 1, 2].includes(this.formData.payType) ||
         !this.formData.currency
       ) {
-        Toast("参数异常");
-        return;
+        Toast('参数异常')
+        this.doubleSubmit = false
+        return
       }
       if (!this.formData.rechargeImg) {
-        Toast("请上传转账凭证");
-        return;
+        Toast('请上传转账凭证')
+        this.doubleSubmit = false
+        return
       }
-      let data = await api.inMoneySubmit(this.formData);
-      Toast(data.msg);
+      let data = await api.inMoneySubmit(this.formData)
+      Toast(data.msg)
       if (data.status === 0) {
-        this.dialogVisible = true;
+        this.dialogVisible = true
       }
+      this.doubleSubmit = false
     },
     onCopy: function (e) {
-      Toast("复制成功！");
+      Toast('复制成功！')
     },
     onError: function (e) {
-      Toast("复制失败，请重试！");
-    },
-  },
-};
+      Toast('复制失败，请重试！')
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -324,6 +334,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
+
     img {
       width: 0.4rem;
       height: 0.4rem;
@@ -335,6 +346,7 @@ body {
     margin: 0.3rem;
     margin-left: 0.5rem;
   }
+
   .num2 {
     margin-left: 0.5rem;
     margin-bottom: 0.3rem;
@@ -352,6 +364,7 @@ body {
       font-size: 0.29rem;
       text-align: center;
     }
+
     .upload-btn {
       // border: 1px solid #ddd;
       flex: 1;
@@ -407,14 +420,17 @@ body {
   .submitDialog {
     /deep/ .el-dialog {
       background-color: #21252a;
+
       p {
         color: #fff;
         text-align: center;
         font-size: 0.4rem;
+
         i {
           color: green;
         }
       }
+
       // .el-dialog__footer {
       //   display: flex;
       //   justify-content: center;

@@ -1,26 +1,17 @@
 <template>
   <div class="wrapper">
-    <mt-header fixed title="用户注册协议">
-      <router-link to="/register" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
-    </mt-header>
-    <div class="content" style="margin:20px;background:#fff;border-radius:5px;margin-top:60px;line-height:200%;">
-        <p v-for="item in agreecontent.split('。')" :key="item">{{item}}。</p>
+    <div class="content reg-agree">
+      <p v-for="item in agreecontent.split('。')" :key="item">{{ item }}。</p>
     </div>
     <div class="iframe-box">
       <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page"></canvas>
-      <!-- <iframe ref="iframeBox" class="iframe" :src="agreeUrl" width="100%" height="400%" scrolling="auto" frameborder="0"></iframe> -->
-      <!-- <embed :src="agreeUrl" width="100%" height="100%" name="plugin" id="plugin" type="application/pdf" internalinstanceid="198"> -->
     </div>
   </div>
 </template>
 <script>
-import { Toast } from 'mint-ui'
+import {Toast} from 'mint-ui'
 import * as api from '@/axios/api'
 import PDFJS from 'pdfjs-dist'
-
-// const Base64 = require('js-base64').Base64
 
 export default {
   data () {
@@ -33,7 +24,6 @@ export default {
   },
   mounted: function () {
     this.getInfoSite()
-    // let width = this.$refs.iframeBox
   },
   created () {
     window.addEventListener('onload', this.setIframeContent)
@@ -94,47 +84,55 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  body {
-    background-color: #fff;
-  }
+body {
+  background-color: #fff;
+}
 
-  .wrapper {
+.wrapper {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+}
+
+.reg-agree {
+  margin: 15px;
+  background: #1b1c25;
+  border-radius: 5px;
+  line-height: 200%;
+  box-shadow: 0 0 0.1rem 0.1rem #0002;
+}
+
+.iframe-box {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  width: 100%;
+  height: 100%;
+
+  overflow:scroll
+  .iframe {
+    overflow: scroll;
     width: 100%;
     height: 100%;
-    padding-bottom: 0;
-    overflow: hidden;
-  }
 
-  html, body {
-    width: 100%;
-    height: 100%;
-  }
-
-  body {
-    -webkit-overflow-scrolling: touch;
-    overflow-y: scroll;
-  }
-
-  .iframe-box {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    top: 0;
-    -webkit-overflow-scrolling: touch;
-    overflow-y: scroll;
-    width: 100%;
-    height: 100%;
-
-    overflow:scroll
-    .iframe {
-      overflow: scroll;
-      width: 100%;
-      height: 100%;
-
-      body {
-        overflow: auto;
-      }
+    body {
+      overflow: auto;
     }
   }
+}
 </style>

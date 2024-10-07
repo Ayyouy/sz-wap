@@ -95,7 +95,7 @@
     <div class="box-bottom">
       <div class="box-bottom-left">
         <div class="box-bottom-money">
-          <span>基金账户余额：</span>
+          <span>基金账户余额：${{ $store.state.userInfo.enableAmt }}</span>
         </div>
         <div class="box-bottom-money">
           <span>最大可购买：${{ detail.perValue * detail.maxNum }}（{{ detail.maxNum }}份）</span>

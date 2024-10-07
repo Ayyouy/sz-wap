@@ -1,10 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <mt-header fixed  title="我的持���">
-        <router-link to="/" slot="left">
-            <mt-button icon="back"></mt-button>
-        </router-link>
-    </mt-header> -->
     <mt-navbar class="sub-navbar" v-model="selected">
       <mt-tab-item id="1">我的持仓</mt-tab-item>
       <mt-tab-item id="2">我的平仓</mt-tab-item>
@@ -15,7 +10,7 @@
           <mt-button @click="toSearchName" type="default">根据股票简拼查询订单</mt-button>
           <mt-button @click="toSearchCode" type="default">根据股票代码查询订单</mt-button>
         </div>
-        <holdPosition :selectedNumber='selectedNumber' :handleOptions='handleOptions'/>
+        <HoldPosition :selectedNumber='selectedNumber' :handleOptions='handleOptions'/>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <div class="text-center">
@@ -31,20 +26,14 @@
 
 <script>
 import foot from '@/components/foot/foot'
-// import '@/assets/style/common.less'
-import holdPosition from './compontents/hold-position-4country'
+import HoldPosition from './compontents/hold-position-4country'
 import HistoryList from './compontents/history-list-4country'
-// import indexHoldPosition from './compontents/indexhold-position'
-// import indexHistoryList from './compontents/indexhistory-list'
-// import * as api from '@/axios/api'
 
 export default {
   components: {
     foot,
-    holdPosition,
-    HistoryList,
-    // indexHoldPosition,
-    // indexHistoryList
+    HoldPosition,
+    HistoryList
   },
   props: {
     selectedNumber: {
@@ -68,14 +57,6 @@ export default {
       hasChangeSell: false,
       hasChangeSell2: false
     }
-  },
-  watch: {},
-  computed: {},
-  created () {},
-  mounted () {
-    //   this.getListDetail()
-    //   this.getListDetail2()
-
   },
   methods: {
     handleOptions (opts) {

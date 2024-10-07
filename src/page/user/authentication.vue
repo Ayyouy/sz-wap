@@ -1,13 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <div class="header">
-      <mt-header title="实名认证">
-        <router-link to="/user" slot="left">
-          <mt-button icon="back">我的</mt-button>
-        </router-link>
-        <mt-button icon="more" slot="right"></mt-button>
-      </mt-header>
-    </div> -->
     <div class="box transaction">
       <div class="box-contain clearfix">
         <div class="empty text-center">
@@ -24,7 +16,7 @@
       <div class="auth-msg" v-if="this.$store.state.userInfo.isActive == 3">
         <p>认证失败，请重新认证</p>
         <div>
-          失败原因：{{this.$store.state.userInfo.authMsg}}
+          失败原因：{{ this.$store.state.userInfo.authMsg }}
         </div>
       </div>
       <!-- <mt-field label="手机号" placeholder="请输入您的手机号" v-model="form.phone"></mt-field> -->
@@ -107,9 +99,9 @@
 
 <script>
 import * as api from '@/axios/api'
-import { Toast } from 'mint-ui'
-import { isNull, idCardReg, isName } from '@/utils/utils'
-import { compress } from '@/utils/imgupload'
+import {Toast} from 'mint-ui'
+import {isNull} from '@/utils/utils'
+import {compress} from '@/utils/imgupload'
 
 export default {
   components: {},
@@ -146,15 +138,15 @@ export default {
     }
   },
   beforeDestroy () {
-    if (this.$state.theme =='red') {
+    if (this.$state.theme === 'red') {
       document.body.classList.remove('red-bg')
-        document.body.classList.add('black-bg')
+      document.body.classList.add('black-bg')
     }
   },
   mounted () {
-    if (this.$state.theme =='red') {
-        document.body.classList.remove('black-bg')
-        document.body.classList.add('red-bg')
+    if (this.$state.theme === 'red') {
+      document.body.classList.remove('black-bg')
+      document.body.classList.add('red-bg')
     }
     this.admin = process.env.API_HOST
     if (this.admin === undefined) {
@@ -287,12 +279,18 @@ export default {
       // 实名认证弹框
       if (isNull(this.form.name)) {
         Toast('请输入您的真实姓名')
-      } else if (isNull(this.form.img1key) && isNull(this.form.img2key)) {
-        Toast('请上传您的至少一张身份证照片')
-      } else {
-        // 显示确认弹窗
-        this.toAuthentication()
+        return
       }
+      if (isNull(this.form.idCard)) {
+        Toast('请输入您的身份证号')
+        return
+      }
+      if (isNull(this.form.img1key) && isNull(this.form.img2key)) {
+        Toast('请上传您的至少一张身份证照片')
+        return
+      }
+      // 显示确认弹窗
+      this.toAuthentication()
     },
     async toAuthentication () {
       let opts = {
@@ -317,101 +315,101 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .transaction {
-    color: rgba(100, 100, 100, 0.78);
+.transaction {
+  color: rgba(100, 100, 100, 0.78);
 
-    .empty {
-      width: 100%;
-      // height: 1.34rem;
-      font-size: 0.43rem;
-      color: #888888;
-      text-align: center;
-      line-height: 2rem;
-      // background: url('../../assets/img/thingsOk.png') no-repeat center center;
-      background-size: 70%;
-    }
+  .empty {
+    width: 100%;
+    // height: 1.34rem;
+    font-size: 0.43rem;
+    color: #888888;
+    text-align: center;
+    line-height: 2rem;
+    // background: url('../../assets/img/thingsOk.png') no-repeat center center;
+    background-size: 70%;
+  }
+}
+
+.rule-box {
+  padding: 0.2rem 0.3rem;
+
+  .title {
+    font-size: 0.3rem;
+    height: 0.5rem;
+    line-height: 0.5rem;
+    margin-bottom: 0.2rem;
   }
 
-  .rule-box {
-    padding: 0.2rem 0.3rem;
-
-    .title {
-      font-size: 0.3rem;
-      height: 0.5rem;
+  ul {
+    li {
+      color: #999;
       line-height: 0.5rem;
-      margin-bottom: 0.2rem;
-    }
-
-    ul {
-      li {
-        color: #999;
-        line-height: 0.5rem;
-      }
     }
   }
+}
 
-  .upload-box {
-    padding: 0.5rem;
+.upload-box {
+  padding: 0.5rem;
 
-    .upload-btn {
-      // border: 1px solid #ddd;
-      border-radius: 4px;
-      width: 40%;
+  .upload-btn {
+    // border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 40%;
+    height: 1.6rem;
+    margin-bottom: 10px;
+    float: left;
+    margin: 0.2rem 5%;
+    text-align: center;
+    position: relative;
+
+    .btn-hidden {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 3;
+      opacity: 0;
+    }
+
+    .id-img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /deep/ .el-upload--picture-card {
+      background: none;
+      width: 100%;
       height: 1.6rem;
-      margin-bottom: 10px;
-      float: left;
-      margin: 0.2rem 5%;
-      text-align: center;
-      position: relative;
+      line-height: 1.6rem;
+    }
 
-      .btn-hidden {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 3;
-        opacity: 0;
-      }
+    .btn-title {
+      position: absolute;
+      top: 23px;
+      left: 0;
+      width: 100%;
+    }
 
-      .id-img {
-        max-width: 100%;
-        max-height: 100%;
-      }
-
-      /deep/ .el-upload--picture-card {
-        background: none;
-        width: 100%;
-        height: 1.6rem;
-        line-height: 1.6rem;
-      }
-
-      .btn-title {
-        position: absolute;
-        top: 23px;
-        left: 0;
-        width: 100%;
-      }
-
-      /deep/ .el-upload__input {
-        display: none;
-      }
-
+    /deep/ .el-upload__input {
+      display: none;
     }
 
   }
 
-  .auth-msg {
-    padding: 0.2rem 0.6rem;
-    line-height: 0.4rem;
+}
 
-    p {
-      color: red;
-    }
+.auth-msg {
+  padding: 0.2rem 0.6rem;
+  line-height: 0.4rem;
 
-    div {
-      color: #ddd;
-    }
+  p {
+    color: red;
   }
+
+  div {
+    color: #ddd;
+  }
+}
 
 </style>

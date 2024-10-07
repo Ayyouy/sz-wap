@@ -18,25 +18,25 @@
         <div class="right" v-else>银行卡</div>
 
       </div>
-      <div  class="content">
+      <div class="content">
         <div class="left">汇率</div>
         <div class="right">1:{{ item.rate }}</div>
       </div>
       <div class="content">
         <div class="left">出金金额</div>
-        <div class="right">{{ item.withAmt }}{{item.symbol}}</div>
+        <div class="right">{{ item.withAmt }}{{ item.symbol }}</div>
       </div>
       <div class="content">
         <div class="left">现金账户余额</div>
         <div class="right">{{ item.nowEnableAmt }}$</div>
       </div>
       <div class="footer">
-        {{new Date(item.applyTime) | timeFormat}}
+        {{ new Date(item.applyTime) | timeFormat }}
       </div>
     </div>
 
     <el-drawer
-      size="46%"
+      size="36%"
       title="筛选"
       direction="btt"
       :visible.sync="drawerShow"
@@ -49,14 +49,15 @@
       >
         <el-form-item label="状态">
           <el-radio-group v-model="searchForm.withStatus">
-            <el-radio label="" border>全部</el-radio>
-            <el-radio label="1" border>审核成功</el-radio>
-            <el-radio label="2" border>审核失败</el-radio>
-            <el-radio label="3" border>待审核</el-radio>
+            <el-radio label="" style="border: none" border>全部</el-radio>
+            <el-radio label="1" style="border: none" border>审核成功</el-radio>
+            <el-radio label="2" style="border: none" border>审核失败</el-radio>
+            <el-radio label="3" style="border: none" border>待审核</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="时间"
-          ><el-date-picker
+        >
+          <el-date-picker
             v-model="searchForm.bbb"
             type="daterange"
             align="right"
@@ -66,6 +67,7 @@
             end-placeholder="结束日期"
             :picker-options="pickerOptions"
             value-format="yyyy-MM-dd"
+            style="border: none"
           >
           </el-date-picker>
         </el-form-item>
@@ -82,73 +84,74 @@
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import * as api from "@/axios/api";
+import {Toast} from 'mint-ui'
+import * as api from '@/axios/api'
+
 export default {
   props: {
     selectedNumber: {
       type: String,
-      default: "0",
-    },
+      default: '0'
+    }
   },
-  data() {
+  data () {
     return {
       list: [],
-      tagTypeArr: ["primary", "success", "danger"],
-      tagTextArr: ["审核中", "审核通过", "审核失败"],
-      payTypeArr: ["支付宝","银行卡", "泰达币"],
+      tagTypeArr: ['primary', 'success', 'danger'],
+      tagTextArr: ['审核中', '审核通过', '审核失败'],
+      payTypeArr: ['支付宝', '银行卡', '泰达币'],
       drawerShow: false,
       searchForm: {
-        aaa: "0",
-        bbb: "",
-        ccc: "",
+        aaa: '0',
+        bbb: '',
+        ccc: ''
       },
       pickerOptions: {
         shortcuts: [
           {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
+            text: '最近一周',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
           },
           {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
+            text: '最近一个月',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
           },
           {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
-      },
-    };
+            text: '最近三个月',
+            onClick (picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }
+        ]
+      }
+    }
   },
-  mounted() {
-    this.getListDetail();
+  mounted () {
+    this.getList()
   },
   methods: {
-    async getListDetail () {
-      console.log('time:',this.searchForm.bbb)
+    async getList () {
+      console.log('money list 4')
       let opt = {
         payChannel: '', // 支付方式
-        withStatus: this.searchForm.withStatus, // 订单状态
+        withStatus: this.searchForm.withStatus // 订单状态
       }
-      if(this.searchForm.bbb){
-        opt.beginTime = new Date(this.searchForm.bbb[0]);
-        opt.endTime = new Date(this.searchForm.bbb[1]);
+      if (this.searchForm.bbb) {
+        opt.beginTime = new Date(this.searchForm.bbb[0])
+        opt.endTime = new Date(this.searchForm.bbb[1])
       }
       let data = await api.withdrawList(opt)
       if (data.status === 0) {
@@ -160,97 +163,116 @@ export default {
         Toast(data.msg)
       }
     },
-    searchOpen() {
-      this.drawerShow = true;
+    searchOpen () {
+      this.drawerShow = true
     },
-    searchSubmit() {
-      this.list = [];
-      this.drawerShow = false;
-      this.getListDetail();
-    },
-  },
-};
+    searchSubmit () {
+      this.list = []
+      this.drawerShow = false
+      this.getList()
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
 .listContainer {
   font-size: 0.28rem;
   margin: 0 0.2rem;
+
   .topBtn {
     text-align: right;
     margin-bottom: 0.3rem;
   }
+
   .item {
     padding: 0.2rem;
     border: 1px solid #eee;
     border-radius: 0.1rem;
     margin-bottom: 0.2rem;
     background-color: #1f2636;
+
     > div {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0.1rem 0.2rem;
       color: rgba(255, 255, 255, 0.8);
+
       &.title {
         border-bottom: 1px solid #999;
         padding: 0.1rem 0;
         font-size: 0.35rem;
       }
+
       &.footer {
         border-top: 1px solid #999;
         font-size: 0.31rem;
         padding: 0.1rem 0;
       }
+
       &:first-of-type {
         margin-top: 0;
         padding-top: 0;
       }
+
       &:last-of-type {
         margin-bottom: 0;
         padding-bottom: 0;
         border-bottom: none;
       }
+
       .left {
         width: 1.8rem;
       }
+
       .right {
         flex: 1;
         text-align: right;
       }
     }
   }
+
   /deep/ .el-drawer {
     background-color: #1f2636;
+
     .el-drawer__header {
       span {
         color: #fff;
       }
     }
+
     .el-drawer__body {
       margin: 0.2rem;
+
       .el-form {
         .el-form-item__label {
           color: #fff;
         }
+
         .el-date-editor {
           width: 100%;
           background: #21252a;
         }
+
         .el-radio-group {
           display: flex;
           justify-content: space-between;
+
           .el-radio {
             margin: 0;
             color: #fff;
           }
         }
+
         .el-input__inner {
           background: #21252a;
         }
+
         input {
           -webkit-text-fill-color: #fff;
         }
+
         .footer {
           display: flex;
           justify-content: center;

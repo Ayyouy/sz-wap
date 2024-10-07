@@ -1,12 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <div class="header">
-      <mt-header :title="type+'银行卡'">
-        <router-link to="/card" slot="left">
-          <mt-button icon="back">返回</mt-button>
-        </router-link>
-      </mt-header>
-    </div> -->
     <div class="box transaction">
       <div class="box-contain clearfix">
         <div class="empty text-center" style="margin-top: 0.3rem">
@@ -136,7 +129,6 @@
 <script>
 import * as api from "@/axios/api";
 import { Toast } from "mint-ui";
-import { isNull, bankNoReg, isName } from "@/utils/utils";
 
 export default {
   components: {},
@@ -153,7 +145,7 @@ export default {
       buttonValue: "获取验证码",
       timer: null,
       codeBtnLoading: false,
-    };
+    }
   },
   watch: {},
   computed: {},

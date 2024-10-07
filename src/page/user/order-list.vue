@@ -1,69 +1,27 @@
 <template>
   <div class="wrapper">
-    <!-- <mt-navbar class="top-navbar" v-model="selected" fixed>
-      <mt-tab-item
-      class="top-nav-item"
-      v-if="this.$store.state.settingForm.stockDisplay" id="1">沪深账户</mt-tab-item>
-      <mt-tab-item
-      class="top-nav-item"
-      v-if="this.$store.state.settingForm.indexDisplay" id="2">指数账户</mt-tab-item>
-     <mt-tab-item id="3">科创</mt-tab-item> 
-      <mt-tab-item
-      class="top-nav-item"
-      v-if="this.$store.state.settingForm.futuresDisplay" id="4">期货账户</mt-tab-item>
-    </mt-navbar> -->
-    <!-- <mt-tab-container class="order-list" v-model="selected">
-      <mt-tab-container-item v-if="this.$store.state.settingForm.stockDisplay" id="1">
-        <List1 :selectedNumber='selected'/>
-      </mt-tab-container-item>
-      <mt-tab-container-item v-if="this.$store.state.settingForm.indexDisplay" id="2">
-        <List2 :selectedNumber='selected'/>
-      </mt-tab-container-item>
-      <mt-tab-container-item v-if="this.$store.state.settingForm.futuresDisplay" id="4">
-        <List4 :selectedNumber='selected'/>
-      </mt-tab-container-item>
-    </mt-tab-container> -->
-
     <mt-navbar class="top-navbar" v-model="selected">
-      <!-- <mt-tab-item id="0">全部</mt-tab-item> -->
-      <!-- v-if="this.$store.state.settingForm.stockDisplay" -->
-      <mt-tab-item class="long" id="1">香港股市</mt-tab-item>
-      <!-- v-if="this.$store.state.settingForm.stockDisplay" -->
       <mt-tab-item class="long" id="2">美国股市</mt-tab-item>
-      <!-- v-if="this.$store.state.settingForm.stockDisplay" -->
-      <mt-tab-item class="long" id="4">印度股市</mt-tab-item>
-      <!-- v-if="this.$store.state.settingForm.stockDisplay" -->
       <mt-tab-item class="long" id="3">日本股市</mt-tab-item>
-      <!-- v-if="this.$store.state.settingForm.futuresDisplay" -->
-      <mt-tab-item id="5">期货</mt-tab-item>
-      <!--  v-if="this.$store.state.settingForm.indexDisplay" -->
-      <mt-tab-item id="6">指数</mt-tab-item>
+      <mt-tab-item class="long" id="1">香港股市</mt-tab-item>
+      <mt-tab-item class="long" id="4">印度股市</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
-      <!-- <mt-tab-container-item id="0">
-          <List0 :changeNavOptions='changeNavOptions'/>
-      </mt-tab-container-item> -->
-      <!-- v-if="this.$store.state.settingForm.indexDisplay" -->
       <mt-tab-container-item id="1">
         <List4Country :selectedNumber="selected" />
       </mt-tab-container-item>
-      <!-- v-if="this.$store.state.settingForm.stockDisplay" -->
       <mt-tab-container-item id="2">
         <List4Country :selectedNumber="selected" />
       </mt-tab-container-item>
-      <!-- v-if="this.$store.state.settingForm.kcStockDisplay" -->
       <mt-tab-container-item id="3">
         <List4Country :selectedNumber="selected" />
       </mt-tab-container-item>
-      <!-- v-if="this.$store.state.settingForm.futuresDisplay" -->
       <mt-tab-container-item id="4">
         <List4Country :selectedNumber="selected" />
       </mt-tab-container-item>
-      <!-- v-if="this.$store.state.settingForm.stockDisplay" -->
       <mt-tab-container-item id="5">
         <List2 :selectedNumber="selected" />
       </mt-tab-container-item>
-      <!-- v-if="this.$store.state.settingForm.stockDisplay" -->
       <mt-tab-container-item id="6">
         <List4 :selectedNumber="selected" />
       </mt-tab-container-item>
@@ -73,64 +31,57 @@
 </template>
 
 <script>
-import foot from "@/components/foot/foot";
-// import '@/assets/style/common.less'
-// import List1 from "./order-list1";
-import List2 from "./order-list2";
-// import List3 from "./order-list3";
-import List4 from "./order-list4";
-import List4Country from "./order-list-4country";
-import * as api from "@/axios/api";
-import { Toast } from "mint-ui";
+import foot from '@/components/foot/foot'
+import List2 from './order-list2'
+import List4 from './order-list4'
+import List4Country from './order-list-4country'
+import * as api from '@/axios/api'
+import { Toast } from 'mint-ui'
 
 export default {
   components: {
     foot,
-    // List1,
     List2,
-    // List3,
     List4,
     List4Country
   },
   props: {},
-  data() {
+  data () {
     return {
-      selected: "1" // 选中
-    };
+      selected: '2' // 选中
+    }
   },
-  watch: {},
-  computed: {},
-  created() {
+  created () {
     if (!this.$store.state.userInfo.phone) {
-      this.getUserInfo();
+      this.getUserInfo()
     }
   },
-  mounted() {
+  mounted () {
     if (this.$route.query.index) {
-      this.selected = this.$route.query.index;
+      this.selected = this.$route.query.index
     }
-    this.getProductSetting();
+    this.getProductSetting()
   },
   methods: {
-    async getUserInfo() {
+    async getUserInfo () {
       // 获取用户信息
-      let data = await api.getUserInfo();
+      let data = await api.getUserInfo()
       if (data.status === 0) {
-        this.$store.state.userInfo = data.data;
+        this.$store.state.userInfo = data.data
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     },
-    async getProductSetting() {
-      let data = await api.getProductSetting();
+    async getProductSetting () {
+      let data = await api.getProductSetting()
       if (data.status === 0) {
-        this.$store.state.settingForm = data.data;
+        this.$store.state.settingForm = data.data
       } else {
-        this.$message.error(data.msg);
+        this.$message.error(data.msg)
       }
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .wrapper {

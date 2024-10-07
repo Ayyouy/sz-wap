@@ -3,9 +3,10 @@
 // 账户：15888888888     密码:123456
 
 import axios from 'axios' // 引入axios
+import {Toast} from 'mint-ui'
 import qs from 'qs' // 引入qs
 import router from '@/router'
-import APIUrl from './api.url' // 引入api.url.js
+import APIUrl from './api.url'
 
 // axios 默认配置  更多配置查看Axios中文文档
 axios.defaults.timeout = 50000 // 超时默认值
@@ -15,11 +16,27 @@ axios.defaults.responseType = 'json' // 默认数据响应类型
 axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.defaults.withCredentials = true // 表示跨域请求时是否需要使用凭证
 
+const exps = ['/api/user/checkPhone.do', '/code/checkCode.do', '/api/site/getInfo.do', '/api/user/login.do', '/api/user/updatePwd.do', '/api/site/login.do', '/api/site/getInfo.do', '/api/sms/new/sendRegSms.do']
 // http request 拦截器
 // 在ajax发送之前拦截 比如对所有请求统一添加header token
 axios.interceptors.request.use(
   (config) => {
-    config.headers['token'] = localStorage.getItem('wap-token')
+    let token = localStorage.getItem('wap-token')
+    if (token === undefined || token === null) {
+      let url = config.url
+      let flag = false
+      for (let item of exps) {
+        if (item === url) {
+          flag = true
+          break
+        }
+      }
+      if (!flag) {
+        router.push('/openaccount')
+      }
+    } else {
+      config.headers['token'] = token
+    }
     return config
   },
   (err) => {
@@ -31,18 +48,27 @@ axios.interceptors.request.use(
 // ajax请求回调之前拦截 对请求返回的信息做统一处理 比如error为401无权限则跳转到登陆界面
 axios.interceptors.response.use(
   (response) => {
-    switch (response.data && response.data.success) {
-      case false:
-        response.data.msg = '您还未登录,请先登录'
-        router.push('/openaccount')
-        break
-      default:
-        break
+    let data = response.data
+    if (data instanceof Object) {
+      if (data.hasOwnProperty('success') && !data.success) {
+        if (data.msg.includes('登录')) {
+          data.msg = '您还未登录,请先登录'
+          router.push('/openaccount')
+        }
+      }
     }
+    // switch (response.data && response.data.success) {
+    //   case false:
+    //     response.data.msg = '您还未登录,请先登录'
+    //     router.push('/openaccount')
+    //     break
+    //   default:
+    //     break
+    // }
     return response
   },
   (error) => {
-    // console.log(error,'error');
+    Toast('服务异常')
     return Promise.reject(error)
   }
 )
@@ -76,7 +102,7 @@ export function post (url, data = {}, out) {
  */
 export function get (url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.get(url, { params: data }).then(
+    axios.get(url, {params: data}).then(
       (response) => {
         resolve(response.data)
       },

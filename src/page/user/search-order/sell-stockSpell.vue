@@ -5,7 +5,6 @@
         <router-link to="/orderlist" slot="left">
           <mt-button icon="back"></mt-button>
         </router-link>
-        <!-- <mt-button icon="more" slot="right"></mt-button> -->
       </mt-header>
     </div>
     <form target="frameFile" v-on:submit.prevent='formSubmit'>
@@ -29,46 +28,79 @@
           <li v-for="(item) in list" :key="item.key">
             <div class="order-info-box">
               <div class="order-title">
-                <span class="main">{{item.stockName}}</span>
-                <span class="secondary">({{item.stockCode}})</span>
-                
-                <span v-if="item.stockPlate=='科创'" :class="item.stockPlate=='科创'?'type':''">科创</span>
-                <span class="pull-right">总盈亏:<b
-                  :class="item.allProfitAndLose<0?'space green':item.allProfitAndLose==0?'space':'space red'">{{item.allProfitAndLose}}</b></span>
-                <!-- <span class="red direction pull-right">{{item.orderDirection}}<i class="iconfont icon-up"></i></span> -->
+                <span class="main">{{ item.stockCode }}</span>
+                <span class="secondary">{{ item.stockName }}</span>
+                <span v-if="item.stockPlate == '科创'" :class="item.stockPlate == '科创' ? 'type' : ''">科创</span>
+                <span class="pull-right">总盈亏:
+                <b :class="
+                  item.rateProfitAndLose > 0
+                  ? 'space green'
+                  : item.rateProfitAndLose == 0
+                  ? 'space'
+                  : 'space red'">
+                  ${{ item.rateProfitAndLose }}
+                </b>
+              </span>
               </div>
               <div class="order-info">
                 <p class="clearfix">
-                  <span class="col-xs-4">买入价格:<b class="space">{{item.buyOrderPrice}}</b></span>
-                  <span class="col-xs-4 text-center">数量:<b class="space">{{item.orderNum}}</b></span>
-                  <span class="col-xs-4 text-right">市值:<b class="space">{{item.orderTotalPrice}}</b></span>
+                  <span class="col-xs-6">买入价格:<b class="space">{{ item.stopTargetPrice }}</b></span>
+                  <span class="col-xs-6">市值:<b class="space">{{ item.orderTotalPrice }}</b></span>
                 </p>
                 <p class="clearfix">
-                  <span class="col-xs-4">卖出价格:<b class="space">{{item.sellOrderPrice}}</b></span>
+                  <span class="col-xs-6">实际购买价格:<b class="space">{{ item.buyOrderPrice }}</b></span>
+                  <span class="col-xs-6">卖出价格:<b class="space">{{ item.sellOrderPrice }}</b></span>
                 </p>
                 <p class="clearfix">
-                  <span class="col-xs-4">手续费:<b class="space">{{item.orderFee}}</b></span>
-                  <span class="col-xs-4 text-center">印花税:<b class="space">{{item.orderSpread}}</b></span>
-                  <span class="col-xs-4 text-right">留仓费:<b class="space">{{item.orderStayFee}}</b></span>
-                </p>
-
-                <p class="clearfix">
-                  <span class="col-xs-5">留仓天数:<b class="space">{{item.orderStayDays}}</b></span>
-                  <span class="col-xs-7 text-right">浮动盈亏:<b
-                    :class="item.profitAndLose<0?'space green':item.profitAndLose==0?'space':'space red'">{{item.profitAndLose}}</b></span>
+                  <span class="col-xs-6">数量:<b class="space">{{ item.orderNum }}</b></span>
+                  <span class="col-xs-6">手续费:<b class="space">{{ item.orderFee }}</b></span>
                 </p>
                 <p class="clearfix">
-                            <span class="secondary col-xs-6">买入:
-                                <b v-if="item.buyOrderTime">{{new Date(item.buyOrderTime) | timeFormat}}</b>
-                                <b v-else></b>
-                            </span>
-                  <span class="secondary col-xs-6 text-right">卖出:
-                                <b v-if="item.sellOrderTime">{{new Date(item.sellOrderTime) | timeFormat}}</b>
-                                <b v-else></b>
-                            </span>
+                  <span class="col-xs-6">封锁期:<b class="space">{{ item.lockTime / (60 * 24) }}天</b></span>
+                  <span class="col-xs-6">汇率:<b class="space">{{ item.rate }}</b></span>
+                </p>
+                <p class="clearfix">
+                  <span class="col-xs-6">印花税:<b class="space">{{ item.orderSpread }}</b></span>
+                  <span class="col-xs-6">留仓费:<b class="space">{{ item.orderStayFee }}</b></span>
+                </p>
+                <p class="clearfix">
+                  <span class="col-xs-6">留仓天数:<b class="space">{{ item.orderStayDays }}</b></span>
+                  <span class="col-xs-6">浮动盈亏:
+                    <b :class="
+                      item.profitAndLose<0
+                      ?'space green'
+                      :item.profitAndLose==0
+                      ?'space':'space red'">
+                      {{ item.profitAndLose }}
+                    </b>
+                </span>
+                </p>
+                <p class="clearfix">
+                <span class="col-xs-12">总盈亏:
+                  <b v-if="item.now_price == 0">-</b>
+                  <b v-else :class="
+                    item.allProfitAndLose < 0
+                    ? 'space red'
+                    : item.allProfitAndLose >= 0
+                    ? 'space'
+                    : 'space green'">
+                    {{ item.symnol }} {{ item.allProfitAndLose }}
+                  </b>
+                </span>
+                </p>
+                <p class="clearfix">
+                <span class="secondary col-xs-6" style=" font-size: 12px;">
+                  买入:
+                  <b v-if="item.buyOrderTime">{{ new Date(item.buyOrderTime) | timeFormat }}</b>
+                  <b v-else></b>
+                </span>
+                  <span class="secondary col-xs-6" style=" font-size: 12px;">
+                  卖出:
+                  <b v-if="item.sellOrderTime">{{ new Date(item.sellOrderTime) | timeFormat }}</b>
+                  <b v-else></b>
+                </span>
                 </p>
               </div>
-
             </div>
           </li>
         </ul>
@@ -88,7 +120,7 @@
 
 <script>
 import foot from '@/components/foot/foot'
-import { Toast } from 'mint-ui'
+import {Toast} from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
@@ -186,35 +218,35 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .table-list-body {
-    padding-top: 0.62rem;
-  }
+.table-list-body {
+  padding-top: 0.62rem;
+}
 
-  .search-btn-list {
-    position: fixed;
-    right: 0;
-    height: 40px;
-    font-size: 0.25rem;
-    // background: #2e3138;
-    z-index: 10;
-    border: none;
-    box-shadow: none;
-    top: 36px;
-  }
+.search-btn-list {
+  position: fixed;
+  right: 0;
+  height: 40px;
+  font-size: 0.25rem;
+  // background: #2e3138;
+  z-index: 10;
+  border: none;
+  box-shadow: none;
+  top: 36px;
+}
 
-  .order-info-box-wrap {
-    margin-top: 0.9rem;
-  }
+.order-info-box-wrap {
+  margin-top: 0.9rem;
+}
 
-  .wrapper /deep/ .mint-searchbar {
-    // background: #2e3138;
-    position: fixed;
-    width: 100%;
-    top: 36px;
+.wrapper /deep/ .mint-searchbar {
+  // background: #2e3138;
+  position: fixed;
+  width: 100%;
+  top: 36px;
 
-    .mint-searchbar-inner {
-      background-color: rgba(180, 180, 180, 0.1)
-    }
+  .mint-searchbar-inner {
+    background-color: rgba(180, 180, 180, 0.1)
   }
+}
 
 </style>

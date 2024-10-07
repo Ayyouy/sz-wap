@@ -1,22 +1,13 @@
 <template>
-  <div
-    :class="`list-content-wrapper ${
-      $state.theme === 'red' ? 'red-theme' : 'black-theme'
-    }`"
-  >
-    <!-- <mt-header fixed  title="指数">
-        <router-link to="/list" slot="left">
-            <mt-button icon="back">返回</mt-button>
-        </router-link>
-    </mt-header> -->
+  <div :class="`list-content-wrapper ${      $state.theme === 'red' ? 'red-theme' : 'black-theme'    }`">
     <ul class="table-list list-table-title">
       <li class="title">
         <div>
           <ul class="clearfix">
-            <li class="li-title">名称<img :src="sortIcon" alt="" /></li>
-            <li class="li-base">最新<img :src="sortIcon" alt="" /></li>
-            <li class="li-base">涨幅<img :src="sortIcon" alt="" /></li>
-            <li class="li-base">涨跌<img :src="sortIcon" alt="" /></li>
+            <li class="li-title">名称<img :src="sortIcon" alt=""/></li>
+            <li class="li-base">最新<img :src="sortIcon" alt=""/></li>
+            <li class="li-base">涨幅<img :src="sortIcon" alt=""/></li>
+            <li class="li-base">涨跌<img :src="sortIcon" alt=""/></li>
           </ul>
         </div>
       </li>
@@ -30,17 +21,9 @@
       >
         <li class="list-body" v-for="item in list" :key="item.code">
           <div>
-            <ul
-              class="clearfix"
-              :class="
-                item.floatPoint < 0
-                  ? 'green'
-                  : item.floatPoint == 0
-                  ? ''
-                  : 'red'
-              "
-              @click="toDetail(item)"
-            >
+            <ul class="clearfix"
+                :class="item.floatPoint < 0? 'green': item.floatPoint == 0? '': 'red'"
+                @click="toDetail(item)">
               <li class="li-title">
                 <div class="titleContainer">
                   <img
@@ -78,8 +61,8 @@
                   <div class="content" v-else>
                     <p class="code code-wra" style="padding-left: 0px">
                       <span class="futures-code code2">{{
-                        item.code
-                      }}</span>
+                          item.code
+                        }}</span>
                       <span class="discount">%{{ (item.discount * 100).toFixed(0) }}</span>
                     </p>
                     <p class="name name2">
@@ -89,19 +72,27 @@
                 </div>
               </li>
               <li class="li-base">
-                <span>{{
-                  item.nowPrice ? Number(item.nowPrice).toFixed(2) : "-"
-                }}</span>
+                <span :style="item.nowPrice>0?'color:green;':'color:red;'">{{
+                    item.nowPrice ? Number(item.nowPrice).toFixed(2) : '-'
+                  }}</span>
               </li>
               <li class="li-base">
-                <span v-if="item.nowPrice == 0">-</span>
-                <span v-else-if="item.nowPrice-item.preclose_px>0">{{item.hcrate?item.hcrate:'0'}}%</span>
-                <span v-else-if="item.nowPrice-item.preclose_px <0">{{item.hcrate?item.hcrate:'0'}}%</span>
+                <span :style="item.nowPrice>0?'color:green;':'color:red;'" v-if="item.nowPrice == 0">-</span>
+                <span :style="(item.nowPrice-item.preclose_px)>0?'color:green;':'color:red;'"
+                      v-else-if="item.nowPrice-item.preclose_px>0">{{ item.hcrate ? item.hcrate : '0' }}%</span>
+                <span :style="(item.nowPrice-item.preclose_px)<0?'color:red;':'color:green;'"
+                      v-else-if="item.nowPrice-item.preclose_px <0">{{ item.hcrate ? item.hcrate : '0' }}%</span>
               </li>
               <li class="li-base no-bold">
-                <span v-if="item.nowPrice == 0">-</span>
-                <span v-else-if="item.nowPrice-item.preclose_px>0">{{(item.nowPrice-item.preclose_px).toFixed(2)}}</span>
-                <span v-else-if="item.nowPrice-item.preclose_px <0">{{(item.nowPrice-item.preclose_px).toFixed(2)}}</span>
+                <span :style="item.nowPrice>0?'color:green;':'color:red;'" v-if="item.nowPrice == 0">-</span>
+                <span :style="(item.nowPrice-item.preclose_px)>0?'color:green;':'color:red;'"
+                      v-else-if="item.nowPrice-item.preclose_px>0">{{
+                    (item.nowPrice - item.preclose_px).toFixed(2)
+                  }}</span>
+                <span :style="(item.nowPrice-item.preclose_px)<0?'color:red;':'color:green;'"
+                      v-else-if="item.nowPrice-item.preclose_px <0">{{
+                    (item.nowPrice - item.preclose_px).toFixed(2)
+                  }}</span>
               </li>
             </ul>
           </div>
@@ -117,169 +108,122 @@
       <div v-show="!loading && list.length > 0" class="load-all text-center">
         已全部加载
       </div>
-      <!-- <div class="footer-btn">
-          <p class="red">*注：
-              <span><i class="iconfont icon-jiaoyi red"></i>表示该指数可交易</span>
-              <span class="pull-right"><i class="iconfont icon-jinzhi yellow"></i>表示���指数不可交易</span>
-          </p>
-      </div> -->
     </div>
     <foot></foot>
   </div>
 </template>
 
 <script>
-import foot from "../../components/foot/foot";
-import { Toast } from "mint-ui";
-import * as api from "@/axios/api";
+import foot from '../../components/foot/foot'
+import {Toast} from 'mint-ui'
+import * as api from '@/axios/api'
 
 export default {
   components: {
-    foot,
+    foot
   },
   props: {
     selectedNumber: {
-      type: String,
-    },
+      type: String
+    }
   },
-  data() {
+  data () {
     return {
       loading: false,
       pageNum: 1,
       pageSize: 15,
       currentNum: 15,
       list: [],
-      timer: "",
-      sortIcon: require("../../../static/img/list/sort-icon.png"),
-    };
+      timer: '',
+      sortIcon: require('../../../static/img/list/sort-icon.png')
+    }
   },
   watch: {
-    selectedNumber(val) {
-      console.log('选择股票:',val);
+    selectedNumber (val) {
       if (val) {
-        this.getStock();
-        clearInterval(this.timer);
-        this.timer = setInterval(this.refreshList, 5000);
+        this.getStock()
+        clearInterval(this.timer)
+        this.timer = setInterval(this.refreshList, 5000)
       } else {
-        clearInterval(this.timer);
+        clearInterval(this.timer)
       }
-    },
+    }
   },
-  mounted() {
-    this.getStock();
+  mounted () {
+    this.getStock()
   },
   methods: {
-    async addOptions(val) {
-      let data = await api.addOption({ code: val.code });
+    async addOptions (val) {
+      let data = await api.addOption({code: val.code})
       if (data.status === 0) {
-        Toast("添加自选成功");
-        this.getStock();
+        Toast('添加自选成功')
+        this.getStock()
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     },
-    async toDeleteMy(val) {
-      let data = await api.delOption({ code: val.code });
+    async toDeleteMy (val) {
+      let data = await api.delOption({code: val.code})
       if (data.status === 0) {
-        Toast("删除自选股成功");
-        this.getStock();
+        Toast('删除自选股成功')
+        this.getStock()
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     },
-    async getStock() {
-      console.log('股票列表')
+    async getStock () {
       let opt = {
-        countryId: this.selectedNumber,
-      };
+        countryId: this.selectedNumber
+      }
       // 获取股票列表
-      let result = await api.getStock(opt);
-      if(result) {
+      let result = await api.getStock(opt)
+      if (result) {
         if (result.status === 0) {
-          this.list = result.data.list;
+          this.list = result.data.list
         } else {
-        Toast(result.msg);
+          Toast(result.msg)
         }
       }
-      console.log(this.selectedNumber,':',result)
-      
-
-      // this.list = [
-      //   {
-      //     name: "平安银行",
-      //     code: "000001", // #股票代码
-      //     spell: "payx,payh",
-      //     gid: "sz000001",
-      //     nowPrice: "10.280",
-      //     hcrate: 0.49,
-      //     today_max: "10.320",
-      //     today_min: "10.230",
-      //     business_balance: "479571585.180",
-      //     business_amount: "46633100",
-      //     preclose_px: "10.230",
-      //     open_px: "10.250",
-      //     day3Rate: -0.57,
-      //     stock_type: "sz",
-      //     stock_plate: null,
-      //     isOption: "0",
-      //     discount: 0.1, // #折扣率， 大于0展示标签
-      //     lockTime: null,
-      //     countryId: 0,
-      //   },
-      // ];
     },
-    async refreshList() {
+    async refreshList () {
       // 刷新指数
       if (this.loading) {
-        return;
+        return
       }
       let opt = {
         pageNum: 1,
         pageSize: this.currentNum,
-        countryId: this.selectedNumber,
-      };
-      let data = await api.getStock(opt);
-      this.list = data.data;
-    },
-    async loadMore() {
-      if (this.list.length < 100) {
-        return;
+        countryId: this.selectedNumber
       }
-      this.loading = true;
+      let data = await api.getStock(opt)
+      this.list = data.data
+    },
+    async loadMore () {
+      if (this.list.length < 100) {
+        return
+      }
+      this.loading = true
       // clearInterval(this.timer)
       // 加载下一页
-      this.pageNum++;
-      this.currentNum = this.pageNum * this.pageSize;
-      await this.getStock();
-      this.loading = false;
+      this.pageNum++
+      this.currentNum = this.pageNum * this.pageSize
+      await this.getStock()
+      this.loading = false
     },
-    async toDetail(val) {
-      // if (val.transState === 1) {
-      // this.$router.push({
-      //   path: '/indexBuy',
-      //   query: {
-      //     info: val
-      //   }
-      // })
-      this.$router.push({
-        path: "/list4countryDetail",
+    async toDetail (val) {
+      await this.$router.push({
+        path: '/list4countryDetail',
         query: {
           code: val.code,
           areaId: this.selectedNumber
-          // stock_type: "sh",
-          // zsinfo: val,
-          // name: val.name
-        },
-      });
-      //   } else {
-      //     Toast("该指数暂不能交易!");
-      //   }
+        }
+      })
     },
-    toSearch() {
-      this.$router.push("/indexsearchlist");
-    },
-  },
-};
+    toSearch () {
+      this.$router.push('/indexsearchlist')
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .wrapper {
@@ -346,15 +290,18 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
+
   .list-table-title {
     width: 100%;
     position: absolute;
     left: 0;
     top: 0;
+
     .title {
       position: relative;
       top: 0;
       left: 0;
+
       ul {
         li {
           font-size: 0.28rem;
@@ -365,13 +312,16 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
+
           img {
             width: 0.15rem;
             margin-left: 0.06rem;
           }
+
           &.li-title {
             width: 40%;
           }
+
           &.li-base {
             width: 20%;
           }
@@ -379,45 +329,55 @@ export default {
       }
     }
   }
+
   .list-table-body {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
     overflow-y: auto;
     padding-top: 0.6rem;
+
     ul {
       li.li-base {
         width: 20%;
+
         span {
           font-size: 0.26rem;
           font-family: MicrosoftYaHeiLight;
           font-weight: 400;
         }
       }
+
       .li-title {
         width: 40%;
+
         .titleContainer {
           height: 100%;
           display: flex;
           align-items: center;
+
           img {
             width: 0.5rem;
             height: 0.5rem;
             margin-right: 0.05rem;
           }
+
           .content {
             display: flex;
             flex-direction: column;
+
             .name {
               color: #fff;
               width: 100%;
               display: flex;
               align-items: center;
               margin-top: 0.05rem;
+
               &.name2 {
                 font-size: 0.22rem;
               }
             }
+
             .code-wra {
               width: 1.35rem;
               height: 0.38rem;
@@ -429,10 +389,12 @@ export default {
               border-radius: 0.05rem;
               color: white;
               position: relative;
+
               span {
                 color: white;
                 border: 0;
               }
+
               &::before {
                 content: "";
                 display: block;
@@ -448,13 +410,16 @@ export default {
                 left: -0.1rem;
                 display: none;
               }
+
               .futures-code {
                 padding: 0;
+
                 &.code2 {
                   font-size: 0.28rem;
                   margin-top: 0.05rem;
                 }
               }
+
               .discount {
                 color: red;
                 border-radius: 0.08rem;
@@ -472,6 +437,7 @@ export default {
 
 .red-theme {
   background: white;
+
   .table-list {
     ul {
       li {
@@ -479,9 +445,11 @@ export default {
       }
     }
   }
+
   .list-table-title {
     .title {
       background: white;
+
       ul {
         li {
           color: #212121;
@@ -489,16 +457,19 @@ export default {
       }
     }
   }
+
   .list-table-body {
     li.li-title {
       .name {
         color: #000;
       }
+
       .futures-code {
         color: #bb1715 !important;
       }
     }
   }
+
   .load-all {
     background-color: #e9e9e9;
     color: #000;

@@ -1,19 +1,13 @@
 <template>
   <div class="wrapper">
-    <div class="header">
-      <mt-header title="用户信息">
-        <router-link to="/user" slot="left">
-          <mt-button icon="back">我的</mt-button>
-        </router-link>
-      </mt-header>
+    <div class="form-block">
+      <!--      <mt-field label="真实姓名" placeholder="真实姓名" type="text" disabled-->
+      <!--                v-model="$store.state.userInfo.realName"></mt-field>-->
+      <mt-field label="手机号码" type="text" disabled v-model="phone"></mt-field>
     </div>
     <div class="form-block">
-      <mt-field label="真实姓名" placeholder="真实姓名" type="text" disabled
-                v-model="$store.state.userInfo.realName"></mt-field>
-      <mt-field label="手机号码" placeholder="手机号码" type="text" disabled v-model="$store.state.userInfo.phone"></mt-field>
-    </div>
-    <div class="form-block">
-      <mt-field label="登录密码" @click.native="changeLogin" autocomplete="new-password" placeholder="点击可修改登录密码"
+      <mt-field label="登录密码" @click.native="changeLogin" autocomplete="new-password"
+                placeholder="点击可修改登录密码"
                 type="password" disabled>
         <span @click="changeLogin"><i class="iconfont icon-xiugai"></i>修改密码</span>
       </mt-field>
@@ -39,8 +33,8 @@
 
 <script>
 import * as api from '@/axios/api'
-import { Toast } from 'mint-ui'
-import { isNull, pwdReg } from '@/utils/utils'
+import {Toast} from 'mint-ui'
+import {isNull, pwdReg2} from '@/utils/utils'
 
 export default {
   components: {},
@@ -50,24 +44,19 @@ export default {
       username: '',
       changeLoginPsdBox: false,
       nextPsd: '',
-      newPsd: ''
+      newPsd: '',
+      phone: this.$store.state.userInfo.phone
     }
   },
-  watch: {},
-  computed: {},
-  created () {},
-  mounted () {},
+  mounted () {
+    if (this.phone === undefined || this.phone == null) {
+      this.phone = localStorage.getItem('wap-phone')
+    }
+  },
   methods: {
     async toRegister () {
-      // 注销登陆
       this.clearCookie()
-      let data = await api.logout()
-      if (data.status === 0) {
-        // Toast(data.msg)
-        this.$router.push('/login')
-      } else {
-        Toast(data.msg)
-      }
+      await api.logout()
       this.$router.push('/login')
     },
     changeLogin () {
@@ -76,8 +65,8 @@ export default {
     async changeLoginPsd () {
       if (isNull(this.nextPsd) || isNull(this.newPsd)) {
         Toast('请输入新旧密码')
-      } else if (!pwdReg(this.newPsd)) {
-        Toast('密码为6~12位，数字、字母或符号')
+      } else if (!pwdReg2(this.newPsd)) {
+        Toast('密码为6~12位，数字、字母或符号组成')
       } else {
         // 修改密码
         let opts = {
@@ -86,37 +75,41 @@ export default {
         }
         let data = await api.changePassword(opts)
         if (data.status === 0) {
-          this.changeLoginPsdBox = false
-          Toast(data.msg)
-        } else {
-          Toast(data.msg)
+          Toast('密码修改成功')
+          localStorage.clear()
+          this.clearCookie()
+          await api.logout()
+          this.$router.push('/login')
+        } else if (data.msg.includes('密码错误')) {
+          Toast('旧密码错误')
         }
+        this.changeLoginPsdBox = false
       }
     }
   }
 }
 </script>
 <style lang="less" scoped>
-  .loginout {
-    color: #999;
-    border: 0.015rem solid #606060;
-    font-size: 0.3rem;
-    background: none;
-  }
+.loginout {
+  color: #999;
+  border: 0.015rem solid #606060;
+  font-size: 0.3rem;
+  background: none;
+}
 
-  .mint-popup-wrap {
-    width: 100%;
-    padding: 0.3rem 0.3rem 0.6rem;
+.mint-popup-wrap {
+  width: 100%;
+  padding: 0.3rem 0.3rem 0.6rem;
 
-    .btn-sure {
-      margin-top: 0.5rem;
-      width: 80%;
-      color: #fff;
-      border: none;
-    }
+  .btn-sure {
+    margin-top: 0.5rem;
+    width: 80%;
+    color: #fff;
+    border: none;
   }
+}
 
-  .btnbox .btnok {
-    background: none;
-  }
+.btnbox .btnok {
+  background: none;
+}
 </style>

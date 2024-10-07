@@ -38,8 +38,17 @@ export function isPhone (mobile) {
 // 密码 校验
 export function pwdReg (psd) {
   let value = psd.replace(/\s*/g, '')
-  let myreg = /^[a-zA-Z0-9!@#$%^&*.]{6,12}$/ // 手机号码验证
-  return myreg.test(value)
+  let myReg = /^[a-zA-Z0-9!@#$%^&*.]{6,12}$/ // 手机号码验证
+  return myReg.test(value)
+}
+
+// 密码 校验
+export function pwdReg2 (psd) {
+  // let value = psd.replace(/\s*/g, '')
+  // let myReg = /^[a-zA-Z0-9!@#$%^&*.]{6,12}$/ // 手机号码验证
+  // const regex = /^(?=.*[a-zA-Z])(?=.*\d)[\W_].{6,12}$/
+  const regex = /^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&*]+$)[a-zA-Z\d!@#$%^&*].{6,12}$/
+  return regex.test(psd)
 }
 
 // 身份证校验

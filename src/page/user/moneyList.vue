@@ -8,16 +8,16 @@
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="1">
-        <MoneyList1 ref="moneyList1" :selectedNumber="selected" />
-      </mt-tab-container-item>
-      <mt-tab-container-item id="2">
-        <MoneyList4 ref="moneyList2" :selectedNumber="selected" />
-      </mt-tab-container-item>
-      <mt-tab-container-item id="3">
-        <MoneyList2 ref="moneyList3" :selectedNumber="selected" />
+        <MoneyList1 ref="moneyList1" :selectedNumber="selected"/>
       </mt-tab-container-item>
       <mt-tab-container-item id="4">
-        <MoneyList3 ref="moneyList4" :selectedNumber="selected" />
+        <MoneyList4 ref="moneyList4" :selectedNumber="selected"/>
+      </mt-tab-container-item>
+      <mt-tab-container-item id="2">
+        <MoneyList2 ref="moneyList2" :selectedNumber="selected"/>
+      </mt-tab-container-item>
+      <mt-tab-container-item id="3">
+        <MoneyList3 ref="moneyList3" :selectedNumber="selected"/>
       </mt-tab-container-item>
     </mt-tab-container>
     <!-- <foot></foot> -->
@@ -25,92 +25,96 @@
 </template>
 
 <script>
-// import foot from "@/components/foot/foot";
-import MoneyList1 from "./moneyList1";
-import MoneyList2 from "./moneyList2";
-import MoneyList3 from "./moneyList3";
-import MoneyList4 from "./moneyList4";
+import MoneyList1 from './moneyList1'
+import MoneyList2 from './moneyList2'
+import MoneyList3 from './moneyList3'
+import MoneyList4 from './moneyList4'
 
-import * as api from "@/axios/api";
-import { Toast } from "mint-ui";
+import * as api from '@/axios/api'
+import {Toast} from 'mint-ui'
 
 export default {
   components: {
-    // foot,
     MoneyList1,
     MoneyList2,
     MoneyList3,
-    MoneyList4,
+    MoneyList4
   },
   props: {},
-  data() {
+  data () {
     return {
-      selected: "1", // 选中
-    };
+      selected: '1' // 选中
+    }
   },
   watch: {
     selected: {
-      handler(val) {
+      handler (val) {
+        console.log('selected', val)
         this.$nextTick(() => {
-          this.$refs[`moneyList${val}`].getList();
-        });
+          this.$refs[`moneyList${val}`].getList()
+        })
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   computed: {},
-  created() {
+  created () {
     if (!this.$store.state.userInfo.phone) {
-      this.getUserInfo();
+      this.getUserInfo()
     }
-  },
-  mounted() {
+  }
+  ,
+  mounted () {
     if (this.$route.query.index) {
-      this.selected = this.$route.query.index;
+      this.selected = this.$route.query.index
     }
-    this.getProductSetting();
-  },
+    this.getProductSetting()
+  }
+  ,
   methods: {
-    async getUserInfo() {
+    async getUserInfo () {
       // 获取用户信息
-      let data = await api.getUserInfo();
+      let data = await api.getUserInfo()
       if (data.status === 0) {
-        this.$store.state.userInfo = data.data;
+        this.$store.state.userInfo = data.data
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
-    },
-    async getProductSetting() {
-      let data = await api.getProductSetting();
+    }
+    ,
+    async getProductSetting () {
+      let data = await api.getProductSetting()
       if (data.status === 0) {
-        this.$store.state.settingForm = data.data;
+        this.$store.state.settingForm = data.data
       } else {
-        this.$message.error(data.msg);
+        this.$message.error(data.msg)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .wrapper {
   background-color: #16171d;
+
   .top-navbar {
     background: none;
     box-shadow: none;
-    /deep/.mint-tab-item {
+
+    /deep/ .mint-tab-item {
       .mint-tab-item-label {
         font-size: 0.28rem;
         font-family: MicrosoftYaHeiLight;
         font-weight: 400;
         color: rgba(255, 255, 255, 1);
       }
+
       &.is-selected {
         position: relative;
-        background: linear-gradient(
-          0deg,
-          rgba(27, 166, 208, 1),
-          rgba(2, 116, 150, 1)
-        );
+        background: linear-gradient(0deg,
+        rgba(27, 166, 208, 1),
+        rgba(2, 116, 150, 1));
+
         &::after {
           position: absolute;
           content: "";
@@ -126,15 +130,18 @@ export default {
       }
     }
   }
+
   .order-list {
     width: 100%;
     height: 100%;
-    /deep/.mint-tab-container-wrap {
+
+    /deep/ .mint-tab-container-wrap {
       width: 100%;
       height: 100%;
     }
   }
 }
+
 .is-selected .mint-tab-item-label:hover {
   text-decoration: none;
 }
@@ -195,22 +202,28 @@ export default {
     justify-content: center;
     align-items: center;
     border-radius: 0.01rem;
+
     &.long {
       flex: 2;
     }
   }
 }
-/deep/.order-info-box {
+
+/deep/ .order-info-box {
   background-color: #08080d;
+
   .main {
     font-size: 0.3rem;
   }
+
   .order-title {
     border-bottom: none;
     height: 0.7rem;
+
     .space {
       font-size: 0.24rem;
     }
+
     .type-up {
       color: #fff;
       border: none;
@@ -218,6 +231,7 @@ export default {
       background-size: cover;
       padding-left: 0.2rem;
     }
+
     .type-down {
       color: #fff;
       border: none;
@@ -226,18 +240,23 @@ export default {
       padding-left: 0.2rem;
     }
   }
+
   .code {
     margin-bottom: 0.3rem;
   }
+
   .table-title {
     font-size: 0.24rem;
   }
+
   .table-value {
     font-size: 0.24rem;
     color: #ccc;
   }
+
   .order-foot {
     padding: 0;
+
     .foot-btn {
       border-color: #b12525;
       background-color: #b12525;
@@ -253,27 +272,34 @@ export default {
 #app.red-theme {
   .top-navbar {
     background-color: #e9e9e9 !important;
+
     .mint-tab-item {
       background-color: #e9e9e9;
     }
+
     .top-nav-item.is-selected {
       color: #000;
     }
+
     .top-nav-item.is-selected :after {
       background-color: #bb1815;
     }
   }
+
   .sub-navbar {
     background-color: #e9e9e9;
   }
+
   .wrapper {
     background-color: #e9e9e9;
   }
+
   .load-all {
     background: #fff !important;
   }
 }
-/deep/.red-theme .order-info-box {
+
+/deep/ .red-theme .order-info-box {
   background-color: #fff;
 }
 </style>

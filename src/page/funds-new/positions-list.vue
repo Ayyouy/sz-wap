@@ -178,7 +178,7 @@ export default {
     Foot
   },
   props: {},
-  data() {
+  data () {
     return {
       loading2: false, // 是否正在加载更多
       isRefresh: false, // 是否正在刷新
@@ -205,11 +205,11 @@ export default {
       selected: '2' // 选中
     }
   },
-  mounted() {
+  mounted () {
     this.getList()
   },
   methods: {
-    validateNumber(rule, value, callback) {
+    validateNumber (rule, value, callback) {
       if (!value) {
         return callback(new Error('输入不能为空'))
       }
@@ -225,7 +225,7 @@ export default {
       }
       callback()
     },
-    handleInput(value) {
+    handleInput (value) {
       // 使用正则表达式来判断是否为正整数
       const regex = /^[1-9]\d*$/
       // 如果输入的值不符合正整数的正则表达式，则将其设置为上一个有效值
@@ -233,7 +233,7 @@ export default {
         this.form.buyNum = this.form.buyNum.substring(0, this.inputValue.length - 1)
       }
     },
-    submit(formName) {
+    submit (formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           this.dialogVisible = false
@@ -243,11 +243,11 @@ export default {
         }
       })
     },
-    submitNext() {
+    submitNext () {
       this.dialogVisible2 = false
       this.callRedeem()
     },
-    async callRedeem() {
+    async callRedeem () {
       let opts = {
         fuId: this.choice.fuId,
         redeemPortion: this.form.buyNum,
@@ -265,11 +265,11 @@ export default {
         Toast(data.msg)
       }
     },
-    btnShowDialog(val) {
+    btnShowDialog (val) {
       this.choice = val
       this.getRedeemCount()
     },
-    async getRedeemCount() {
+    async getRedeemCount () {
       let opts = {
         fuId: this.choice.fuId
       }
@@ -281,7 +281,8 @@ export default {
         Toast(data.msg)
       }
     },
-    async getList(val) {
+    async getList () {
+      console.log('positions:', this.pageNum)
       let opts = {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
@@ -314,7 +315,7 @@ export default {
         Toast(data.msg)
       }
     },
-    async loadMore() {
+    async loadMore () {
       if (this.list.length < this.pageSize || this.loading2 || this.total <= this.currentNum) {
         return
       }

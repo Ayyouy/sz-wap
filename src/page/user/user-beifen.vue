@@ -1,8 +1,25 @@
 <template>
   <div class="page wrapper">
+    <!--    <div class="header">-->
+    <!--      <mt-header title="">-->
+    <!--        <router-link to="" slot="left">-->
+    <!--          <span v-if="$store.state.userInfo.accountType == 1" class="status"-->
+    <!--            >(模拟)</span-->
+    <!--          >-->
+    <!--          <span @click="hideNumber" class="status"-->
+    <!--            >资产状况-->
+    <!--            <i v-show="$store.state.hide" class="iconfont icon-yanjing1"></i>-->
+    <!--            <i v-show="!$store.state.hide" class="iconfont icon-yanjing"></i>-->
+    <!--          </span>-->
+    <!--        </router-link>-->
+    <!--        <mt-button @click="tosetting" class="setting" slot="right">-->
+    <!--          <i class="iconfont icon-shezhi"></i>-->
+    <!--        </mt-button>-->
+    <!--      </mt-header>-->
+    <!--    </div>-->
     <div class="account-info">
       <div class="account-info_avatar">
-        <img src="../../assets/ico/wogerenziliao.png"/>
+        <img src="../../assets/ico/wogerenziliao.png" alt=""/>
       </div>
       <div class="account-info_detail">
         <div class="account-phone">
@@ -22,6 +39,13 @@
       <div class="account-header">
         <h2 class="title" style="font-size: 20px;">
           账户总资产
+          <!--          <span class="sub-title"-->
+          <!--            >( 沪深账户-->
+          <!--            <i v-if="this.$store.state.settingForm.indexDisplay">+ 指数账户</i>-->
+          <!--            <i v-if="this.$store.state.settingForm.futuresDisplay">-->
+          <!--              + 期货账户</i-->
+          <!--            >)</span-->
+          <!--          >-->
         </h2>
         <div>
           <p
@@ -123,11 +147,174 @@
           :bar-height="5"
         ></mt-progress>
       </div>
+      <!--      <div class="account-preview">-->
+      <!--        <div class="acc-pre-left">-->
+      <!--          <img-->
+      <!--            v-show="$state.theme != 'red'"-->
+      <!--            src="../../assets/ico/zongzichan.png"-->
+      <!--            alt=""-->
+      <!--          />-->
+      <!--          <img-->
+      <!--            v-show="$state.theme == 'red'"-->
+      <!--            src="../../assets/ico/zongzichan-red.png"-->
+      <!--            alt=""-->
+      <!--          />-->
+
+      <!--          <span class="ti">总资产</span>-->
+      <!--          <span class="de">-->
+      <!--            <div>-->
+      <!--              <p-->
+      <!--                v-if="-->
+      <!--                  this.$store.state.settingForm.indexDisplay &&-->
+      <!--                  !this.$store.state.settingForm.futuresDisplay-->
+      <!--                "-->
+      <!--                class="account"-->
+      <!--              >-->
+      <!--                ¥{{-->
+      <!--                  $store.state.hide-->
+      <!--                    ? "****"-->
+      <!--                    : Number(-->
+      <!--                        $store.state.userInfo.userAmt +-->
+      <!--                          $store.state.userInfo.userIndexAmt-->
+      <!--                      ).toFixed(2)-->
+      <!--                }}-->
+      <!--              </p>-->
+      <!--              <p-->
+      <!--                v-else-if="-->
+      <!--                  !this.$store.state.settingForm.indexDisplay &&-->
+      <!--                  this.$store.state.settingForm.futuresDisplay-->
+      <!--                "-->
+      <!--                class="account"-->
+      <!--              >-->
+      <!--                ¥{{-->
+      <!--                  $store.state.hide-->
+      <!--                    ? "****"-->
+      <!--                    : Number(-->
+      <!--                        $store.state.userInfo.userAmt +-->
+      <!--                          $store.state.userInfo.userFuturesAmt-->
+      <!--                      ).toFixed(2)-->
+      <!--                }}-->
+      <!--              </p>-->
+      <!--              <p-->
+      <!--                v-else-if="-->
+      <!--                  !this.$store.state.settingForm.indexDisplay &&-->
+      <!--                  !this.$store.state.settingForm.futuresDisplay-->
+      <!--                "-->
+      <!--                class="account"-->
+      <!--              >-->
+      <!--                ¥{{-->
+      <!--                  $store.state.hide-->
+      <!--                    ? "****"-->
+      <!--                    : Number($store.state.userInfo.userAmt).toFixed(2)-->
+      <!--                }}-->
+      <!--              </p>-->
+      <!--              <p-->
+      <!--                v-else-if="-->
+      <!--                  this.$store.state.settingForm.indexDisplay &&-->
+      <!--                  this.$store.state.settingForm.futuresDisplay-->
+      <!--                "-->
+      <!--                class="account"-->
+      <!--              >-->
+      <!--                ¥{{-->
+      <!--                  $store.state.hide-->
+      <!--                    ? "****"-->
+      <!--                    : Number(-->
+      <!--                        $store.state.userInfo.userAmt +-->
+      <!--                          $store.state.userInfo.userIndexAmt +-->
+      <!--                          $store.state.userInfo.userFuturesAmt-->
+      <!--                      ).toFixed(2)-->
+      <!--                }}-->
+      <!--              </p>-->
+      <!--            </div>-->
+      <!--          </span>-->
+      <!--        </div>-->
+      <!--        <div class="acc-pre-center">-->
+      <!--          <div>-->
+      <!--            沪深账户:-->
+      <!--            <span-->
+      <!--              >￥{{-->
+      <!--                $store.state.hide ? "****" : $store.state.userInfo.userAmt-->
+      <!--              }}</span-->
+      <!--            >-->
+      <!--          </div>-->
+      <!--          <div>-->
+      <!--            指数账户:-->
+      <!--            <span-->
+      <!--              >￥{{-->
+      <!--                $store.state.hide ? "****" : $store.state.userInfo.userIndexAmt-->
+      <!--              }}</span-->
+      <!--            >-->
+      <!--          </div>-->
+      <!--          <div>-->
+      <!--            期货账户:-->
+      <!--            <span-->
+      <!--              >￥{{-->
+      <!--                $store.state.hide-->
+      <!--                  ? "****"-->
+      <!--                  : Number($store.state.userInfo.userFuturesAmt).toFixed(2)-->
+      <!--              }}</span-->
+      <!--            >-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--        <div class="acc-pre-right">-->
+      <!--          <div class="redbtn btn" @click="toRecharge">银证转入</div>-->
+      <!--          <div class="bluebtn btn" @click="toCash">银证转出</div>-->
+      <!--        </div>-->
+      <!--      </div>-->
       <div class="account-center">
         <span>现金账户（${{ Number($store.state.userInfo.userAmt).toFixed(2) }}）</span>
       </div>
       <div v-for="item in account" :key="item.key">
         <div class="account-box" v-if="item.isDisplay">
+          <!--          <div class="header" @click="item.isShow = item.isShow ? false : true">-->
+          <!--            <i v-if="item.isShow" class="iconfont jian"></i>-->
+          <!--            <i v-else class="iconfont jia"></i>-->
+          <!--            <div class="header-left">-->
+          <!--              <img-->
+          <!--                v-if="item.isShow && $state.theme == 'red'"-->
+          <!--                class="iconfont"-->
+          <!--                src="../../assets/ico/jian-red.png"-->
+          <!--              />-->
+          <!--              <img-->
+          <!--                v-else-if="item.isShow && $state.theme != 'red'"-->
+          <!--                class="iconfont"-->
+          <!--                src="../../assets/ico/jian.png"-->
+          <!--              />-->
+          <!--              <img-->
+          <!--                v-else-if="!item.isShow && $state.theme != 'red'"-->
+          <!--                class="iconfont"-->
+          <!--                src="../../assets/ico/jia.png"-->
+          <!--              />-->
+          <!--              <img v-else class="iconfont" src="../../assets/ico/jia-red.png" />-->
+          <!--              <span :style="{ color: $state.theme == 'red' ? '#000' : '#fff' }"-->
+          <!--                >{{ item.name }}账户</span-->
+          <!--              >-->
+          <!--              <span v-if="item.name == '指数'"-->
+          <!--                >(￥{{-->
+          <!--                  $store.state.hide-->
+          <!--                    ? "****"-->
+          <!--                    : $store.state.userInfo.userIndexAmt-->
+          <!--                }})</span-->
+          <!--              >-->
+          <!--              <span v-if="item.name == '沪深'"-->
+          <!--                >(￥{{-->
+          <!--                  $store.state.hide ? "****" : $store.state.userInfo.userAmt-->
+          <!--                }})</span-->
+          <!--              >-->
+          <!--              <span v-if="item.name == '期货'"-->
+          <!--                >(￥{{-->
+          <!--                  $store.state.hide-->
+          <!--                    ? "****"-->
+          <!--                    : Number($store.state.userInfo.userFuturesAmt).toFixed(2)-->
+          <!--                }})-->
+          <!--              </span>-->
+          <!--            </div>-->
+          <!--            <a class="pull-right" @click="toTransfer(1)">-->
+          <!--              <span :style="{ color: $state.theme == 'red' ? '#000' : '#fff' }"-->
+          <!--                >资金互转<i class="iconfont icon-you"></i-->
+          <!--              ></span>-->
+          <!--            </a>-->
+          <!--          </div>-->
           <div v-show="item.isShow" class="content">
             <ul class="clearfix">
               <li>
@@ -176,6 +363,31 @@
                   }}
                 </p>
               </li>
+<!--              <li>-->
+<!--                <i class="iconfont icon-dongjiezijin"></i>-->
+<!--                <div class="name">新股申购</div>-->
+<!--                <p v-if="item.name == '指数'" class="number yellow">-->
+<!--                  {{-->
+<!--                    $store.state.hide-->
+<!--                      ? '****'-->
+<!--                      : $store.state.userInfo.allIndexFreezAmt-->
+<!--                  }}-->
+<!--                </p>-->
+<!--                <p v-if="item.name == '沪深'" class="number yellow">-->
+<!--                  {{-->
+<!--                    $store.state.hide-->
+<!--                      ? '****'-->
+<!--                      : $store.state.userInfo.allFreezAmt-->
+<!--                  }}-->
+<!--                </p>-->
+<!--                <p v-if="item.name == '期货'" class="number yellow">-->
+<!--                  {{-->
+<!--                    $store.state.hide-->
+<!--                      ? '****'-->
+<!--                      : $store.state.userInfo.allFuturesFreezAmt-->
+<!--                  }}-->
+<!--                </p>-->
+<!--              </li>-->
               <li>
                 <i class="iconfont icon-yingkuixuanzhong"></i>
                 <div class="name">持仓总盈亏</div>
@@ -230,171 +442,205 @@
                   }}
                 </p>
               </li>
+<!--              <li>-->
+<!--                <i class="iconfont icon-dongjiezijin"></i>-->
+<!--                <div class="name">新股缴费</div>-->
+<!--                <p>{{ shengoudj.djzj }}</p>-->
+<!--              </li>-->
             </ul>
           </div>
         </div>
       </div>
     </div>
-    <div class="account-container">
-      <div class="account-center">
-        <span>基金账户（$此字段及下面三个字段都未定）</span>
+    <!-- <div class="panel">
+      <div class="panel-head">
+        <span class="font-w">分仓配资</span>
       </div>
-      <div v-for="item in account" :key="item.key">
-        <div class="account-box" v-if="item.isDisplay">
-          <div v-show="item.isShow" class="content">
-            <ul class="clearfix">
-              <li>
-                <i class="iconfont icon-zijin1"></i>
-                <div class="name">持仓金额</div>
-                <p v-if="item.name == '指数'" class="number yellow">
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.userIndexAmt).toFixed(2)
-                  }}
-                </p>
-                <p v-if="item.name == '沪深'" class="number yellow">
-                  {{
-                    $store.state.hide ? '****' : Number($store.state.userInfo.userAmt).toFixed(2)
-                  }}
-                </p>
-                <p v-if="item.name == '期货'" class="number yellow">
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.userFuturesAmt).toFixed(2)
-                  }}
-                </p>
-              </li>
-              <li>
-                <i class="iconfont icon-keyongzijin"></i>
-                <div class="name">可用资金</div>
-                <p v-if="item.name == '指数'" class="number yellow">
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.enableIndexAmt).toFixed(2)
-                  }}
-                </p>
-                <p v-if="item.name == '沪深'" class="number yellow">
-                  {{
-                    $store.state.hide ? '****' : Number($store.state.userInfo.enableAmt).toFixed(2)
-                  }}
-                </p>
-                <p v-if="item.name == '期货'" class="number yellow">
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.enableFuturesAmt).toFixed(2)
-                  }}
-                </p>
-              </li>
-              <li>
-                <i class="iconfont icon-yingkuixuanzhong"></i>
-                <div class="name">收益金额</div>
-                <p
-                  v-if="item.name == '指数'"
-                  :class="
-                    $store.state.userInfo.allIndexProfitAndLose > 0
-                      ? 'number red'
-                      : $store.state.userInfo.allIndexProfitAndLose < 0
-                      ? 'number green'
-                      : 'number'
-                  "
-                >
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.allIndexProfitAndLose).toFixed(2)
-                  }}
-                </p>
-                <p
-                  v-if="item.name == '沪深'"
-                  :class="
-                    $store.state.userInfo.allProfitAndLose > 0
-                      ? 'number red'
-                      : $store.state.userInfo.allProfitAndLose < 0
-                      ? 'number green'
-                      : 'number'
-                  "
-                >
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.allProfitAndLose).toFixed(2)
-                  }}
-                </p>
-                <p
-                  v-if="item.name == '期货'"
-                  :class="
-                    $store.state.userInfo.allFuturesProfitAndLose > 0
-                      ? 'number red'
-                      : $store.state.userInfo.allFuturesProfitAndLose < 0
-                      ? 'number green'
-                      : 'number'
-                  "
-                >
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number(
-                        $store.state.userInfo.allFuturesProfitAndLose
-                      ).toFixed(2)
-                  }}
-                </p>
-              </li>
-              <!--              <li>-->
-              <!--                <i class="iconfont icon-dongjiezijin"></i>-->
-              <!--                <div class="name">新股缴费</div>-->
-              <!--                <p>{{ shengoudj.djzj }}</p>-->
-              <!--              </li>-->
-            </ul>
+      <div class="panel-body">
+        <div class="row">
+          <div @click="goFunds(3)" class="col-xs-3">
+            <i class="iconfont icon-rongzi2"></i>
+            新股申购
+          </div>
+          <div @click="goFunds(1)" class="col-xs-3">
+            <i class="iconfont icon-rongzi2"></i>
+            配资主页
+          </div>
+          <div @click="goFunds(2)" class="col-xs-3">
+            <i class="iconfont icon-rongzi2"></i>
+            按天配资
+          </div>
+          <div @click="goFundsList(1)" class="col-xs-3">
+            <i class="iconfont icon-rongzi2"></i>
+            我的配资
+          </div>
+          <div @click="goFundsList(2)" class="col-xs-3">
+            <i class="iconfont icon-rongzi2"></i>
+            配资持仓
+          </div>
+          <div @click="goFundsList(3)" class="col-xs-3">
+            <i class="iconfont icon-rongzi2"></i>
+            配资平仓
           </div>
         </div>
       </div>
     </div>
+     <div class="panel">
+      <div class="panel-head">
+        <span class="font-w">我的持仓</span>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div @click="goOrderList(1)" class="col-xs-3">
+            <i class="iconfont icon-rongzi2"></i>
+            沪深持仓
+          </div>
+          <div @click="goOrderList(1)" class="col-xs-3">
+            <i class="iconfont icon-rongzilishi"></i>
+            沪深平仓
+          </div>
+          <div v-if="this.$store.state.settingForm.indexDisplay" @click="goOrderList(2)" class="col-xs-3">
+            <i class="iconfont icon-zhishuyidong"></i>
+            指数持仓
+          </div>
+          <div v-if="this.$store.state.settingForm.indexDisplay" @click="goOrderList(2)" class="col-xs-3">
+            <i class="iconfont icon-geguyingkui"></i>
+            指数平仓
+          </div>
+        <div v-if="this.$store.state.settingForm.futuresDisplay" @click="goOrderList(4)" class="col-xs-3">
+            <i class="iconfont icon-jiaoyitixing"></i>
+            期货持仓
+          </div>
+          <div v-if="this.$store.state.settingForm.futuresDisplay" @click="goOrderList(4)" class="col-xs-3">
+            <i class="iconfont icon-qihuo1"></i>
+            期货平仓
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="btns">
+      <mt-button type="primary" size="small" @click="toDeposit">入金</mt-button>
+      <mt-button type="primary" size="small" @click="toWithdraw"
+        >出金</mt-button
+      >
+      <mt-button type="primary" size="small" @click="toTransferMoney"
+        >转账</mt-button
+      >
+    </div> -->
+    <div class="accounts">
+<!--      <div class="account">-->
+<!--        <div class="top bigFont">-->
+<!--          <span class="left">现金账户:</span>-->
+<!--          <span class="right num">{{ $store.state.userInfo.userAmt }}</span>-->
+<!--        </div>-->
+<!--        <div class="bottom">-->
+<!--          <div class="left">-->
+<!--            <p>持仓市值:</p>-->
+<!--            <p class="num">{{ $store.state.userInfo.userAmt }}</p>-->
+<!--          </div>-->
+<!--          <div class="right">-->
+<!--            <p>可用资金:</p>-->
+<!--            <p class="num">{{ $store.state.userInfo.enableAmt }}</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+      <div class="account">
+        <div class="top bigFont">
+          <span class="left">基金账户:</span>
+          <span class="right num">$0</span>
+        </div>
+        <div class="bottom">
+          <div class="left">
+            <p>持仓市值:</p>
+            <p class="num">0</p>
+          </div>
+          <div class="right">
+            <p>可用资金:</p>
+            <p class="num">0</p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="account">
+        <div class="top bigFont">
+          <span class="left">我的邀请</span>
+          <span class="right">已邀请<span class="num">{{$store.state.userInfo.shareCount}}</span>人</span>
+        </div>
+        <div class="top">
+          <span class="left bigFont">邀请链接</span>
+          <span class="right">http://egstock.com/wap3/#/register?code={{$store.state.userInfo.shareCode}}</span>
+        </div>
+        <div class="top">
+          <span class="left bigFont">邀请码</span>
+          <span class="right">{{$store.state.userInfo.shareCode}}</span>
+        </div>
+      </div> -->
+    </div>
+
     <div class="other">
       <ul class="after">
         <li @click="toAuthentication">
           <span>
-            <img src="../../assets/ico/shimin.png" style="width: 0.28rem; height: 0.24rem; margin-right: 0.15rem"/>
+            <!-- <icon name="shoufei" slot="icon"></icon> -->
+            <!-- <i style="font-size:0.34rem" class="iconfont icon-shenfenrenzheng"></i> -->
+            <img
+              src="../../assets/ico/shimin.png"
+              style="width: 0.28rem; height: 0.24rem; margin-right: 0.15rem"
+            />
             实名认证
-            <span class="renzhen done" v-if="$store.state.userInfo.isActive == 0">
+            <span
+              class="renzhen done"
+              v-if="$store.state.userInfo.isActive == 2"
+            >
               <i class="iconfont el-icon-circle-check"></i>
               审核通过
             </span>
-            <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 1">
-              <i class="iconfont el-icon-circle-check"></i>
-              审核中
-            </span>
-             <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 3">
+            <span
+              class="renzhen ing"
+              v-if="
+                $store.state.userInfo.isActive == 0 ||
+                $store.state.userInfo.isActive == 3
+              "
+              style="color: red; font-size: 0.7rem"
+            >
               <i class="iconfont el-icon-circle-close"></i>
-             审核失败
+              未审核
             </span>
-            <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 2">
-              <i class="iconfont el-icon-circle-close"></i>
-             未认证
-            </span>
+            <!-- <i v-if="$store.state.userInfo.isActive == 1" style="color:red;font-size: 0.7rem;"
+                       class="iconfont icon-shenhezhong"></i>
+                    <i v-if="$store.state.userInfo.isActive == 2" style="color:red;font-size: 0.7rem;"
+                       class="iconfont icon-tongguo1"></i>
+                    <i v-if="$store.state.userInfo.isActive == 0 || $store.state.userInfo.isActive == 3"
+                       style="color:red;font-size: 0.75rem;" class="iconfont icon-icon-test"></i> -->
             <icon name="right66" class="right" slot="icon"></icon>
           </span>
         </li>
         <li @click="goCard">
           <span>
+            <!-- <i style="font-size:0.28rem" class="iconfont icon-yinhangqia"></i> -->
             <img
               src="../../assets/ico/yinhangka.png"
               style="width: 0.28rem; height: 0.24rem; margin-right: 0.15rem"
             />
             银行卡
+            <!-- <i v-if="!$store.state.bankInfo.bankNo" style="color:red;font-size: 0.3rem;margin-left: 0.1rem;"
+                       class="iconfont icon-iconfontweitongguo"></i>
+                    <i v-if="$store.state.bankInfo.bankNo" style="color:red;font-size: 0.3rem;margin-left: 0.1rem;"
+                       class="iconfont icon-yanzhengma"></i> -->
             <icon name="right66" class="right" slot="icon"></icon>
           </span>
         </li>
-        <li @click="goChangePwd">
+        <li @click="xgmm">
           <span>
+            <!-- <i style="font-size:0.28rem" class="iconfont icon-yinhangqia"></i> -->
             <img
               src="../../assets/ico/gaimima.png"
               style="width: 0.24rem; height: 0.24rem; margin-right: 0.15rem"
             />
             修改密码
+            <!-- <i v-if="!$store.state.bankInfo.bankNo" style="color:red;font-size: 0.3rem;margin-left: 0.1rem;"
+                    class="iconfont icon-iconfontweitongguo"></i>
+                <i v-if="$store.state.bankInfo.bankNo" style="color:red;font-size: 0.3rem;margin-left: 0.1rem;"
+                    class="iconfont icon-yanzhengma"></i> -->
             <icon name="right66" class="right" slot="icon"></icon>
           </span>
         </li>
@@ -421,6 +667,49 @@
           </span>
         </li>
       </ul>
+      <!-- <ul class="after">
+        <li @click="goDetail">
+          <span>
+            <img
+              src="../../assets/ico/zijin.png"
+              style="width: 0.27rem; height: 0.24rem; margin-right: 0.15rem"
+            />
+            资金明细
+            <icon name="right66" class="right" slot="icon"></icon>
+          </span>
+        </li>
+        <li @click="toRechargeList">
+          <span>
+            <img
+              src="../../assets/ico/chongzhi.png"
+              style="width: 0.27rem; height: 0.27rem; margin-right: 0.15rem"
+            />
+            交易记录
+            <icon name="right66" class="right" slot="icon"></icon>
+          </span>
+        </li>
+        <li @click="toCashList">
+                <span>
+                    <img src="../../assets/ico/tixian.png"
+                      style="width:.24rem;height:.24rem;margin-right: 0.15rem;"
+                    >
+                    转出记录
+                    <icon name="right66" class="right" slot="icon"></icon>
+                </span>
+        </li>
+      </ul> -->
+      <!-- <ul class="after">
+          <li  @click="changeStyle">
+              <span>
+                <i style="font-size:0.28rem" class="iconfont icon-shouye"></i>
+                主题换肤
+                <span class="right">
+                    <i v-if="styleName == 'red'" style="color:#ff9800" class="iconfont icon-baitian"></i>
+                    <i v-if="styleName == 'black'" style="color:#ff9800" class="iconfont icon-yewan1"></i>
+                </span>
+              </span>
+          </li>
+      </ul> -->
       <mt-popup
         v-model="focePromptPopup"
         popup-transition="popup-fade"
@@ -488,31 +777,19 @@
         </p>
       </mt-popup>
       <div class="btnbox">
-        <span class="text-center btnok loginout" @click="toRegister">退出登录</span>
+        <span class="text-center btnok loginout" @click="toRegister"
+        >退出登录</span
+        >
       </div>
     </div>
-    <el-dialog
-      top="30vh"
-      width="80%"
-      :title="dialogObj.title"
-      class="submitDialog"
-      :visible.sync="dialogObj.flag"
-      :close-on-click-modal="false"
-    >
-      <p>
-        {{ dialogObj.content }}
-      </p>
-      <span slot="footer">
-        <el-button type="danger" size="mini" @click="dialogObj.cancel">取消</el-button>
-        <el-button type="primary" size="mini" @click="dialogObj.success">确 定</el-button>
-      </span>
-    </el-dialog>
     <foot></foot>
   </div>
 </template>
 <script type="text/ecmascript-6">
 import {Toast} from 'mint-ui'
+// import '@/assets/style/bg.less'
 import foot from '../../components/foot/foot'
+// import { hideNumberTo } from '@/utils/utils'
 import * as api from '@/axios/api'
 
 export default {
@@ -539,16 +816,15 @@ export default {
       ],
       showChangeBtn: false, // 是否显示资金互转按钮
       styleName: 'black',
-      shengoudj: '',
-      dialogObj: {
-        flag: false,
-        title: '',
-        content: '',
-        success: Function,
-        cancel: Function
-      }
+      shengoudj: ''
     }
   },
+  watch: {
+    //   changeHideStatus(newval){
+    //     //   this.userAmt = hideNumberTo(this.$store.state.userInfo.userAmt)
+    //   }
+  },
+  computed: {},
   created () {
     this.getUserInfo()
     this.styleName = window.localStorage.getItem('styleName') ? window.localStorage.getItem('styleName') : 'red'
@@ -558,25 +834,55 @@ export default {
     this.getIndexSettingInfo()
     this.getFuturesSetting()
     this.getCardDetail()
-    this.getPrice()
+    this.getprice()
     this.changeHideStatus = this.$store.state.hide
     if (this.$store.state.settingForm.indexDisplay || this.$store.state.settingForm.futuresDisplay) {
       this.showChangeBtn = true
     }
   },
   methods: {
-    async getPrice () {
+    async getprice () {
       let opt = {}
       let data = await api.getprice(opt)
       this.shengoudj = data.data
+      console.log(this.shengoudj, '申购')
+    },
+    goFunds (type) {
+      if (type == 1) {
+        this.$router.push('/funds')
+      }
+      if (type == 2) {
+        this.$router.push('/days')
+      }
+      if (type == 3) {
+        this.$router.push('/xingu')
+      }
+    },
+    changeStyle () {
+      if (this.styleName === 'red') {
+        this.styleName = 'black'
+        this.$store.state.className = 'black'
+        window.localStorage.setItem('styleName', 'black')
+      } else {
+        this.styleName = 'red'
+        this.$store.state.className = 'red'
+        window.localStorage.setItem('styleName', 'red')
+      }
+      window.location.reload()
     },
     async getProductSetting () {
       let data = await api.getProductSetting()
       if (data.status === 0) {
         this.$store.state.settingForm = data.data
+        // if(this.$store.state.userInfo.accountType != 1){
         this.account[0].isDisplay = data.data.stockDisplay
         this.account[1].isDisplay = data.data.indexDisplay
         this.account[2].isDisplay = data.data.futuresDisplay
+        // }else{
+        //     this.account[0].isDisplay = true
+        //     this.account[1].isDisplay = true
+        //     this.account[2].isDisplay = true
+        // }
       } else {
         this.$message.error(data.msg)
       }
@@ -588,85 +894,80 @@ export default {
       this.$store.state.hide = this.$store.state.hide ? i : j
     },
     goOrderList: function (val) {
+      //   this.$router.push('/orderlist')
       this.$router.push('/orderlist?index=1')
     },
-    goCard: function () {
-      if (this.$store.state.userInfo.isActive !== 2) {
-        this.dialogObj.flag = true
-        this.dialogObj.title = '银行卡提示'
-        this.dialogObj.content = '无法添加或编辑银行卡，请先实名认证'
-        this.dialogObj.cancel = this.dialogCancel
-        this.dialogObj.success = () => {
-          this.$router.push('/card')
-        }
-      } else {
-        this.$router.push('/card')
-      }
+    goFundsList: function (val) {
+      this.$router.push('/fundslist?index=' + val)
     },
-    goChangePwd: function () {
+    goDetail: function () {
+      this.$router.push('/detail')
+    },
+    goCard: function () {
+      this.$router.push('/card')
+    },
+    xgmm: function () {
       this.$router.push('/setting')
+    },
+    toAggre: function () {
+      this.$router.push('/aggre')
     },
     toAuthentication: function () {
       this.$router.push('/authentication')
+    },
+    toRecharge () {
+      // 充值
+      this.$router.push('/recharge')
+    },
+    toCash () {
+      // 提现
+      this.$router.push('/cash')
     },
     async toRegister () {
       // 注销登陆
       this.clearCookie()
       let data = await api.logout()
       if (data.status === 0) {
+        // Toast(data.msg)
         this.$router.push('/login')
       } else {
         Toast(data.msg)
       }
     },
-    toDeposit () { // 充值
-      if (this.$store.state.userInfo.isActive !== 2) {
-        this.dialogObj.flag = true
-        this.dialogObj.title = '充值提示'
-        this.dialogObj.content = '无法充值，请先实名认证'
-        this.dialogObj.cancel = this.dialogCancel
-        this.dialogObj.success = () => {
-          this.$router.push('/deposit')
-        }
-      } else {
-        this.$router.push('/deposit')
-      }
+    tosetting () {
+      this.$router.push('/setting')
     },
-    dialogCancel () {
-      this.dialogObj.flag = false
-      this.dialogObj.title = ''
-      this.dialogObj.content = ''
-      this.dialogObj.success = () => {
-      }
+    toCashList () {
+      this.$router.push('/Cashlist')
     },
-    toWithdraw () { // 提现
-      if (this.$store.state.userInfo.isActive !== 2) {
-        this.dialogObj.flag = true
-        this.dialogObj.title = '提现提示'
-        this.dialogObj.content = '无法提现，请先实名认证'
-        this.dialogObj.cancel = this.dialogCancel
-        this.dialogObj.success = () => {
-          this.$router.push('/withdraw')
+    toRechargeList () {
+      this.$router.push('/rechargelist')
+    },
+    toTransfer (val) {
+      this.$router.push({
+        path: '/transfer',
+        query: {
+          type: val
         }
-      } else {
-        this.$router.push('/withdraw')
-      }
+      })
+    },
+    toDeposit () {
+      this.$router.push('/deposit')
+    },
+    toWithdraw () {
+      this.$router.push('/withdraw')
     },
     toTransferMoney () {
-      if (this.$store.state.userInfo.isActive !== 2) {
-        this.dialogObj.flag = true
-        this.dialogObj.title = '转账提示'
-        this.dialogObj.content = '无法转账，请先实名认证'
-        this.dialogObj.cancel = this.dialogCancel
-        this.dialogObj.success = () => {
-          this.$router.push('/transferMoney')
-        }
-      } else {
-        this.$router.push('/transferMoney')
-      }
+      this.$router.push('/transferMoney')
     },
     goMoneyList () {
       this.$router.push('/moneyList')
+    },
+    goInviteList () {
+      this.$router.push('/inviteList')
+    },
+    goMarketApply () {
+      this.$router.push('/marketApply')
     },
     async getCardDetail () {
       // 获取银行卡信息
@@ -674,6 +975,7 @@ export default {
       if (data.status === 0) {
         this.$store.state.bankInfo = data.data
       } else {
+        // Toast(data.msg)
       }
     },
     async getSettingInfo () {
@@ -1520,25 +1822,6 @@ body {
     .bottom {
       line-height: 0.3rem;
       margin-top: 0.1rem;
-    }
-  }
-}
-
-.submitDialog {
-  /deep/ .el-dialog {
-    background-color: #21252a;
-
-    p {
-      color: #eee;
-      text-align: left;
-      font-size: 0.3rem;
-      line-height: 0.4rem;
-    }
-
-    .el-dialog__header {
-      .el-dialog__title {
-        color: #eee;
-      }
     }
   }
 }

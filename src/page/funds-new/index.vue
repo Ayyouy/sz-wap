@@ -8,16 +8,16 @@
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="1">
-        <FundsList :selectedNumber='selected'/>
+        <FundsList ref="indexList1" :selectedNumber='selected'/>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
-        <PositionsList :selectedNumber='selected'/>
+        <PositionsList ref="indexList2" :selectedNumber='selected'/>
       </mt-tab-container-item>
       <mt-tab-container-item id="3">
-        <FinancialList :selectedNumber='selected'/>
+        <FinancialList ref="indexList3" :selectedNumber='selected'/>
       </mt-tab-container-item>
       <mt-tab-container-item id="4">
-        <InviteView :selectedNumber='selected'/>
+        <InviteView ref="indexList4" :selectedNumber='selected'/>
       </mt-tab-container-item>
     </mt-tab-container>
     <Foot></Foot>
@@ -40,9 +40,21 @@ export default {
     InviteView
   },
   props: {},
-  data() {
+  data () {
     return {
       selected: '1' // 选中
+    }
+  },
+  watch: {
+    selected: {
+      handler (val) {
+        console.log('index selected', val)
+        this.$nextTick(() => {
+          this.$refs[`indexList${val}`].pageNum = 1
+          this.$refs[`indexList${val}`].getList()
+        })
+      },
+      immediate: true
     }
   }
 }
