@@ -32,21 +32,19 @@
             name="upload_file"
             list-type="picture-card"
             :with-credentials="true"
-            :action="`${url}/user/upload.do`"
+            action="#"
+            multiple
+            :limit="1"
+            :file-list="fileList"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :on-error="handleError"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img
-              v-if="formData.rechargeImg"
-              :src="formData.rechargeImg"
-              class="id-img avatar"
-            />
+            :auto-upload="false"
+            :on-exceed="limitCheck"
+            :on-remove="removeFile"
+            :on-change="handleChange">
+            <!--            <el-button size="mini" type="primary" @click="confirm">点击上传</el-button>-->
+            <img v-if="formData.rechargeImg" :src="formData.rechargeImg" class="id-img avatar"/>
             <i v-else class="iconfont icon-zhaopian"></i>
-            <span v-if="!formData.rechargeImg && !imgStatus" class="btn-title"
-            >截图凭证</span
-            >
+            <span v-if="!formData.rechargeImg && !imgStatus" class="btn-title">截图凭证</span>
             <span v-if="imgStatus" class="btn-title">正在上传中...</span>
           </el-upload>
         </div>
@@ -167,6 +165,7 @@
 import {Toast} from 'mint-ui'
 import APIUrl from '../../axios/api.url' // 引入api.url.js
 import * as api from '@/axios/api'
+import axios from 'axios'
 
 export default {
   data () {
@@ -184,6 +183,7 @@ export default {
       },
       payInfo: {},
       payId: '',
+      fileList: [],
       formData: {
         amt: '', // 转账金额（美元）
         payType: '', // 渠道类型 #0：支付包 1：银行转账 2：虚拟货币
@@ -202,6 +202,7 @@ export default {
     this.payId = this.$route.query.payId
     this.getDetail()
     this.url = APIUrl.baseURL
+    console.log('upload url：', this.url)
   },
   methods: {
     // 获取支付渠道详情数据
@@ -215,24 +216,43 @@ export default {
         Toast(data.msg)
       }
     },
-    handleAvatarSuccess (res, file) {
-      this.imgStatus = false
-      this.formData.rechargeImg = res.data.url
+    handleChange (file, fileList) {
+      this.fileList = fileList
+      const isLt2M = (file.size / 1024 / 1024 < 2)
+      if (!isLt2M) {
+        Toast('上传头像图片大小不能超过 2MB!')
+        this.fileList.pop()
+      } else {
+        this.imgStatus = true
+        this.confirm()
+      }
+      return isLt2M
     },
-    beforeAvatarUpload (file) {
-      this.imgStatus = true
-      //     const isJPG = file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/png';
-      //     const isLt2M = file.size / 1024 / 1024 < 20;
-      //     if (!isJPG) {
-      //         Toast('请选择jpg或者png的图片格式!');
-      //     }
-      // // if (!isLt2M) {
-      // //     Toast('上传头像图片大小不能超过 2MB!');
-      // // }
-      //     return isJPG && isLt2M;
+    limitCheck () {
+      Toast('每次最多上传一个文件')
+      this.fileList = []
     },
-    handleError () {
-      this.imgStatus = false
+    removeFile (file, fileList) {
+      this.fileList = fileList
+    },
+    confirm () {
+      console.log('confirm')
+      const param = new FormData()
+      param.append('upload_file', this.fileList[0].raw)
+      const url = this.url + '/user/upload.do'
+      axios(url, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'token': localStorage.getItem('wap-token')
+        },
+        method: 'POST',
+        data: param
+      }).then(res => {
+        this.imgStatus = false
+        this.formData.rechargeImg = res.data.data.url
+      }).catch(err => {
+        this.imgStatus = false
+      })
     },
     // 提交
     async toSure () {
