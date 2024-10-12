@@ -68,7 +68,7 @@ axios.interceptors.response.use(
     return response
   },
   (error) => {
-    Toast('服务异常')
+    Toast('服务异常，请联系管理员')
     return Promise.reject(error)
   }
 )

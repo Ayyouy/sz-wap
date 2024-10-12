@@ -524,3 +524,8 @@ export function redeem (options) {
 export function redeemCount (options) {
   return get('/api/fundUser/redeemCount.do', options)
 }
+
+// 我的邀请
+export function invitations (options) {
+  return get('/api/user/myInvitationList.do', options)
+}

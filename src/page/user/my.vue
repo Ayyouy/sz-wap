@@ -13,7 +13,8 @@
       </mt-field>
     </div>
     <div class="btnbox">
-      <span class="text-center btnok loginout" @click="toRegister">退出系统</span>
+      <span v-if="isLogin" class="text-center btnok loginout" @click="toRegister">退出系统</span>
+      <span v-else class="text-center btnok" @click="toRegister">去登录</span>
     </div>
     <!-- 修改密码 -->
     <mt-popup v-model="changeLoginPsdBox" position="bottom" class="mint-popup-wrap">
@@ -45,13 +46,16 @@ export default {
       changeLoginPsdBox: false,
       nextPsd: '',
       newPsd: '',
-      phone: this.$store.state.userInfo.phone
+      phone: this.$store.state.userInfo.phone,
+      isLogin: false
     }
   },
   mounted () {
     if (this.phone === undefined || this.phone == null) {
       this.phone = localStorage.getItem('wap-phone')
     }
+    let token = localStorage.getItem('wap-token')
+    this.isLogin = (token === undefined || token == null)
   },
   methods: {
     async toRegister () {
@@ -95,6 +99,12 @@ export default {
   border: 0.015rem solid #606060;
   font-size: 0.3rem;
   background: none;
+}
+
+.login {
+  border: 0.015rem solid #f8b936;
+  font-size: 0.3rem;
+  background: #f8b936;
 }
 
 .mint-popup-wrap {

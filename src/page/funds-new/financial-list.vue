@@ -22,7 +22,7 @@
               infinite-scroll-distance="0">
             <li v-for="(item) in list" :key="item.id">
               <div class="order-info-box">
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.orderNum!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>订单编号</span>
                   </el-col>
@@ -30,7 +30,7 @@
                     <span style="color: #1b8e5d"> {{ item.orderNum }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.realName!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>姓名/ID</span>
                   </el-col>
@@ -38,7 +38,7 @@
                     <span> {{ item.realName }}/{{ item.userId }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.agentRealName!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>归属代理/ID</span>
                   </el-col>
@@ -46,7 +46,7 @@
                     <span> {{ item.agentRealName }}/{{ item.agentId }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row">
+                <el-row class="self-el-row"  v-show="item.agentLevel!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>代理等级</span>
                   </el-col>
@@ -54,7 +54,7 @@
                     <span> {{ item.agentLevel + 1 }}级</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.amount!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>变动金额</span>
                   </el-col>
@@ -62,7 +62,7 @@
                     <span>  {{ item.amount }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.balance!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>基金账户余额</span>
                   </el-col>
@@ -70,7 +70,7 @@
                     <span> ${{ item.balance }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.addTime!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>时间</span>
                   </el-col>
@@ -78,7 +78,7 @@
                     <span> {{ new Date(item.addTime) | timeFormat }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.type!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>类型</span>
                   </el-col>
@@ -86,7 +86,7 @@
                     <span> {{ item.type }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.remark!=undefined">
                   <el-col :span="8" class="text-left">
                     <span>说明</span>
                   </el-col>

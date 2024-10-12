@@ -22,16 +22,15 @@
     </div>
     <mt-tab-container class="order-list" v-model="selected" style="margin-top: 1.9rem !important;">
       <mt-tab-container-item id="4">
-        <div v-if="list.length<=0 && !getStatus" class="empty text-center">
+        <div v-if="list.length<=0 && !loading" class="empty text-center">
           暂无邀请信息!
         </div>
-        <div v-if="list.length<=0 && getStatus" class="empty text-center">
+        <div v-if="list.length<=0 && loading" class="empty text-center">
           <mt-spinner type="fading-circle"></mt-spinner>
           加载中...
         </div>
         <div v-if="list.length>0">
           <ul class="order-info-box-wrap"
-              v-infinite-scroll="loadMore"
               :infinite-scroll-disabled="loading"
               infinite-scroll-distance="0">
             <li v-for="(item) in list" :key="item.id">
@@ -41,7 +40,7 @@
                     <span>被邀请人姓名</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> 张三</span>
+                    <span>{{item.realName}}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -49,7 +48,7 @@
                     <span>邀请人账号</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span>+86 130000000000</span>
+                    <span>{{item.phone}}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -57,7 +56,7 @@
                     <span>直推奖</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> $1000</span>
+                    <span>{{item.recommendTotal}}</span>
                   </el-col>
                 </el-row>
               </div>
@@ -70,29 +69,6 @@
           <div v-show="!loading" class="load-all text-center">
             已全部加载
           </div>
-          <el-dialog center top="25vh" title="筛选" width="80%" :visible.sync="dialogVisible" :show-close="false">
-            <div>
-              <el-form :inline="false" :model="form" size="mini">
-                <el-form-item label="来源" prop="xxx">
-                  <el-select v-model="form.xxx" placeholder="所有" style="width: 100%">
-                    <el-option label="xxx" value="xxx"></el-option>
-                    <el-option label="xxx" value="xxx"></el-option>
-                    <el-option label="xxx" value="xxx"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="时间" prop="buyTime">
-                  <el-input v-model="form.buyTime" placeholder="请输入" type="date"></el-input>
-                </el-form-item>
-                <el-form-item label="订单编号" prop="orderNum">
-                  <el-input v-model="form.orderNum" placeholder="请输入"></el-input>
-                </el-form-item>
-              </el-form>
-            </div>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="submit()">确 定</el-button>
-            </span>
-          </el-dialog>
         </div>
       </mt-tab-container-item>
     </mt-tab-container>
@@ -111,20 +87,9 @@ export default {
   },
   data () {
     return {
-      loading: false, // 是否正在加载更多
-      isRefresh: false, // 是否正在刷新
-      getStatus: false, // 是否正在数据
-      pageNum: 1,
-      pageSize: 10,
-      currentNum: 10,
-      dialogVisible: false,
-      form: {
-        orderNum: '',
-        buyTime: '',
-        xxx: ''// todo 来源
-      },
+      loading: false,
+      code: '',
       list: [],
-      total: 0, // 记录总值,
       selected: '4' // 选中
     }
   },
@@ -132,40 +97,18 @@ export default {
     this.getList()
   },
   methods: {
-    submit () {
-      this.pageNum = 1
-      this.getList()
-      this.dialogVisible = false
-    },
     async getList () {
-      console.log('invite:', this.pageNum)
+      this.loading = true
       let opts = {
-        pageSize: this.pageSize,
-        pageNum: this.pageNum
+        userId: this.$store.state.userInfo.id
       }
-      this.getStatus = true
-      if (this.pageNum === 1) {
-        this.list = []
-      }
-      let data = await api.getFundsNewList(opts)
+      let data = await api.invitations(opts)
       if (data.status === 0) {
-        this.getStatus = false
-        this.total = data.data.total
-        data.data.list.forEach(item => {
-          this.list.push(item)
-        })
+        this.list = data.data.list
+        this.code = data.data.code
       } else {
         Toast(data.msg)
       }
-    },
-    async loadMore () {
-      if (this.list.length < this.pageSize || this.loading || this.total <= this.currentNum) {
-        return
-      }
-      this.loading = true
-      this.pageNum++
-      await this.getList()
-      this.currentNum = this.pageNum * this.pageSize
       this.loading = false
     }
   }
