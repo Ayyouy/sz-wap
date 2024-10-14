@@ -351,11 +351,6 @@ export function payLInk (url, options) {
   return post(url, options)
 }
 
-// 图片上传 uploadimg
-export function uploadimg (options) {
-  return post('/user/upload.do', options)
-}
-
 // 查询点差费率
 export function findSpreadRateOne (options) {
   return post('/api/user/findSpreadRateOne.do', options)
@@ -443,16 +438,6 @@ export function getFundsOrderList (options) {
 // 分仓交易-配资平仓
 export function sellFunds (options) {
   return post('/user/funds/sellFunds.do', options)
-}
-
-// 支付渠道详情接口
-// export function getPayInfoById(options) {
-//   return post("/api/site/getPayInfoById.do", options);
-// }
-
-// 上传截图凭证接口
-export function inMoneyUpload (options) {
-  return post('/user/upload.do', options)
 }
 
 // 入金提交接口

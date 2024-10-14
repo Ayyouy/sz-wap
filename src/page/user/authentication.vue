@@ -19,68 +19,52 @@
           失败原因：{{ this.$store.state.userInfo.authMsg }}
         </div>
       </div>
-      <!-- <mt-field label="手机号" placeholder="请输入您的手机号" v-model="form.phone"></mt-field> -->
       <mt-field label="真实姓名" placeholder="请输入您的真实姓名" type="text" v-model="form.name"></mt-field>
       <mt-field label="身份证号" placeholder="请输入您的身份证号" type="text" v-model="form.idCard"></mt-field>
     </div>
     <div class="upload-box clearfix">
-      <!-- <form action=""> -->
       <div class="upload-btn">
         <el-upload
-          :with-credentials='true'
-          class="avatar-uploader"
-          :action="admin+'/user/upload.do'"
-          list-type="picture-card"
           name="upload_file"
+          list-type="picture-card"
+          :with-credentials='true'
+          action="#"
+          multiple
+          :limit="1"
+          :file-list="fileList1"
           :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :on-error='handleError'
-          :before-upload="beforeAvatarUpload">
+          :auto-upload="false"
+          :on-exceed="limitCheck(1)"
+          :on-remove='removeFile1'
+          :on-change="handleChange1"
+          class="avatar-uploader">
           <img v-if="form.img1key" :src="form.img1key" class="id-img avatar">
           <i v-else class="iconfont icon-zhaopian"></i>
           <span v-if="!form.img1key && !imgStatus" class="btn-title">身份证正面</span>
           <span v-if="imgStatus" class="btn-title">正在上传中...</span>
         </el-upload>
-        <!-- <i class="iconfont icon-tupian"></i> -->
-        <!-- <span class="btn-title">身份证正面</span> -->
-        <!-- <input class="btn-hidden" type="file" accept="image/jpeg, image/png, image/jpg" @change="handleFile"/> -->
-        <!-- <img class="id-img" :src="this.form.img2Key" alt=""> -->
       </div>
       <div class="upload-btn">
         <el-upload
-          :with-credentials='true'
-          class="avatar-uploader"
-          :action="admin+'/user/upload.do'"
-          list-type="picture-card"
           name="upload_file"
+          list-type="picture-card"
+          :with-credentials='true'
+          action="#"
+          multiple
+          :limit="1"
+          :file-list="fileList2"
           :show-file-list="false"
-          :on-success="handleAvatarSuccess2"
-          :on-error='handleError2'
-          :before-upload="beforeAvatarUpload2">
+          :auto-upload="false"
+          :on-exceed="limitCheck(2)"
+          :on-remove="removeFile2"
+          :on-change="handleChange2"
+          class="avatar-uploader">
           <img v-if="form.img2key" :src="form.img2key" class="id-img avatar">
           <i v-else class="iconfont icon-zhaopian"></i>
           <span v-if="!form.img2key && !imgStatus2" class="btn-title">身份证背面</span>
           <span v-if="imgStatus2" class="btn-title">正在上传中...</span>
         </el-upload>
-        <!--
-            :auto-upload="false"
-            身份证背面 -->
       </div>
-      <!-- <div class="upload-btn">
-          <el-upload
-              :with-credentials='true'
-              class="avatar-uploader"
-              :action="admin+'/user/upload.do'"
-              list-type="picture-card"
-              name="upload_file"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess3"
-              :before-upload="beforeAvatarUpload3">
-              <img v-if="form.img3key" :src="form.img3key" class="id-img avatar">
-              <i v-else class="iconfont icon-zhaopian"></i>
-              <span v-if="!form.img3key"  class="btn-title">手持身份证</span>
-          </el-upload>
-      </div> -->
     </div>
     <div class="rule-box">
       <div class="title">认证规则：</div>
@@ -102,6 +86,8 @@ import * as api from '@/axios/api'
 import {Toast} from 'mint-ui'
 import {isNull} from '@/utils/utils'
 import {compress} from '@/utils/imgupload'
+import axios from 'axios'
+import APIUrl from '../../axios/api.url'
 
 export default {
   components: {},
@@ -120,20 +106,19 @@ export default {
       img2Key: '',
       img3Key: '',
       showBtn: true,
-      admin: '',
       imgStatus: false,
-      imgStatus2: false
+      imgStatus2: false,
+      fileList1: [],
+      fileList2: [],
+      url: ''
     }
   },
-  watch: {},
-  computed: {},
   created () {
     if (this.$store.state.userInfo.isActive === 1 || this.$store.state.userInfo.isActive === 2) {
       this.form.idCard = this.$store.state.userInfo.idCard
       this.form.name = this.$store.state.userInfo.realName
       this.form.img1key = this.$store.state.userInfo.img1Key
       this.form.img2key = this.$store.state.userInfo.img2Key
-      //   this.form.img3key = this.$store.state.userInfo.img3Key
       this.showBtn = false
     }
   },
@@ -144,135 +129,82 @@ export default {
     }
   },
   mounted () {
+    this.url = APIUrl.baseURL
     if (this.$state.theme === 'red') {
       document.body.classList.remove('black-bg')
       document.body.classList.add('red-bg')
     }
-    this.admin = process.env.API_HOST
-    if (this.admin === undefined) {
-      this.admin = ''
-    }
   },
   methods: {
-    handleAvatarSuccess (res, file) {
-      this.imgStatus = false
-      this.form.img1key = res.data.url
+    limitCheck (val) {
+      Toast('每次最多上传一个文件')
+      if (val === 1) {
+        this.fileList1 = []
+      } else if (val === 2) {
+        this.fileList2 = []
+      }
     },
-    beforeAvatarUpload (file) {
-      this.imgStatus = true
-      //     const isJPG = file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/png';
-      //     const isLt2M = file.size / 1024 / 1024 < 20;
-      //     if (!isJPG) {
-      //         Toast('请选择jpg或者png的图片格式!');
-      //     }
-      // // if (!isLt2M) {
-      // //     Toast('上传头像图片大小不能超过 2MB!');
-      // // }
-      //     return isJPG && isLt2M;
+    removeFile1 (file, fileList) {
+      this.fileList1 = fileList
     },
-    handleError () {
-      this.imgStatus = false
+    removeFile2 (file, fileList) {
+      this.fileList2 = fileList
     },
-    handleAvatarSuccess2 (res, file) {
-      this.imgStatus2 = false
-      this.form.img2key = res.data.url // URL.createObjectURL(file.raw);
-    },
-    // 自动义图片上传 uploadFileFun2
-    // async uploadFileFun2 (params) {
-    //   const _that = this
-    //   const isLt10M = file.size / 1024 / 1024 < 10
-    //   if (!isLt10M) {
-    //     this.$message.error('上传图片大小不能超过 10M!')
-    //     return false
-    //   } else {
-    //     this.form.img2key = URL.createObjectURL(file.raw)
-    //     compress(file.raw, function (val) {
-    //       _that.form.img2key = val
-    //     })
-    //   }
-    //   // 通过 FormData 对象上传文件
-    //   const _file = params.file
-    //   var formData = new FormData()
-    //   formData.append('upload_file', _file)
-    //   let data = await api.uploadimg(formData)
-    //   if (data.status === 0) {
-    //     this.form.img2key = data.data
-    //   } else {
-    //     Toast(data.msg)
-    //   }
-    // },
-    beforeAvatarUpload2 (file) {
-      this.imgStatus2 = true
-      // const _that = this
-      const isLt10M = file.size / 1024 / 1024 < 10
+    handleChange1 (file, fileList) {
+      this.fileList1 = fileList
+      const isLt10M = (file.size / 1024 / 1024 < 10)
       if (!isLt10M) {
-        this.$message.error('上传图片大小不能超过 10M!')
-        return false
+        Toast('上传图片大小不能超过 10MB!')
+        this.fileList1.pop()
       } else {
-        this.form.img2key = URL.createObjectURL(file)
-        compress(file, function (val) {
-          // _that.theForm.picUrl = val
-          // _that.imgFile = val
-          // _that.showDelete = true
-          // _that.$refs['addBuildingForm'].validateField('picUrl')
-        })
+        this.imgStatus = true
+        this.confirm(1)
       }
-      // const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-      // const isLt2M = file.size / 1024 / 1024 < 20;
-
-      // return isJPG && isLt2M;
+      return isLt10M
     },
-    handleError2 () {
-      this.imgStatus2 = false
-    },
-    handleAvatarSuccess3 (res, file) {
-      this.form.img3key = res.data.url // URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload3 (file) {
-      // const isJPG = file.type === 'image/jpeg' || file.type === 'image/jpeg' || file.type === 'image/png';
-      // const isLt2M = file.size / 1024 / 1024 < 20;
-      // if (!isJPG) {
-      //     Toast('请选择jpg或者png的图片格式!');
-      // }
-      // return isJPG && isLt2M;
-    },
-    // 上传
-    handleFile: function (e) {
-      // var that = this
-      let $target = e.target || e.srcElement
-      let file = $target.files[0]
-      // if(file.size > 1024 * 1024 *20){
-      let i = false
-      if (i) {
-        Toast('您上传的照片过大，请选择20M以下的图片')
+    handleChange2 (file, fileList) {
+      this.fileList2 = fileList
+      const isLt10M = (file.size / 1024 / 1024 < 10)
+      if (!isLt10M) {
+        Toast('上传图片大小不能超过 10MB!')
+        this.fileList2.pop()
       } else {
-        // Indicator.open('Loading...')
-        this.img1Key = file
-        // this.$refs.formDate.submit()
-        // this.uploadIdImg({upload_file:file})
-        var reader = new FileReader()
-        reader.onload = (data) => {
-          let res = data.target || data.srcElement
-          this.form.img1Key = res.result
-          // Indicator.close()
+        this.imgStatus2 = true
+        this.confirm(2)
+      }
+      return isLt10M
+    },
+    confirm (val) {
+      const param = new FormData()
+      if (val === 1) {
+        param.append('upload_file', this.fileList1[0].raw)
+      } else if (val === 2) {
+        param.append('upload_file', this.fileList2[0].raw)
+      }
+      const url = this.url + '/user/upload.do'
+      axios(url, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'token': localStorage.getItem('wap-token')
+        },
+        method: 'POST',
+        data: param
+      }).then(res => {
+        if (val === 1) {
+          this.imgStatus = false
+          this.form.img1key = res.data.data.url
+        } else if (val === 2) {
+          this.imgStatus2 = false
+          this.form.img2key = res.data.data.url
         }
-        // reader.onloadend = () => {
-        //   Indicator.close()
-        // }
-        reader.readAsDataURL(file)
-      }
+      }).catch(() => {
+        if (val === 1) {
+          this.imgStatus = false
+        } else if (val === 2) {
+          this.imgStatus2 = false
+        }
+      })
     },
-    // async uploadIdImg(){
-    //      let imgformData = new FormData()
-
-    //         imgformData.append('upload_file', this.img1Key)
-    //     let data = await api.uploadFile({upload_file:this.img1Key})
-    //     if(data.status == 0){
-    //         Toast('认证成功!')
-    //     }else{
-    //         Toast(data.msg)
-    //     }
-    // },
     toSure () {
       // 实名认证弹框
       if (isNull(this.form.name)) {
@@ -307,7 +239,7 @@ export default {
       }
     },
     goBack () {
-      this.$router.back(-1)
+      this.$router.back()
     }
   }
 }

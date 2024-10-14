@@ -41,7 +41,6 @@
             :on-exceed="limitCheck"
             :on-remove="removeFile"
             :on-change="handleChange">
-            <!--            <el-button size="mini" type="primary" @click="confirm">点击上传</el-button>-->
             <img v-if="formData.rechargeImg" :src="formData.rechargeImg" class="id-img avatar"/>
             <i v-else class="iconfont icon-zhaopian"></i>
             <span v-if="!formData.rechargeImg && !imgStatus" class="btn-title">截图凭证</span>
@@ -247,7 +246,7 @@ export default {
       }).then(res => {
         this.imgStatus = false
         this.formData.rechargeImg = res.data.data.url
-      }).catch(err => {
+      }).catch(() => {
         this.imgStatus = false
       })
     },
