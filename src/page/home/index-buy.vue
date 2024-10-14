@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper"> 
+  <div class="wrapper">
     <div class="detail-part">
       <div class="index-name">
         <p>{{detail.indexName}} <span class="index-name_code">{{detail.indexCode}}</span></p>
@@ -19,7 +19,7 @@
               <!-- <p class="title"></p> -->
               <p :class="detail.floatPoint<0?'number green': 'number red'">
                 <span class="title">涨跌</span>
-                {{Number(detail.floatPoint).toFixed(2)}} 
+                {{Number(detail.floatPoint).toFixed(2)}}
               </p>
             </li>
             <li>
@@ -150,7 +150,7 @@
         </p>
 
       </div>
-    </div> --> 
+    </div> -->
     <div class="agree">
       <p style="line-height: 0.4rem;padding: 0 0.2rem;">
         当该指数涨幅达到<span class="red">涨停限制</span>时,不能买涨；达到<span class="green">跌停限制</span>时，不能买跌.
@@ -174,7 +174,7 @@
         </div>
       </div>
     </div>
-   
+
     <!-- <foot></foot> -->
   </div>
 </template>
@@ -294,7 +294,7 @@ export default {
       if (data.status === 0) {
         // 成功
         this.settingInfo = data.data
-        
+
       } else {
         Toast(data.msg)
       }
@@ -306,7 +306,6 @@ export default {
         // 成功
         // 杠杆倍数
         this.selectCycle = data.data.siteLever
-        // console.log(this.$store.state.userInfo)
         // alert(this.$store.state.userInfo +"=="+this.$store.state.userInfo.phone)
         if(this.$store.state.userInfo !== undefined && this.$store.state.userInfo !== null && this.$store.state.userInfo.phone !== '' && this.$store.state.userInfo.siteLever !== null){
             this.selectCycle = this.$store.state.userInfo.siteLever.split('/')[0]
@@ -352,12 +351,11 @@ export default {
       this.selectCycle = value
     },
     selectNumberFun (value) {
-      
+
       this.selectNumber = value
       if (value !== 0) {
         this.autoNumber = ''
       }
-      console.log(value, this.selectNumber)
     },
     selectTypeFun (value) {
       this.selectType = value

@@ -343,11 +343,6 @@
                   }}
                 </p>
               </li>
-              <!--              <li>-->
-              <!--                <i class="iconfont icon-dongjiezijin"></i>-->
-              <!--                <div class="name">新股缴费</div>-->
-              <!--                <p>{{ shengoudj.djzj }}</p>-->
-              <!--              </li>-->
             </ul>
           </div>
         </div>
@@ -539,7 +534,6 @@ export default {
       ],
       showChangeBtn: false, // 是否显示资金互转按钮
       styleName: 'black',
-      shengoudj: '',
       dialogObj: {
         flag: false,
         title: '',
@@ -558,18 +552,12 @@ export default {
     this.getIndexSettingInfo()
     this.getFuturesSetting()
     this.getCardDetail()
-    this.getPrice()
     this.changeHideStatus = this.$store.state.hide
     if (this.$store.state.settingForm.indexDisplay || this.$store.state.settingForm.futuresDisplay) {
       this.showChangeBtn = true
     }
   },
   methods: {
-    async getPrice () {
-      let opt = {}
-      let data = await api.getprice(opt)
-      this.shengoudj = data.data
-    },
     async getProductSetting () {
       let data = await api.getProductSetting()
       if (data.status === 0) {

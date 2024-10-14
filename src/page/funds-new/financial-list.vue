@@ -186,7 +186,6 @@ export default {
       }
     },
     async getList () {
-      console.log('financial:', this.pageNum)
       let opts = {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
@@ -214,7 +213,7 @@ export default {
         return
       }
       this.loading = true
-      this.pageNum++
+      this.pageNum = this.pageNum + 1
       await this.getList()
       this.currentNum = this.pageNum * this.pageSize
       this.loading = false

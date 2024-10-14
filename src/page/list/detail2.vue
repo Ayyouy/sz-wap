@@ -261,7 +261,6 @@
         this.loading = false
         if (data.status === 0) {
           this.detail = data.data
-          console.log(data.data);
         } else {
           Toast(data.msg)
         }

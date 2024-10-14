@@ -845,7 +845,6 @@ export default {
       let opt = {}
       let data = await api.getprice(opt)
       this.shengoudj = data.data
-      console.log(this.shengoudj, '申购')
     },
     goFunds (type) {
       if (type == 1) {

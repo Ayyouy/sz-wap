@@ -235,7 +235,6 @@ export default {
       },
       currentSelDays(selVal) {
         let val = parseInt(selVal.target.value)
-        console.log(val)
         if (isNaN(val)) {
             this.selDaysUsePeriod = this.selMinDay + '天'
             this.selDaysUseVal = this.selMinDay

@@ -48,7 +48,6 @@ export default {
   watch: {
     selected: {
       handler (val) {
-        console.log('index selected', val)
         this.$nextTick(() => {
           this.$refs[`indexList${val}`].pageNum = 1
           this.$refs[`indexList${val}`].getList()

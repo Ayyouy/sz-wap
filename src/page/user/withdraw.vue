@@ -114,7 +114,6 @@ export default {
       document.body.classList.add('red-bg')
     }
     this.getSettingInfo()
-    console.log(this.$store.state.bankInfo)
   },
   watch: {
     'formData.amt' (val) {

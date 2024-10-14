@@ -322,7 +322,6 @@ export default {
     },
     async getNewsList(type) {
       let data = await api.queryNewsList(type);
-      console.log('xinwen:',data)
       switch(type) {
         case 1:
           this.newsContent1 = data.data.list

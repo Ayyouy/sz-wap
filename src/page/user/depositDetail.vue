@@ -202,13 +202,11 @@ export default {
     this.payId = this.$route.query.payId
     this.getDetail()
     this.url = APIUrl.baseURL
-    console.log('upload url：', this.url)
   },
   methods: {
     // 获取支付渠道详情数据
     async getDetail () {
       let data = await api.getPayInfoDetail({payId: this.payId})
-      console.log('data:', data)
       if (data.status === 0) {
         this.detail = data.data
         this.imgSrc = data.data.formUrl
@@ -236,7 +234,6 @@ export default {
       this.fileList = fileList
     },
     confirm () {
-      console.log('confirm')
       const param = new FormData()
       param.append('upload_file', this.fileList[0].raw)
       const url = this.url + '/user/upload.do'

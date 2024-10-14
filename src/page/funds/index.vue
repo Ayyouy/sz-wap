@@ -33,7 +33,7 @@
                   <span style="font-size: .2rem"
                   :style="{color:$state.theme =='red'&&'#000'}"
                   >资金互转
-                  <i 
+                  <i
                   style="font-size: .2rem"
                   class="iconfont icon-you"></i>
                   </span>
@@ -89,7 +89,7 @@
             <div class="funds-list-item__title">
                 <span class="funds-list-item__title-left">
                     <!-- <span class="zhishu">
-                        
+
                     </span> -->
                     总操盘资金：
                     <span class="green">{{i.totalTradingAmount}}</span>
@@ -173,15 +173,14 @@ export default {
         async getlist () {
             // 获取持仓列表
             let opt = {
-            userId: 0, 
+            userId: 0,
             pageNum: this.pageNum,
             pageSize: this.pageSize
             }
-            console.log(opt)
             let data = await api.getUserApplyList(opt)
             if (data.status === 0) {
                 this.list = data.data
-            } 
+            }
             // else {
             //     this.$message.error(data.msg)
             // }
@@ -304,7 +303,7 @@ export default {
             }
         }
     }
-    
+
   }
   .funds-list {
     display: block;
@@ -340,7 +339,7 @@ export default {
             &-right {
                 font-size: .24rem;
             }
-        } 
+        }
         .account {
             padding: 0;
             .order-title {
@@ -406,7 +405,7 @@ export default {
               }
           }
       }
-      
+
       .funds-list-loadmore {
           background-color: #BC1816;
       }

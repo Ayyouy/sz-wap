@@ -86,12 +86,9 @@ Vue.prototype.checkCookie = function () {
   }
 }
 // router.beforeEach((to, from, next) => {
-// console.log(to.path)
 // store.state.select = to.path
 // document.title = to.meta.title || '亿点通'
 // // 判断是否登录
-// console.log(document.cookie)
-// // console.log(checkCookie(),'checkCookie()')
 // if(!to.meta.requireAuth){
 // next()
 // return

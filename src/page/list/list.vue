@@ -70,19 +70,10 @@ export default {
     }
   },
   created () {
-    console.log(this.stockDisplay)
-    console.log(this.futureDisplay)
-    console.log(this.indexDisplay)
-    console.log(this.kcDisplay)
     this.getProductSetting()
     if (!this.$store.state.userInfo.phone) {
       this.getUserInfo()
     }
-    console.log('xxxxxxxxxxxxx')
-    console.log(this.stockDisplay)
-    console.log(this.futureDisplay)
-    console.log(this.indexDisplay)
-    console.log(this.kcDisplay)
   },
   mounted () {
     if (this.$route.query.index) {

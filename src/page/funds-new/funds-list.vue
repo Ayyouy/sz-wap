@@ -60,7 +60,6 @@ export default {
   components: {
     Foot
   },
-  props: {},
   data () {
     return {
       loading: false, // 是否正在加载更多
@@ -74,16 +73,8 @@ export default {
       selected: '1' // 选中
     }
   },
-  watch: {},
-  computed: {},
-  created () {
-  },
-  mounted () {
-    this.getList()
-  },
   methods: {
     async getList () {
-      console.log('funds:', this.pageNum)
       let opts = {
         pageSize: this.pageSize,
         pageNum: this.pageNum
@@ -108,7 +99,7 @@ export default {
         return
       }
       this.loading = true
-      this.pageNum++
+      this.pageNum = this.pageNum + 1
       await this.getList()
       this.currentNum = this.pageNum * this.pageSize
       this.loading = false

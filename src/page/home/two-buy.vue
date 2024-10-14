@@ -297,7 +297,6 @@ export default {
         // 成功
         // 杠杆倍数
         this.selectCycle = data.data.siteLever
-        // console.log(this.$store.state.userInfo)
         if(this.$store.state.userInfo !== undefined && this.$store.state.userInfo !== null && this.$store.state.userInfo.phone !== '' && this.$store.state.userInfo.siteLever !== null){
             this.selectCycle = data.data.siteLever.split('/')[0]
             this.siteLeverList = []
@@ -333,8 +332,6 @@ export default {
         if(data.data != undefined){
           this.settingSpreadRate = data.data
         }
-        console.log(this.settingSpreadRate)
-
       } else {
         this.$message.error(data.msg)
       }
@@ -367,9 +364,7 @@ export default {
       this.loading = false
       if (data.status === 0) {
         this.detail = data.data
-        console.log(data)
         this.findSpreadRateOne()
-
       } else {
         Toast(data.msg)
       }
@@ -383,7 +378,6 @@ export default {
       if (value !== 0) {
         this.autoNumber = ''
       }
-      console.log(value, this.selectNumber)
     },
     selectTypeFun (value) {
       this.selectType = 0

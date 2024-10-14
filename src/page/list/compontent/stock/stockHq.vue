@@ -143,20 +143,20 @@
           <div class="k-main-content-box">
             <div class="k-left-content kLineTabs">
               <p class="tabsTitle" :style="{marginRight: FiveMinute.IsShow ? '0.2rem' : '0'}">
-                <span 
-                  v-for='(item,index) in PeriodObj.TabTextAry' 
+                <span
+                  v-for='(item,index) in PeriodObj.TabTextAry'
                   :key='index'
                   :class="`${PeriodObj.TabTextIndex == index ? 'active' : ''} ${PeriodObj.preTextIndex == index ? 'active-pre' : ''}`"
                   @click='ChangeChartTab(index)'
                 >{{item}}</span>
-                <select 
+                <select
                   v-if="false"
-                  v-model='MinutePeriod.minutePeriod' 
+                  v-model='MinutePeriod.minutePeriod'
                   @click="ChangeMinuteIndex"
                   :class='{selectActive : PeriodObj.TabTextIndex == 6}'
                 >
-                  <option 
-                    v-for='(minuteItem,ind) in MinutePeriod.SelectOptionList' 
+                  <option
+                    v-for='(minuteItem,ind) in MinutePeriod.SelectOptionList'
                     :value="minuteItem.Value"
                     :key='ind'
                   >
@@ -168,14 +168,14 @@
               <div class="k-echarts" id="minuteFiveDaychart" v-show='FiveMinute.IsShow'></div>
               <div class="k-echarts" id="kline" v-show='Kline.IsShow'></div>
               <!-- k线图指标 -->
-              <div 
-                class="indexWrap" 
+              <div
+                class="indexWrap"
                 v-show='Kline.IsShow'
               >
-                <span 
-                  v-for='item in IndexMenu' 
-                  :key="item.ID" 
-                  @click='ChangeKlinIndex(item)' 
+                <span
+                  v-for='item in IndexMenu'
+                  :key="item.ID"
+                  @click='ChangeKlinIndex(item)'
                   class="indexItem"
                   :class='{active : item.Selected == true }'
                 >{{item.Name}}</span>
@@ -242,20 +242,20 @@
         </div>
         <div class="tab-content tabs kLineTabs blockBg" v-if="false">
             <p class="tabsTitle">
-              <span 
-                v-for='(item,index) in PeriodObj.TabTextAry' 
+              <span
+                v-for='(item,index) in PeriodObj.TabTextAry'
                 :key='index'
                 :class='{active : PeriodObj.TabTextIndex == index}'
                 @click='ChangeChartTab(index)'
               >{{item}}</span>
-              <select 
+              <select
                 v-if="false"
-                v-model='MinutePeriod.minutePeriod' 
+                v-model='MinutePeriod.minutePeriod'
                 @click="ChangeMinuteIndex"
                 :class='{selectActive : PeriodObj.TabTextIndex == 6}'
               >
-                <option 
-                  v-for='(minuteItem,ind) in MinutePeriod.SelectOptionList' 
+                <option
+                  v-for='(minuteItem,ind) in MinutePeriod.SelectOptionList'
                   :value="minuteItem.Value"
                   :key='ind'
                 >
@@ -325,14 +325,14 @@
                 </div>
 
                 <!-- k线图指标 -->
-                <div 
-                  class="indexWrap" 
+                <div
+                  class="indexWrap"
                   v-show='Kline.IsShow'
                 >
-                  <span 
-                    v-for='item in IndexMenu' 
-                    :key="item.ID" 
-                    @click='ChangeKlinIndex(item)' 
+                  <span
+                    v-for='item in IndexMenu'
+                    :key="item.ID"
+                    @click='ChangeKlinIndex(item)'
                     class="indexItem"
                     :class='{active : item.Selected == true }'
                   >{{item.Name}}</span>
@@ -683,9 +683,7 @@
     created () {
       // this.timer = setInterval(this.refreshList, 5000)
       this.Symbol = this.$parent.detail.code + '.' + this.$parent.detail.stockType
-
       console.log('Symbol:', this.Symbol)
-
       // this.Symbol = '600000.sh'
       var symbol = Tools.getURLParams('symbol')
       if (symbol) {
@@ -750,7 +748,7 @@
 
     methods:
       {
-       
+
         //下单部分
         async getUserInfo () {
           // 获取用户信息
@@ -853,12 +851,11 @@
             $('#minuteFiveDaychart').width(chartWidth)
             $('#minuteFiveDaychart').height(chartHeight)
           } else if (this.Kline.IsShow) {
-            console.log('kline')
             var chartWidth = width
             if (this.RightMenu.IsShow) {
               // chartWidth = this.IsIndex ? width : width - $('.phoneRight').outerWidth(true) + 10
               chartWidth = this.IsIndex ? width : width - 1.8 * unitRem
-            } 
+            }
             $('#kline').width(chartWidth)
             $('#kline').height(chartHeight)
             if (this.Kline.JSChart) this.Kline.JSChart.OnSize()
@@ -1221,8 +1218,8 @@
         goToBusiness () {
           window.open(urlObj.htmlSimulateTrade + '?oprTypeIndex=0' + '&symbol=' + this.Symbol + '&symbolName=' + this.StockData.Name.Text, '_self')
         }
-      }, 
-       
+      },
+
   }
 
 </script>

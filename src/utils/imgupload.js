@@ -33,7 +33,6 @@ export function compress (fileObj, callback) {
       callback(newFile)
     }
   } catch (e) {
-    console.log('压缩失败!')
   }
 }
 

@@ -50,21 +50,11 @@ axios.interceptors.response.use(
   (response) => {
     let data = response.data
     if (data instanceof Object) {
-      if (data.hasOwnProperty('success') && !data.success) {
-        if (data.msg.includes('登录')) {
-          data.msg = '您还未登录,请先登录'
-          router.push('/openaccount')
-        }
+      if (data.status === 401) {
+        data.msg = '您还未登录,请先登录'
+        router.push('/openaccount')
       }
     }
-    // switch (response.data && response.data.success) {
-    //   case false:
-    //     response.data.msg = '您还未登录,请先登录'
-    //     router.push('/openaccount')
-    //     break
-    //   default:
-    //     break
-    // }
     return response
   },
   (error) => {

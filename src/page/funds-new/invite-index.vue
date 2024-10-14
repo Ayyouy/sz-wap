@@ -7,7 +7,7 @@
             <span>邀请链接</span>
           </el-col>
           <el-col :span="20" class="text-right">
-            <span>http://www.baidu.com</span>
+            <span>-</span>
           </el-col>
         </el-row>
         <el-row class="self-el-row">
@@ -15,7 +15,7 @@
             <span>邀请码</span>
           </el-col>
           <el-col :span="20" class="text-right">
-            <span style="color: #1b8e5d"> XDk869</span>
+            <span style="color: #1b8e5d">{{code}}</span>
           </el-col>
         </el-row>
       </div>
@@ -92,9 +92,6 @@ export default {
       list: [],
       selected: '4' // 选中
     }
-  },
-  mounted () {
-    this.getList()
   },
   methods: {
     async getList () {

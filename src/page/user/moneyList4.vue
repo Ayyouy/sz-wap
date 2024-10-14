@@ -144,7 +144,6 @@ export default {
   },
   methods: {
     async getList () {
-      console.log('money list 4')
       let opt = {
         payChannel: '', // 支付方式
         withStatus: this.searchForm.withStatus // 订单状态

@@ -209,7 +209,6 @@ export default {
       }
     },
     async toSure() {
-      console.log("添加银行卡")
       // 添加银行卡
       if (!this.code) {
         Toast("请输入验证码");

@@ -101,7 +101,7 @@
         </ul>
       </div>
     </div>
-    
+
     <div class="box-tab">
       <div class="tab-con">
         <p class="text-left page-part">
@@ -134,7 +134,7 @@
       </div>
       <mt-button :disabled="buying" class="btn-red" size="small" type="danger" @click="toInquiry">下单</mt-button>
     </div>
-    
+
     <mt-popup v-model="focePromptPopup" popup-transition="popup-fade" class="mint-popup-white">
       <div class="clearfix">
         <a @click="focePromptPopup = false" class="pull-right"><i class="iconfont icon-weitongguo"></i></a>
@@ -181,7 +181,7 @@ export default {
         { label: '300手', value: '300' },
         { label: '自定义', value: '' }
       ],
-      siteLeverList:[],
+      siteLeverList: [],
       selectNumber: '',
       autoNumber: '',
       type: [
@@ -206,7 +206,7 @@ export default {
   },
   watch: {},
   computed: {
-    poundage () { //手续费= 买入手续费+印花税+点差费
+    poundage () { // 手续费= 买入手续费+印花税+点差费
       if (this.autoNumber) {
         let payfee = (this.detail.nowPrice * this.autoNumber * 100).toFixed(2) // / this.selectCycle
         return ((payfee * this.settingInfo.buyFee) + (payfee * this.settingInfo.dutyFee) + (payfee * this.settingSpreadRate.spreadRate)).toFixed(2)
@@ -218,18 +218,18 @@ export default {
       }
     },
     total () {
-      if (this.settingSpreadRate == undefined || this.settingSpreadRate.spreadRate == undefined){
+      if (this.settingSpreadRate === undefined || this.settingSpreadRate.spreadRate === undefined) {
         this.settingSpreadRate.spreadRate = 0
       }
       if (this.autoNumber) {
         let payfee = (this.detail.nowPrice * this.autoNumber * 100 / this.selectCycle)
         return (payfee + (payfee * this.settingInfo.buyFee) + (payfee * this.settingInfo.dutyFee) + (payfee * this.settingSpreadRate.spreadRate)).toFixed(2)
-        //return (this.detail.nowPrice * this.autoNumber * 100 / this.selectCycle).toFixed(2)
+        // return (this.detail.nowPrice * this.autoNumber * 100 / this.selectCycle).toFixed(2)
       } else if (this.selectNumber) {
         // alert("bb"+this.detail.nowPrice+"cc==="+this.selectNumber+"ff==="+this.selectCycle+"==="+this.settingSpreadRate.spreadRate)
         let payfee = (this.detail.nowPrice * this.selectNumber * 100 / this.selectCycle)
         return (payfee + (payfee * this.settingInfo.buyFee) + (payfee * this.settingInfo.dutyFee) + (payfee * this.settingSpreadRate.spreadRate)).toFixed(2)
-        //return (this.detail.nowPrice * this.selectNumber * 100 / this.selectCycle).toFixed(2)
+        // return (this.detail.nowPrice * this.selectNumber * 100 / this.selectCycle).toFixed(2)
       } else {
         return 0
       }
@@ -280,23 +280,23 @@ export default {
         this.settingInfo = data.data
         // 杠杆倍数
         this.selectCycle = data.data.siteLever
-        if(this.$store.state.userInfo !== undefined && this.$store.state.userInfo !== null && this.$store.state.userInfo.phone !== '' && this.$store.state.userInfo.siteLever !== null){
-            this.selectCycle = this.$store.state.userInfo.siteLever.split('/')[0]
-            this.siteLeverList = []
-            for (let i = 0; i < this.$store.state.userInfo.siteLever.split('/').length; i++) {
-              let val = this.$store.state.userInfo.siteLever.split('/')[i]
-              let item = { label: val + '倍', value: val }
-              this.siteLeverList.push(item)
-            }
-          } else {
-            this.selectCycle = data.data.siteLever.split('/')[0]
-            this.siteLeverList = []
-            for (let i = 0; i < data.data.siteLever.split('/').length; i++) {
-              let val = data.data.siteLever.split('/')[i]
-              let item = { label: val + '倍', value: val }
-              this.siteLeverList.push(item)
-            }
+        if (this.$store.state.userInfo !== undefined && this.$store.state.userInfo !== null && this.$store.state.userInfo.phone !== '' && this.$store.state.userInfo.siteLever !== null) {
+          this.selectCycle = this.$store.state.userInfo.siteLever.split('/')[0]
+          this.siteLeverList = []
+          for (let i = 0; i < this.$store.state.userInfo.siteLever.split('/').length; i++) {
+            let val = this.$store.state.userInfo.siteLever.split('/')[i]
+            let item = { label: val + '倍', value: val }
+            this.siteLeverList.push(item)
           }
+        } else {
+          this.selectCycle = data.data.siteLever.split('/')[0]
+          this.siteLeverList = []
+          for (let i = 0; i < data.data.siteLever.split('/').length; i++) {
+            let val = data.data.siteLever.split('/')[i]
+            let item = { label: val + '倍', value: val }
+            this.siteLeverList.push(item)
+          }
+        }
       } else {
         Toast(data.msg)
       }
@@ -305,18 +305,16 @@ export default {
       // 查询点差费率
       let opts = {
         applies: this.detail.hcrate, // 涨跌幅
-        turnover: this.total, //成交额
-        unitprice: this.detail.nowPrice, //股票单价
+        turnover: this.total, // 成交额
+        unitprice: this.detail.nowPrice, // 股票单价
         code: this.$route.params.code
       }
       let data = await api.findSpreadRateOne(opts)
       if (data.status === 0) {
         // 成功
-        if(data.data != undefined){
+        if (data.data !== undefined) {
           this.settingSpreadRate = data.data
         }
-        console.log(this.settingSpreadRate)
-        
       } else {
         this.$message.error(data.msg)
       }

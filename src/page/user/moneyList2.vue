@@ -143,7 +143,6 @@ export default {
   },
   methods: {
     async getList () {
-      console.log('money list 2')
       // todo 待定
       // let opt = {
       //   payChannel: '', // 支付方式

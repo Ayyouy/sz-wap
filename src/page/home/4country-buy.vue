@@ -295,7 +295,6 @@ export default {
     clearInterval(this.timer)
   },
   mounted () {
-    console.log('areaId:', this.$route.params.areaId)
     //   this.getDetail()
     this.detail.gid = this.$route.params.gid
     this.detail.name = this.$route.params.name
@@ -370,7 +369,6 @@ export default {
         if (data.data != undefined) {
           this.settingSpreadRate = data.data
         }
-        console.log(this.settingSpreadRate)
       } else {
         this.$message.error(data.msg)
       }

@@ -144,7 +144,6 @@ export default {
   },
   methods: {
     async getList () {
-      console.log('money list 3')
       let opt = {
         phoneNum: this.searchForm.phoneNum,
         name: this.searchForm.name,

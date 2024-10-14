@@ -255,7 +255,6 @@ export default {
         if (data2.status === 0) {
           // 成功
           this.formDate = data2.data
-          //console.log(document.getElementById("pay_form"))
           this.dialogShow = true
           // 支付跳转
           setTimeout(() => {
@@ -403,7 +402,6 @@ export default {
           });
 
           this.popupVisible = true
-          // console.log(document.getElementById("payh5_form"))
           // return;
           // setTimeout(() => {
           //   this.isloading = false

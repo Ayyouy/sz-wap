@@ -136,18 +136,14 @@ export default {
     },
     selectedNumber (newval) {
       if (newval) {
-        console.log('change:', newval)
         this.list = []
         this.getListDetail()
       }
     }
   },
-  computed: {},
-  created () {
-  },
-  mounted () {
-    this.getListDetail()
-  },
+  // mounted () {
+  //   this.getListDetail()
+  // },
   methods: {
     async loadMore () {
       if (
@@ -165,7 +161,6 @@ export default {
       this.loading = false
     },
     async getListDetail () {
-      console.log('curr:', this.selectedNumber)
       let opt = {
         state: 1,
         stockCode: '', // 代码

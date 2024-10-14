@@ -179,7 +179,6 @@ export default {
     },
     // 自动义图片上传 uploadFileFun2
     // async uploadFileFun2 (params) {
-    //   console.log('uploadFile', params)
     //   const _that = this
     //   const isLt10M = file.size / 1024 / 1024 < 10
     //   if (!isLt10M) {
@@ -243,7 +242,6 @@ export default {
       let $target = e.target || e.srcElement
       let file = $target.files[0]
       // if(file.size > 1024 * 1024 *20){
-      console.log(file, 'file')
       let i = false
       if (i) {
         Toast('您上传的照片过大，请选择20M以下的图片')

@@ -25,7 +25,7 @@
     :style="{backgroundImage:`url(${$state.theme=='red'?r_bg:b_bg})`}"
     >
       <div class="content ">
-        <div 
+        <div
         :class="i.floatPoint<0?'tab greenBg text-center':'tab redBg text-center'"
         v-for="(i,index) in market"
         v-if="index < 3"
@@ -43,7 +43,7 @@
     </div>
     <!-- 导航路由 -->
     <div class="icon-router clearfix home-ico-router">
-      
+
       <div class="col-xs-3 text-center">
         <a class='icon-wrap animated zoomIn' @click="goList" href="javascript:;">
           <img
@@ -117,8 +117,8 @@
             <img style="width:100%;height: 100%;" :src="banner.bannerUrl" alt="">
           </a>
         </mt-swipe-item>
-      </mt-swipe>   
-    </div>   
+      </mt-swipe>
+    </div>
     <!-- 轮播图 -->
     <AllList/>
     <div class="swiper-ad">
@@ -127,13 +127,13 @@
         v-for="banner in bannerList"
         :key="banner.id"
         >
-          <a 
+          <a
           class="banner-ad"
           :href="banner.targetUrl || null">
             <img style="width:100%;height: 100%;" :src="banner.bannerUrl" alt="">
           </a>
         </mt-swipe-item>
-      </mt-swipe>   
+      </mt-swipe>
     </div>
     <!-- <div v-show="true" class="box  page-part">
       <div class="box-title">
@@ -179,7 +179,7 @@
       <mt-tab-container v-model="news" :swipeable="true">
         <mt-tab-container-item id="tab_0">
           <div class="news-content">
-            <div 
+            <div
               class="news-item"
               v-for="item of newsContent1"
               :key="item.id"
@@ -197,7 +197,7 @@
         </mt-tab-container-item>
         <mt-tab-container-item id="tab_1">
           <div class="news-content">
-            <div 
+            <div
               class="news-item"
               v-for="item of newsContent2"
               :key="item.id"
@@ -215,7 +215,7 @@
         </mt-tab-container-item>
         <mt-tab-container-item id="tab_2">
           <div class="news-content">
-            <div 
+            <div
               class="news-item"
               v-for="item of newsContent3"
               :key="item.id"
@@ -233,7 +233,7 @@
         </mt-tab-container-item>
         <mt-tab-container-item id="tab_3">
           <div class="news-content">
-            <div 
+            <div
               class="news-item"
               v-for="item of newsContent4"
               :key="item.id"
@@ -251,7 +251,7 @@
         </mt-tab-container-item>
         <mt-tab-container-item id="tab_4">
           <div class="news-content">
-            <div 
+            <div
               class="news-item"
               v-for="item of newsContent5"
               :key="item.id"
@@ -294,7 +294,7 @@ export default {
   props: {},
   data () {
     return {
-      news:'tab_0',
+      news: 'tab_0',
       market: [],
       moveStats: false,
       bannerList: '',
@@ -316,8 +316,8 @@ export default {
       newsContent3: [], // 全球股市
       newsContent4: [], // 7*24全球
       newsContent5: [], // 商品资讯,
-      b_bg:require('../../../static/img/bg-zhisu.png'),
-      r_bg:require('../../../static/img/bg-zhisu-red.png')
+      b_bg: require('../../../static/img/bg-zhisu.png'),
+      r_bg: require('../../../static/img/bg-zhisu-red.png')
     }
   },
   created () {
@@ -337,34 +337,33 @@ export default {
     }
   },
   methods: {
-    async getNewsList(type) {
-      let data = await api.queryNewsList(type);
-      console.log('xinwen:',data)
-      switch(type) {
+    async getNewsList (type) {
+      let data = await api.queryNewsList(type)
+      switch (type) {
         case 1:
           this.newsContent1 = data.data.list
-          break;
+          break
         case 2:
           this.newsContent2 = data.data.list
-          break;
+          break
         case 3:
           this.newsContent3 = data.data.list
-          break;
+          break
         case 4:
           this.newsContent4 = data.data.list
-          break;
+          break
         case 5:
           this.newsContent5 = data.data.list
-          break;
+          break
       }
     },
     // 主题切换
-    handleChangeThemeClick() {
+    handleChangeThemeClick () {
       if (this.theme === 'black') {
-        eventBus.$emit("getTheme", 'red');
+        eventBus.$emit('getTheme', 'red')
         this.theme = 'red'
       } else {
-        eventBus.$emit("getTheme", 'black');
+        eventBus.$emit('getTheme', 'black')
         this.theme = 'black'
       }
     },
@@ -498,7 +497,7 @@ export default {
     this.getNewsList(4)
     this.getNewsList(5)
     this.getMarket() // 获取大盘指数
-    this.getBanner() //获取banner
+    this.getBanner() // 获取banner
     this.getArtList() // 获取公告
     // let header = document.querySelector('.header-box')
     let body = document.querySelector('.wrapper')
@@ -819,7 +818,7 @@ export default {
 }
 .icon-router.home-ico-router {
   padding: .4rem 0;
-  background-color: #16171d !important; 
+  background-color: #16171d !important;
 }
 .zhishu {
   // background-image: url(../../../static/img/bg-zhisu.png);
@@ -873,7 +872,7 @@ export default {
       &::-webkit-input-placeholder {
         color: #363636;
       }
-      // color: 
+      // color:
     }
   }
   &-ctl {
@@ -923,7 +922,7 @@ export default {
   /deep/.mint-tab-item-label {
     color: #fff;
     font-size: .26rem;
-    
+
   }
   /deep/.is-selected .tab-name{
     position: relative;

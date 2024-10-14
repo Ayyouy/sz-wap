@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper"> 
+  <div class="wrapper">
     <div class="detail-part">
       <div class="index-name">
         <p>{{detail.name}} <span class="index-name_code">{{detail.code}}</span></p>
@@ -19,7 +19,7 @@
               <!-- <p class="title"></p> -->
               <p :class="detail.hcrate<0?'number green': 'number red'">
                 <span class="title">涨跌</span>
-                {{Number(detail.hcrate).toFixed(2)}} 
+                {{Number(detail.hcrate).toFixed(2)}}
               </p>
             </li>
             <li>
@@ -158,7 +158,7 @@
         </p>
 
       </div>
-    </div> --> 
+    </div> -->
     <div class="agree">
       <p style="line-height: 0.4rem;padding: 0 0.2rem;">
         当该指数涨幅达到<span class="red">涨停限制</span>时,不能买涨；达到<span class="green">跌停限制</span>时，不能买跌.
@@ -182,7 +182,7 @@
         </div>
       </div>
     </div>
-   
+
     <foot></foot>
   </div>
 </template>
@@ -241,7 +241,7 @@ export default {
         riseLimit:0.1,
         downLimit:0.1
       },
-      
+
       dialogShow: false,
       timer: null,
       buying: false,
@@ -322,7 +322,7 @@ export default {
       if (data.status === 0) {
         // 成功
         this.settingIndexInfo = data.data
-        
+
       } else {
         Toast(data.msg)
       }
@@ -336,7 +336,6 @@ export default {
         // 成功
         // 杠杆倍数
         this.selectCycle = data.data.siteLever
-        // console.log(this.$store.state.userInfo)
         if(this.$store.state.userInfo !== undefined && this.$store.state.userInfo !== null && this.$store.state.userInfo.phone !== '' && this.$store.state.userInfo.siteLever !== null){
             this.selectCycle = data.data.siteLever.split('/')[0]
             this.siteLeverList = []
@@ -381,8 +380,6 @@ export default {
         if(data.data != undefined){
           this.settingSpreadRate = data.data
         }
-        console.log(this.settingSpreadRate)
-        
       } else {
         this.$message.error(data.msg)
       }
@@ -416,7 +413,7 @@ export default {
               this.form.subaccountNumber = this.$route.query.sub
             } else {
               this.form.subaccountNumber = this.subaccountList[0].subaccountNumber
-            } 
+            }
           } else {
             Toast('未获取到子账户！')
           }
@@ -443,12 +440,11 @@ export default {
       this.selectCycle = value
     },
     selectNumberFun (value) {
-      
+
       this.selectNumber = value
       if (value !== 0) {
         this.autoNumber = ''
       }
-      console.log(value, this.selectNumber)
     },
     selectTypeFun (value) {
       this.selectType = value
@@ -839,7 +835,7 @@ export default {
     }
     .footer-btn {
       background-color: #E0E0E0;
-      
+
     }
     .footer-btn .total .pay {
       color: #222;

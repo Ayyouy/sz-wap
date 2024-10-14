@@ -282,7 +282,6 @@ export default {
       }
     },
     async getList () {
-      console.log('positions:', this.pageNum)
       let opts = {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
@@ -320,7 +319,7 @@ export default {
         return
       }
       this.loading2 = true
-      this.pageNum++
+      this.pageNum = this.pageNum + 1
       await this.getList()
       this.currentNum = this.pageNum * this.pageSize
       this.loading2 = false

@@ -146,7 +146,6 @@ export default {
   },
   watch: {
     selectedNumber (val) {
-      console.log(val + '期货持仓')
       if (val === '4') {
         if (!this.$store.state.userInfo.idCard) {
           this.getUserInfo()

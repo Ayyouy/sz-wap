@@ -153,23 +153,15 @@ export default {
       if (val) {
         this.list = []
         this.getListDetail()
-        clearInterval(this.timer)
-        this.timer = setInterval(this.refreshList, 5000)
       }
     }
   },
-  created () {
-    this.timer = setInterval(this.refreshList, 5000)
-  },
-  beforeDestroy () {
-    clearInterval(this.timer)
-  },
-  mounted () {
-    if (!this.$store.state.userInfo.idCard) {
-      this.getUserInfo()
-    }
-    this.getListDetail()
-  },
+  // mounted () {
+  //   if (!this.$store.state.userInfo.idCard) {
+  //     this.getUserInfo()
+  //   }
+  //   this.getListDetail()
+  // },
   methods: {
     async getUserInfo () {
       // 获取用户信息

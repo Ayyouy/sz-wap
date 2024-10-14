@@ -50,15 +50,15 @@
         </div>
       </li>
     </ul>
-    <div v-if="list.length<=0 && getStatus" class="text-center" style="margin-top: 1rem;">
-      <mt-spinner type="fading-circle"></mt-spinner>
-    </div>
-    <div v-show="loading" class="text-center" style="margin-top: 1rem;">
+    <div v-if="getStatus" class="text-center empty" style="margin-top: 1rem;">
       <mt-spinner type="fading-circle"></mt-spinner>
       <span style="margin-top: 0.1rem;">加载中...</span>
     </div>
-    <div v-show="!loading && !getStatus" class="load-all text-center">
-      已全部加载
+    <div v-show="!getStatus && list.length>0" class="text-center empty" style="margin-top: 1rem;">
+      <span style="margin-top: 0.1rem;">已全部加载</span>
+    </div>
+    <div v-show="!getStatus && list.length<=0" class="text-center empty" style="margin-top: 1rem;">
+      <span style="margin-top: 0.1rem;">暂无自选信息</span>
     </div>
     <foot></foot>
   </div>

@@ -14,7 +14,7 @@
             <div class="order-title">
               <span class="main">{{item.futuresName}}</span>
               <span class="secondary">({{item.futuresCode}})</span>
-              
+
               <span class="pull-right big-font">总盈亏:
                         <b :class="item.allProfitAndLose<0?'space green':item.allProfitAndLose==0?'space':'space red'">{{item.allProfitAndLose}}</b> <span
                   class="mini-size">{{item.coinCode}}</span>
@@ -105,7 +105,6 @@ export default {
   watch: {
     hasChangeSell (newval) {
       if (newval) {
-        console.log(newval)
         this.list = []
         this.getListDetail()
       }

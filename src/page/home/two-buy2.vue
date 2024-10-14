@@ -308,7 +308,6 @@ export default {
         // 成功
         // 杠杆倍数
         this.selectCycle = data.data.siteLever
-        // console.log(this.$store.state.userInfo)
         if(this.$store.state.userInfo !== undefined && this.$store.state.userInfo !== null && this.$store.state.userInfo.phone !== '' && this.$store.state.userInfo.siteLever !== null){
             this.selectCycle = data.data.siteLever.split('/')[0]
             this.siteLeverList = []
@@ -371,7 +370,6 @@ export default {
       if (value !== 0) {
         this.autoNumber = ''
       }
-      console.log(value, this.selectNumber)
     },
     selectTypeFun (value) {
       this.selectType = value

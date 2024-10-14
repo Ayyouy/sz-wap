@@ -49,7 +49,6 @@ export default {
   watch: {
     selected: {
       handler (val) {
-        console.log('selected', val)
         this.$nextTick(() => {
           this.$refs[`moneyList${val}`].getList()
         })
