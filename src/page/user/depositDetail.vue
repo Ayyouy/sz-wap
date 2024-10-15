@@ -249,7 +249,8 @@ export default {
         this.imgStatus = false
         this.formData.rechargeImg = res.data.data.url
         this.fileList = []
-      }).catch(() => {
+      }).catch(res => {
+        Toast(res.data.msg)
         this.imgStatus = false
         this.formData.rechargeImg = ''
         this.fileList = []

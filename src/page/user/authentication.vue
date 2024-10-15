@@ -202,7 +202,8 @@ export default {
           this.form.img2key = res.data.data.url
           this.fileList2 = []
         }
-      }).catch(() => {
+      }).catch(res => {
+        Toast(res.data.msg)
         if (val === 1) {
           this.imgStatus = false
           this.form.img1key = ''
