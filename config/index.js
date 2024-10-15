@@ -11,9 +11,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/': {
-        // target:'http://egstock.com/stock2c1',
-        // target:'http://121.40.17.234:8101/',
-        target:'http://103.214.142.174:8101/',
+        // target:'http://103.214.142.174:8101/',
+        target:'http://129.204.23.247:8101/',
         secure: false,
         changeOrigin: true,
         pathRewrite: {
