@@ -162,7 +162,7 @@
 
 <script>
 import {Toast} from 'mint-ui'
-import APIUrl from '../../axios/api.url' // 引入api.url.js
+import APIUrl from '@/axios/api.url' // 引入api.url.js
 import * as api from '@/axios/api'
 import axios from 'axios'
 
@@ -225,11 +225,13 @@ export default {
       }
       return isLt2M
     },
-    limitCheck () {
+    limitCheck (file, fileList) {
       Toast('每次最多上传一个文件')
+      this.formData.rechargeImg = ''
       this.fileList = []
     },
     removeFile (file, fileList) {
+      this.formData.rechargeImg = ''
       this.fileList = fileList
     },
     confirm () {
@@ -246,8 +248,11 @@ export default {
       }).then(res => {
         this.imgStatus = false
         this.formData.rechargeImg = res.data.data.url
+        this.fileList = []
       }).catch(() => {
         this.imgStatus = false
+        this.formData.rechargeImg = ''
+        this.fileList = []
       })
     },
     // 提交

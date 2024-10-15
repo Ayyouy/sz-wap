@@ -34,7 +34,7 @@
           :file-list="fileList1"
           :show-file-list="false"
           :auto-upload="false"
-          :on-exceed="limitCheck(1)"
+          :on-exceed="limitCheck1()"
           :on-remove='removeFile1'
           :on-change="handleChange1"
           class="avatar-uploader">
@@ -55,7 +55,7 @@
           :file-list="fileList2"
           :show-file-list="false"
           :auto-upload="false"
-          :on-exceed="limitCheck(2)"
+          :on-exceed="limitCheck2()"
           :on-remove="removeFile2"
           :on-change="handleChange2"
           class="avatar-uploader">
@@ -85,9 +85,8 @@
 import * as api from '@/axios/api'
 import {Toast} from 'mint-ui'
 import {isNull} from '@/utils/utils'
-import {compress} from '@/utils/imgupload'
 import axios from 'axios'
-import APIUrl from '../../axios/api.url'
+import APIUrl from '@/axios/api.url'
 
 export default {
   components: {},
@@ -136,18 +135,22 @@ export default {
     }
   },
   methods: {
-    limitCheck (val) {
+    limitCheck1 (file, fileList) {
       Toast('每次最多上传一个文件')
-      if (val === 1) {
-        this.fileList1 = []
-      } else if (val === 2) {
-        this.fileList2 = []
-      }
+      this.form.img1key = ''
+      this.fileList1 = []
+    },
+    limitCheck2 (file, fileList) {
+      Toast('每次最多上传一个文件')
+      this.form.img2key = ''
+      this.fileList2 = []
     },
     removeFile1 (file, fileList) {
+      this.form.img1key = ''
       this.fileList1 = fileList
     },
     removeFile2 (file, fileList) {
+      this.form.img2key = ''
       this.fileList2 = fileList
     },
     handleChange1 (file, fileList) {
@@ -193,15 +196,21 @@ export default {
         if (val === 1) {
           this.imgStatus = false
           this.form.img1key = res.data.data.url
+          this.fileList1 = []
         } else if (val === 2) {
           this.imgStatus2 = false
           this.form.img2key = res.data.data.url
+          this.fileList2 = []
         }
       }).catch(() => {
         if (val === 1) {
           this.imgStatus = false
+          this.form.img1key = ''
+          this.fileList1 = []
         } else if (val === 2) {
           this.imgStatus2 = false
+          this.form.img2key = ''
+          this.fileList2 = []
         }
       })
     },
