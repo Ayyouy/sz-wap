@@ -13,6 +13,12 @@ RUN npm cache clean --force
 # 证书过期
 RUN npm config set strict-ssl false
 
+# 更改镜像源：注意国内的用这个，国外的还是用原来的比较好
+RUN npm config set registry https://registry.npm.taobao.org
+
+# 查看镜像源是否更改成功
+RUN npm config get registry
+
 # 安装项目依赖
 RUN npm install
 
