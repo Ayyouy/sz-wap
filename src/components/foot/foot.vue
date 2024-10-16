@@ -4,25 +4,7 @@
     width: 100%;"
        :class="`footer ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
     <mt-tabbar v-model="select">
-      <!--      <mt-tab-item id="home" :class="$store.state.select == '/home' ? 'on' : ''">-->
-      <!--        &lt;!&ndash; <i v-if="$store.state.select == '/home'" class="iconfont icon-zhuiocn02"></i>-->
-      <!--        <i v-else class="iconfont icon-zhuiocn"></i> &ndash;&gt;-->
-      <!--        <img-->
-      <!--          class="foot-icon"-->
-      <!--          v-if="$store.state.select == '/home'"-->
-      <!--          :src="require(`../../../static/img/foot/${$state.theme}/home-active.png`)" alt="">-->
-      <!--        <img-->
-      <!--          class="foot-icon"-->
-      <!--          v-else-->
-      <!--          :src="require(`../../../static/img/foot/${$state.theme}/home.png`)" alt="">-->
-      <!--        <p v-if="$store.state.select == '/home'" :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">-->
-      <!--          首页</p>-->
-      <!--        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">首页</p>-->
-
-      <!--      </mt-tab-item>-->
       <mt-tab-item id="list" :class="$store.state.select == '/list' || $store.state.select == '/indexlist'? 'on' : ''">
-        <!-- <i v-if="$store.state.select == '/list'" class="iconfont icon-hangqing"></i>
-        <i v-else class="iconfont icon-hangqing-copy"></i> -->
         <img
           class="foot-icon"
           v-if="$store.state.select == '/list'"
@@ -34,11 +16,8 @@
         <p v-if="$store.state.select == '/list'" :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">
           行情</p>
         <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">行情</p>
-
       </mt-tab-item>
       <mt-tab-item id="orderlist" :class="$store.state.select == '/orderlist' ? 'on' : ''">
-        <!-- <i v-if="$store.state.select == '/orderlist'" class="iconfont icon-hangqing2"></i>
-        <i v-else class="iconfont icon-hangqing-unselectedx"></i> -->
         <img
           class="foot-icon"
           v-if="$store.state.select == '/orderlist'"
@@ -52,8 +31,6 @@
         <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">持仓</p>
       </mt-tab-item>
       <mt-tab-item id="mylist" :class="$store.state.select == '/mylist' ? 'on' : ''">
-        <!-- <i v-if="$store.state.select == '/mylist'" class="iconfont icon-xuanze3" style="font-size: 0.40rem; padding-top: 0.04rem;"></i>
-        <i v-else class="iconfont icon-xuanze" style="font-size: 0.40rem; padding-top: 0.04rem;"></i> -->
         <img
           class="foot-icon"
           v-if="$store.state.select == '/mylist'"
@@ -81,8 +58,6 @@
         <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">基金</p>
       </mt-tab-item>
       <mt-tab-item id="user" :class="$store.state.select == '/user' ? 'on' : ''">
-        <!-- <i v-if="$store.state.select == '/user'" class="iconfont icon-peoplefill"></i>
-        <i v-else class="iconfont icon-my"></i> -->
         <img
           class="foot-icon"
           v-if="$store.state.select == '/user'"
@@ -94,7 +69,6 @@
         <p v-if="$store.state.select == '/user'" :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">
           我的</p>
         <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">我的</p>
-
       </mt-tab-item>
     </mt-tabbar>
   </div>

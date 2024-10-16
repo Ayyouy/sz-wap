@@ -77,7 +77,8 @@ export default {
     async getList () {
       let opts = {
         pageSize: this.pageSize,
-        pageNum: this.pageNum
+        pageNum: this.pageNum,
+        state: 0
       }
       this.getStatus = true
       if (this.pageNum === 1) {

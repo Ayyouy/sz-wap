@@ -585,6 +585,7 @@ export default {
         this.dialogObj.content = '无法添加或编辑银行卡，请先实名认证'
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
+          this.dialogObj.flag = false
           this.$router.push('/card')
         }
       } else {
@@ -596,6 +597,15 @@ export default {
     },
     toAuthentication: function () {
       this.$router.push('/authentication')
+      // if (this.$store.state.userInfo.isActive === 2) {
+      //   this.dialogObj.flag = true
+      //   this.dialogObj.title = '已实名'
+      //   this.dialogObj.content = '实名认证已通过，无需重复实名认证'
+      //   this.dialogObj.cancel = this.dialogCancel
+      //   this.dialogObj.success = this.dialogCancel
+      // } else {
+      //   this.$router.push('/authentication')
+      // }
     },
     async toRegister () {
       // 注销登陆
@@ -614,6 +624,7 @@ export default {
         this.dialogObj.content = '无法充值，请先实名认证'
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
+          this.dialogObj.flag = false
           this.$router.push('/deposit')
         }
       } else {
@@ -634,6 +645,7 @@ export default {
         this.dialogObj.content = '无法提现，请先实名认证'
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
+          this.dialogObj.flag = false
           this.$router.push('/withdraw')
         }
       } else {
@@ -647,6 +659,7 @@ export default {
         this.dialogObj.content = '无法转账，请先实名认证'
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
+          this.dialogObj.flag = false
           this.$router.push('/transferMoney')
         }
       } else {

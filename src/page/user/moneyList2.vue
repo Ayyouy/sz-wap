@@ -154,9 +154,7 @@ export default {
       // }
       // let data = await api.getMoneyList(opt)
       // if (data.status === 0) {
-      //   data.data.list.forEach(element => {
-      //     this.list.push(element)
-      //   })
+      // this.list = data.data.list
       //   this.total = data.data.total
       // } else {
       //   Toast(data.msg)

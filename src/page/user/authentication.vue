@@ -4,10 +4,10 @@
       <div class="box-contain clearfix">
         <div class="empty text-center">
           <!-- 您已通过实名认证 -->
-          <i v-show="this.$store.state.userInfo.isActive == 1" style="color:red;font-size: 1.5rem;"
-             class="iconfont icon-shenhezhong"></i>
-          <i v-show="!showBtn && this.$store.state.userInfo.isActive != 1" style="color:red;font-size: 1.5rem;"
+          <i v-show="this.$store.state.userInfo.isActive == 2" style="color:red;font-size: 1.5rem;"
              class="iconfont icon-tongguo1"></i>
+          <i v-show="!showBtn && this.$store.state.userInfo.isActive != 2" style="color:red;font-size: 1.5rem;"
+             class="iconfont icon-shenhezhong"></i>
           <i v-show="showBtn" style="color:red;font-size: 1.5rem;" class="iconfont icon-icon-test"></i>
         </div>
       </div>
@@ -34,7 +34,7 @@
           :file-list="fileList1"
           :show-file-list="false"
           :auto-upload="false"
-          :on-exceed="limitCheck1()"
+          :on-exceed="limitCheck1"
           :on-remove='removeFile1'
           :on-change="handleChange1"
           class="avatar-uploader">
@@ -55,7 +55,7 @@
           :file-list="fileList2"
           :show-file-list="false"
           :auto-upload="false"
-          :on-exceed="limitCheck2()"
+          :on-exceed="limitCheck2"
           :on-remove="removeFile2"
           :on-change="handleChange2"
           class="avatar-uploader">
@@ -77,7 +77,6 @@
     <div v-show="showBtn" class="btnbox">
       <span class="text-center btnok" @click="toSure">确定</span>
     </div>
-
   </div>
 </template>
 
