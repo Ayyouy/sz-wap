@@ -514,3 +514,8 @@ export function redeemCount (options) {
 export function invitations (options) {
   return get('/api/user/myInvitationList.do', options)
 }
+
+// 查询钱包
+export function wallets(options) {
+  return get('/api/fundWallet/findByUserId.do', options)
+}

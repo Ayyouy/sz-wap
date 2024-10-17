@@ -4,7 +4,8 @@
       <div class="box-contain clearfix">
         <div class="account text-center">
           <p class="title">现金账户余额</p>
-          <p class="red number">${{ $store.state.userInfo.enableAmt || 0 }}</p>
+          <p class="red number" v-show="selected==1">${{ accountMoney || 0 }}</p>
+          <p class="red number" v-show="selected==2">${{ $store.state.userInfo.enableAmt || 0 }}</p>
         </div>
       </div>
     </div>
@@ -20,7 +21,7 @@
         </el-radio-group>
         <div class="form-block">
           <mt-field v-show="payType === '1'" label="可转金额" placeholder="可转金额" type="text" disabled
-                    v-model="this.$store.state.userInfo.enableAmt"></mt-field>
+                    v-model="accountMoney"></mt-field>
         </div>
         <div class="form-block">
           <mt-field label="转账金额" v-show="payType === '0'" name="amt" v-model="form.account1"
@@ -38,7 +39,7 @@
             :placeholder="`${payType === '0' ? '基金' : '现金'}账户余额`"
             type="text"
             disabled
-            v-model="this.$store.state.userInfo.enableAmt"
+            v-model="accountMoney"
           ></mt-field>
         </div>
         <div class="btnbox">
@@ -134,11 +135,12 @@ export default {
   },
   data () {
     return {
+      accountMoney: 0,
       selected: '1', // 选中
       form: {
-        account1: '0',
-        account2: '0',
-        account: '0'
+        account1: '',
+        account2: '',
+        account: ''
       },
       userInfo: {
         realName: ''
@@ -164,9 +166,21 @@ export default {
     if (this.$route.query.type) {
       this.selected = this.$route.query.type + ''
     }
+    this.getWallets()
     this.getUserInfo()
   },
   methods: {
+    async getWallets () {
+      let opts = {
+        userId: localStorage.getItem('wap-id')
+      }
+      let data = await api.wallets(opts)
+      if (data.status === 0) {
+        this.accountMoney = data.data.walletBalance
+      } else {
+        Toast(data.msg)
+      }
+    },
     async getNameByPhone (value) {
       if (value) {
         let opt = {
@@ -199,7 +213,7 @@ export default {
         if (this.payType === '0') {
           account = this.form.account1
         } else if (this.payType === '1') {
-          account = this.form.account2
+          account = -this.form.account2
         }
       } else if (val === 2) {
         account = this.form.account

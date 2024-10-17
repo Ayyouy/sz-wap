@@ -95,7 +95,7 @@
     <div class="box-bottom">
       <div class="box-bottom-left">
         <div class="box-bottom-money">
-          <span>基金账户余额：${{ $store.state.userInfo.enableAmt }}</span>
+          <span>基金账户余额：${{ accountMoney }}</span>
         </div>
         <div class="box-bottom-money">
           <span>最大可购买：${{ detail.perValue * detail.maxNum }}（{{ detail.maxNum }}份）</span>
@@ -107,7 +107,7 @@
       <div>
         <el-form :inline="false" :model="form" size="mini" ref="ruleForm" :rules="rule">
           <el-form-item label="购买份额" prop="buyNum">
-            <el-input v-model="form.buyNum" placeholder="请输入" type="number" @input="handleInput"></el-input>
+            <el-input v-model="form.buyNum" placeholder="请输入" type="number"></el-input>
           </el-form-item>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
             <el-col :span="24" class="text-right">需支付：${{ form.buyNum * detail.perValue }}</el-col>
@@ -126,7 +126,6 @@
       <div>
         说明：
         <div style="margin-top: 10px;">封锁期为{{ detail.blackoutPeriod }}天，封锁期内没有收益</div>
-        <!--        <div style="margin-top: 10px;">2.{{// detail.perValue*form.buyNum*}}可随时提现，收益金额每天打入基金账户，提现次日不计算金额</div>-->
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -141,8 +140,9 @@ import * as api from '../../axios/api'
 import {Toast} from 'mint-ui'
 
 export default {
-  data() {
+  data () {
     return {
+      accountMoney: 0,
       detail: {},
       dialogVisible: false,
       form: {
@@ -157,35 +157,35 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
+    this.getWallets()
     this.getDetail()
   },
   methods: {
-    validateNumber(rule, value, callback) {
+    validateNumber (rule, value, callback) {
       if (!value) {
         return callback(new Error('输入不能为空'))
       }
       if (value <= 0) {
         return callback(new Error('输入值需大于零'))
       }
-      if (value > this.detail.perValue) {
-        return callback(new Error('输入值错误'))
+      if (value > this.detail.maxNum) {
+        return callback(new Error('输入值超过最大购买份额'))
       }
-      const regex = /^[1-9]\d*$/
-      if (!regex.test(value)) {
-        return callback(new Error('输入值需要正整数'))
+      if (Number(value) * Number(this.detail.perValue) > this.accountMoney) {
+        return callback(new Error('余额不足，请减少购买份额'))
       }
       callback()
     },
-    handleInput(value) {
-      // 使用正则表达式来判断是否为正整数
-      const regex = /^[1-9]\d*$/
-      // 如果输入的值不符合正整数的正则表达式，则将其设置为上一个有效值
-      if (!regex.test(value)) {
-        this.form.buyNum = this.form.buyNum.substring(0, this.inputValue.length - 1)
-      }
-    },
-    submit(formName) {
+    // handleInput (value) {
+    //   // 使用正则表达式来判断是否为正整数
+    //   const regex = /^[1-9]\d*$/
+    //   // 如果输入的值不符合正整数的正则表达式，则将其设置为上一个有效值
+    //   if (!regex.test(value)) {
+    //     this.form.buyNum = this.form.buyNum.substring(0, this.inputValue.length - 1)
+    //   }
+    // },
+    submit (formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           let opts = {
@@ -197,6 +197,7 @@ export default {
           if (data.status === 0) {
             this.form.buyNum = ''
             Toast('购买成功')
+            this.$router.push('/fundsnew?index=2')
           } else {
             Toast(data.msg)
           }
@@ -206,7 +207,18 @@ export default {
         }
       })
     },
-    async getDetail() {
+    async getWallets () {
+      let opts = {
+        userId: localStorage.getItem('wap-id')
+      }
+      let data = await api.wallets(opts)
+      if (data.status === 0) {
+        this.accountMoney = data.data.walletBalance
+      } else {
+        Toast(data.msg)
+      }
+    },
+    async getDetail () {
       let opts = {
         id: this.$route.query.id
       }

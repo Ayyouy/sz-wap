@@ -7,6 +7,7 @@ import {Toast} from 'mint-ui'
 import qs from 'qs' // 引入qs
 import router from '@/router'
 import APIUrl from './api.url'
+import {logout} from './api'
 
 // axios 默认配置  更多配置查看Axios中文文档
 axios.defaults.timeout = 50000 // 超时默认值
@@ -52,6 +53,7 @@ axios.interceptors.response.use(
     if (data instanceof Object) {
       if (data.status === 401) {
         data.msg = '您还未登录,请先登录'
+        localStorage.clear()
         router.push('/openaccount')
       }
     }
@@ -59,6 +61,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     Toast('服务异常，请联系管理员')
+    localStorage.clear()
     return Promise.reject(error)
   }
 )

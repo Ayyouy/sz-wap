@@ -39,10 +39,14 @@ export default {
     FinancialList,
     InviteView
   },
-  props: {},
   data () {
     return {
       selected: '1' // 选中
+    }
+  },
+  mounted () {
+    if (this.$route.query.index) {
+      this.selected = this.$route.query.index
     }
   },
   watch: {

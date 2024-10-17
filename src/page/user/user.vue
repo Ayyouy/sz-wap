@@ -586,7 +586,7 @@ export default {
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
           this.dialogObj.flag = false
-          this.$router.push('/card')
+          this.$router.push('/authentication')
         }
       } else {
         this.$router.push('/card')
@@ -596,16 +596,15 @@ export default {
       this.$router.push('/setting')
     },
     toAuthentication: function () {
-      this.$router.push('/authentication')
-      // if (this.$store.state.userInfo.isActive === 2) {
-      //   this.dialogObj.flag = true
-      //   this.dialogObj.title = '已实名'
-      //   this.dialogObj.content = '实名认证已通过，无需重复实名认证'
-      //   this.dialogObj.cancel = this.dialogCancel
-      //   this.dialogObj.success = this.dialogCancel
-      // } else {
-      //   this.$router.push('/authentication')
-      // }
+      if (this.$store.state.userInfo.isActive === 2) {
+        this.dialogObj.flag = true
+        this.dialogObj.title = '已实名'
+        this.dialogObj.content = '实名认证已通过，无需重复实名认证'
+        this.dialogObj.cancel = this.dialogCancel
+        this.dialogObj.success = this.dialogCancel
+      } else {
+        this.$router.push('/authentication')
+      }
     },
     async toRegister () {
       // 注销登陆
@@ -625,7 +624,7 @@ export default {
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
           this.dialogObj.flag = false
-          this.$router.push('/deposit')
+          this.$router.push('/authentication')
         }
       } else {
         this.$router.push('/deposit')
@@ -646,7 +645,7 @@ export default {
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
           this.dialogObj.flag = false
-          this.$router.push('/withdraw')
+          this.$router.push('/authentication')
         }
       } else {
         this.$router.push('/withdraw')
@@ -660,7 +659,7 @@ export default {
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
           this.dialogObj.flag = false
-          this.$router.push('/transferMoney')
+          this.$router.push('/authentication')
         }
       } else {
         this.$router.push('/transferMoney')
