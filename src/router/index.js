@@ -53,17 +53,14 @@ import FundsNewList from '@/page/funds-new/index'
 import FundsNewDetail from '@/page/funds-new/funds-detail'
 
 Vue.use(Router)
-
 const routerPush = Router.prototype.push
 Router.prototype.push = function push (location) {
   return routerPush.call(this, location).catch((error) => error)
 }
-
 export default new Router({
   routes: [
     {
       path: '/',
-      // redirect: "/home",
       redirect: '/list'
     },
     {
@@ -71,10 +68,7 @@ export default new Router({
       name: 'home',
       meta: {
         title: '首页',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'none'
+        iconLeft: false
       },
       component: Home
     },
@@ -83,10 +77,7 @@ export default new Router({
       name: 'buy',
       meta: {
         title: '购买',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Buy
     },
@@ -95,10 +86,7 @@ export default new Router({
       name: 'fourCountryBuy',
       meta: {
         title: '购买',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: fourCountryBuy
     },
@@ -107,9 +95,7 @@ export default new Router({
       name: 'register',
       meta: {
         title: '注册',
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Register
     },
@@ -118,9 +104,7 @@ export default new Router({
       name: 'forget',
       meta: {
         title: '忘记密码',
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Forget
     },
@@ -129,9 +113,7 @@ export default new Router({
       name: 'login',
       meta: {
         title: '登录',
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Login
     },
@@ -140,9 +122,7 @@ export default new Router({
       name: 'openaccount',
       meta: {
         title: '开户',
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'none'
+        iconLeft: false
       },
       component: OpenAccount
     },
@@ -151,10 +131,7 @@ export default new Router({
       name: 'list',
       meta: {
         title: '行情',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'none'
+        iconLeft: false
       },
       component: List
     },
@@ -163,10 +140,7 @@ export default new Router({
       name: '指数查询',
       meta: {
         title: '指数查询',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: IndexSearchlist
     },
@@ -175,22 +149,16 @@ export default new Router({
       name: 'indexlist',
       meta: {
         title: '指数列表',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
-      component: IndexList,
+      component: IndexList
     },
     {
       path: '/searchlist',
       name: '个股查询',
       meta: {
         title: '个股查询',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Searchlist
     },
@@ -199,10 +167,7 @@ export default new Router({
       name: 'searchmylist',
       meta: {
         title: '自选查询',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: SearchMylist
     },
@@ -211,10 +176,7 @@ export default new Router({
       name: 'mylist',
       meta: {
         title: '自选列表',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'none'
+        iconLeft: false
       },
       component: MyList
     },
@@ -223,10 +185,7 @@ export default new Router({
       name: 'listdetail',
       meta: {
         title: '详情',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: ListDetail
     },
@@ -235,10 +194,7 @@ export default new Router({
       name: 'listdetail2',
       meta: {
         title: '详情',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: ListDetail2
     },
@@ -247,10 +203,7 @@ export default new Router({
       name: 'list4countryDetail',
       meta: {
         title: '详情',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: List4countryDetail
     },
@@ -259,10 +212,7 @@ export default new Router({
       name: 'indexBuy',
       meta: {
         title: '指数购买',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'search',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: indexBuy
     },
@@ -271,10 +221,7 @@ export default new Router({
       name: 'TwoBuy',
       meta: {
         title: '两融交易',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'search',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: TwoBuy
     },
@@ -283,10 +230,7 @@ export default new Router({
       name: 'SubWarehouseBuy',
       meta: {
         title: '分仓交易',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'search',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: SubWarehouseBuy
     },
@@ -295,10 +239,7 @@ export default new Router({
       name: 'futuresBuy',
       meta: {
         title: '期货购买',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: futuresBuy
     },
@@ -307,10 +248,7 @@ export default new Router({
       name: 'inquiry',
       meta: {
         title: '询价',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Inquiry
     },
@@ -319,10 +257,7 @@ export default new Router({
       name: 'user',
       meta: {
         title: '我的',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'none'
+        iconLeft: false
       },
       component: User
     },
@@ -331,10 +266,7 @@ export default new Router({
       name: 'transfer',
       meta: {
         title: '资金互转',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Transfer
     },
@@ -343,10 +275,7 @@ export default new Router({
       name: 'orderlist',
       meta: {
         title: '持仓',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'none'
+        iconLeft: false
       },
       component: OrderList
     },
@@ -355,10 +284,7 @@ export default new Router({
       name: 'holdorderlist',
       meta: {
         title: '查询持仓',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: holdOrderList
     },
@@ -367,10 +293,7 @@ export default new Router({
       name: 'holdorderlist2',
       meta: {
         title: '查询持仓',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: holdOrderList2
     },
@@ -379,10 +302,7 @@ export default new Router({
       name: 'sellorderlist',
       meta: {
         title: '查询平仓',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: sellOrderList
     },
@@ -391,10 +311,7 @@ export default new Router({
       name: 'sellorderlist2',
       meta: {
         title: '查询平仓',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: sellOrderList2
     },
@@ -403,10 +320,7 @@ export default new Router({
       name: 'detail',
       meta: {
         title: '资金明细',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Detail
     },
@@ -415,10 +329,7 @@ export default new Router({
       name: 'card',
       meta: {
         title: '银行卡',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Card
     },
@@ -427,10 +338,7 @@ export default new Router({
       name: 'authentication',
       meta: {
         title: '认证',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Authentication
     },
@@ -439,10 +347,7 @@ export default new Router({
       name: 'aggre',
       meta: {
         title: '合作协议',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Aggre
     },
@@ -451,10 +356,7 @@ export default new Router({
       name: 'recharge',
       meta: {
         title: '银证转入',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Recharge
     },
@@ -463,10 +365,7 @@ export default new Router({
       name: 'rechargeSure',
       meta: {
         title: '确认充值',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: RechargeSure
     },
@@ -475,10 +374,7 @@ export default new Router({
       name: 'rechargelist',
       meta: {
         title: '充值记录',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: RechargeList
     },
@@ -487,10 +383,7 @@ export default new Router({
       name: 'cash',
       meta: {
         title: '提现',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Cash
     },
@@ -499,10 +392,7 @@ export default new Router({
       name: 'addCard',
       meta: {
         title: '添加银行卡',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: AddCard
     },
@@ -511,10 +401,7 @@ export default new Router({
       name: 'cashlist',
       meta: {
         title: '转出记录',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Cashlist
     },
@@ -523,10 +410,7 @@ export default new Router({
       name: 'setting',
       meta: {
         title: '设置',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Setting
     },
@@ -535,10 +419,7 @@ export default new Router({
       name: 'agree',
       meta: {
         title: '注册协议',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Agree
     },
@@ -547,10 +428,7 @@ export default new Router({
       name: 'trade',
       meta: {
         title: '交易⻛险揭示书',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Trage
     },
@@ -559,10 +437,7 @@ export default new Router({
       name: 'alertdetail',
       meta: {
         title: '公告详情',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Alertdetail
     },
@@ -571,10 +446,7 @@ export default new Router({
       name: 'funds',
       meta: {
         title: '配资主页',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'setting',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: () => import('../page/funds/index')
     },
@@ -583,10 +455,7 @@ export default new Router({
       name: 'days',
       meta: {
         title: '按天配资',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'setting',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: () => import('../page/funds/days')
     },
@@ -595,10 +464,7 @@ export default new Router({
       name: 'xingu',
       meta: {
         title: '新股申购',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'setting',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: () => import('../page/funds/xingu')
     },
@@ -607,10 +473,7 @@ export default new Router({
       name: 'searchStock',
       meta: {
         title: '查询股票',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: () => import('../page/list/search')
     },
@@ -619,10 +482,7 @@ export default new Router({
       name: 'notify',
       meta: {
         title: '消息记录',
-        requireAuth: true,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: () => import('../page/user/notify')
     },
@@ -631,10 +491,7 @@ export default new Router({
       name: 'fundslist',
       meta: {
         title: '分仓配资',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: FundsList
     },
@@ -643,10 +500,7 @@ export default new Router({
       name: 'deposit',
       meta: {
         title: '入金',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Deposit
     },
@@ -655,10 +509,7 @@ export default new Router({
       name: 'depositDetail',
       meta: {
         title: '入金',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: DepositDetail
     },
@@ -667,10 +518,7 @@ export default new Router({
       name: 'withdraw',
       meta: {
         title: '出金',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: Withdraw
     },
@@ -679,10 +527,7 @@ export default new Router({
       name: 'transferMoney',
       meta: {
         title: '转账',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: TransferMoney
     },
@@ -691,10 +536,7 @@ export default new Router({
       name: 'moneyList',
       meta: {
         title: '资金明细',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: MoneyList
     },
@@ -703,10 +545,7 @@ export default new Router({
       name: 'marketApply',
       meta: {
         title: '申请市场',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: MarketApply
     },
@@ -715,10 +554,7 @@ export default new Router({
       name: 'fundsnew',
       meta: {
         title: '基金',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'none'
+        iconLeft: false
       },
       component: FundsNewList
     },
@@ -727,10 +563,7 @@ export default new Router({
       name: 'fundsdetail',
       meta: {
         title: '基金',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: FundsNewDetail
     },
@@ -739,17 +572,13 @@ export default new Router({
       name: 'positions',
       meta: {
         title: '基金',
-        requireAuth: false,
-        hasHeader: true,
-        iconRight: 'none',
-        iconLeft: 'default'
+        iconLeft: true
       },
       component: FundsNewDetail
     },
     {
       // 会匹配所有路径
       path: '*',
-      // redirect: "/home",
       redirect: '/list'
     }
   ]

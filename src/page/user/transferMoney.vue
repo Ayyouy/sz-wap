@@ -176,7 +176,7 @@ export default {
       }
       let data = await api.wallets(opts)
       if (data.status === 0) {
-        this.accountMoney = data.data.walletBalance
+        this.accountMoney = Number(data.data.walletBalance).toFixed(2)
       } else {
         Toast(data.msg)
       }

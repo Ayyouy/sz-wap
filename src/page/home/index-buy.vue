@@ -351,7 +351,6 @@ export default {
       this.selectCycle = value
     },
     selectNumberFun (value) {
-
       this.selectNumber = value
       if (value !== 0) {
         this.autoNumber = ''

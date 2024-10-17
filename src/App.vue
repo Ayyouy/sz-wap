@@ -1,19 +1,9 @@
 <template>
   <div id="app" :class="`${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
-    <div :class="`header-box`" v-if="hasHeader">
+    <div :class="`header-box`">
       <mt-header :title="title">
-        <template v-if="iconLeft == 'default'">
-          <mt-button icon="back" slot="left" @click="$router.go(-1)"></mt-button>
-        </template>
-        <template v-else>
-        </template>
-        <template v-if="iconRight == 'search'">
-          <img slot="right" class="search-right" src="./assets/ico/fangdajing.png" alt="">
-        </template>
-        <template v-else-if="iconRight == 'default'">
-          <mt-button icon="more" slot="right"></mt-button>
-        </template>
-        <template v-else>
+        <template>
+          <mt-button v-show="iconLeft" icon="back" slot="left" @click="$router.back()"></mt-button>
         </template>
       </mt-header>
     </div>
@@ -27,46 +17,19 @@
 export default {
   name: 'App',
   created () {
-    this.title = this.$route.meta.title || '首页'
-    if (this.$route.meta.hasHeader) {
-      this.hasHeader = true
-    } else {
-      this.hasHeader = false
-    }
-    if (this.$route.meta.iconRight) {
-      this.iconRight = this.$route.meta.iconRight
-    } else {
-      this.iconRight = 'default'
-    }
-    if (this.$route.meta.iconLeft) {
-      this.iconLeft = this.$route.meta.iconLeft
-    } else {
-      this.iconLeft = 'default'
-    }
+    this.title = this.$route.meta.title
+    this.iconLeft = this.$route.meta.iconLeft
   },
   watch: {
     $route (val) {
-      let title = val.meta.title || '首页'
-      this.title = title
-
-      if (val.meta.iconRight) {
-        this.iconRight = val.meta.iconRight
-      } else {
-        this.iconRight = 'default'
-      }
-      if (val.meta.hasHeader) {
-        this.hasHeader = true
-      } else {
-        this.hasHeader = false
-      }
+      this.title = val.meta.title
+      this.iconLeft = val.meta.iconLeft
     }
   },
   data () {
     return {
-      title: '首页',
-      hasHeader: false,
-      iconRight: 'default',
-      iconLeft: 'default'
+      title: '',
+      iconLeft: true
     }
   }
 }
