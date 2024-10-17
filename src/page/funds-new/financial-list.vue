@@ -67,7 +67,7 @@
                     <span>基金账户余额</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> ${{ item.balance }}</span>
+                    <span> ${{ Number(item.balance).toFixed(2) }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.addTime!=undefined">
@@ -166,7 +166,6 @@ export default {
   },
   mounted () {
     this.getTypes()
-    this.getList()
   },
   methods: {
     showDialog () {
@@ -325,8 +324,8 @@ export default {
 }
 
 .self-el-row {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .btn-bg {

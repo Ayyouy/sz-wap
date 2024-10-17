@@ -355,20 +355,20 @@
             <img src="../../assets/ico/shimin.png" style="width: 0.28rem; height: 0.24rem; margin-right: 0.15rem"/>
             实名认证
             <span class="renzhen done" v-if="$store.state.userInfo.isActive == 0">
-              <i class="iconfont el-icon-circle-check"></i>
-              审核通过
+              <i class="iconfont el-icon-circle-close"></i>
+              未认证
             </span>
             <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 1">
               <i class="iconfont el-icon-circle-check"></i>
-              审核中
+              认证中
             </span>
              <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 3">
               <i class="iconfont el-icon-circle-close"></i>
-             审核失败
+             认证失败
             </span>
             <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 2">
-              <i class="iconfont el-icon-circle-close"></i>
-             未认证
+              <i class="iconfont el-icon-circle-check"></i>
+             已认证
             </span>
             <icon name="right66" class="right" slot="icon"></icon>
           </span>

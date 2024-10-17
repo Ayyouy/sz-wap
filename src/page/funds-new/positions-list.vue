@@ -21,7 +21,7 @@
                     <span>预期总收益</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span style="color: #1b8e5d"> ${{ item.dueIncome }}</span>
+                    <span style="color: #1b8e5d"> ${{ Number(item.dueIncome).toFixed(2) }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -29,7 +29,7 @@
                     <span>已获得收益</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span style="color: #1b8e5d"> ${{ item.income }}</span>
+                    <span style="color: #1b8e5d"> ${{ Number(item.income).toFixed(2) }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -204,9 +204,6 @@ export default {
       total: 0, // 记录总值,
       selected: '2' // 选中
     }
-  },
-  mounted () {
-    this.getList()
   },
   methods: {
     validateNumber (rule, value, callback) {
@@ -431,8 +428,8 @@ export default {
 }
 
 .self-el-row {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .btn-bg {

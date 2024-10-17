@@ -11,6 +11,9 @@
         <div class="box-center-clean">
           <span class="fund-content">${{ detail.perValue }}</span>
         </div>
+        <div class="box-center-clean">
+          <span class="fund-content">{{ detail.blackoutPeriod }}天</span>
+        </div>
       </div>
       <div class="box-center">
         <div class="box-center-clean">
@@ -18,6 +21,9 @@
         </div>
         <div class="box-center-clean">
           <span>每份净值</span>
+        </div>
+        <div class="box-center-clean">
+          <span>封锁期</span>
         </div>
       </div>
     </div>
@@ -107,7 +113,8 @@
       <div>
         <el-form :inline="false" :model="form" size="mini" ref="ruleForm" :rules="rule">
           <el-form-item label="购买份额" prop="buyNum">
-            <el-input v-model="form.buyNum" placeholder="请输入" type="number"></el-input>
+            <el-input v-model="form.buyNum" placeholder="请输入" type="number" @input="changeBuyNum"></el-input>
+            <div style="font-size: 12px;color: #f56c6c" v-show="buyNumFlag">请输入整数</div>
           </el-form-item>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
             <el-col :span="24" class="text-right">需支付：${{ form.buyNum * detail.perValue }}</el-col>
@@ -145,6 +152,7 @@ export default {
       accountMoney: 0,
       detail: {},
       dialogVisible: false,
+      buyNumFlag: false,
       form: {
         buyNum: ''
       },
@@ -162,6 +170,9 @@ export default {
     this.getDetail()
   },
   methods: {
+    changeBuyNum (val) {
+      this.buyNumFlag = /[.]/.test(val)
+    },
     validateNumber (rule, value, callback) {
       if (!value) {
         return callback(new Error('输入不能为空'))
@@ -177,14 +188,6 @@ export default {
       }
       callback()
     },
-    // handleInput (value) {
-    //   // 使用正则表达式来判断是否为正整数
-    //   const regex = /^[1-9]\d*$/
-    //   // 如果输入的值不符合正整数的正则表达式，则将其设置为上一个有效值
-    //   if (!regex.test(value)) {
-    //     this.form.buyNum = this.form.buyNum.substring(0, this.inputValue.length - 1)
-    //   }
-    // },
     submit (formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
@@ -213,7 +216,7 @@ export default {
       }
       let data = await api.wallets(opts)
       if (data.status === 0) {
-        this.accountMoney = data.data.walletBalance
+        this.accountMoney = Number(data.data.walletBalance).toFixed(2)
       } else {
         Toast(data.msg)
       }

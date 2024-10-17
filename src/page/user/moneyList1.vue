@@ -32,7 +32,8 @@
       </div>
       <div class="content">
         <div class="left">说明</div>
-        <div class="right">等待接口返回</div>
+        <!--    todo 等待接口返回 -->
+        <div class="right"></div>
       </div>
       <div class="footer">
         {{ new Date(item.addTime) | timeFormat }}

@@ -7,7 +7,7 @@
       <div class="login-form-item input-model" style="margin-top: 1.32rem;">
         <img v-if="theme" src="../assets/ico/loginuser-red.png"/>
         <img v-else src="../assets/ico/loginuser.png"/>
-        <select v-model="form.select">
+        <select class="form-select-option-style" v-model="form.select">
           <option v-for="item in options" :key="item" :label="item" :value="item"/>
         </select>
         <input placeholder="请输入账户" type="tel" pattern="[0-9]*" v-model="form.phone"/>
@@ -34,7 +34,7 @@
 </template>
 <script>
 import {Toast} from 'mint-ui'
-import {isNull,pwdReg2} from '@/utils/utils'
+import {isNull, pwdReg2} from '@/utils/utils'
 import * as api from '@/axios/api'
 
 export default {
@@ -127,6 +127,22 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.form-select-option-style {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-left: 5px;
+  padding-top: 3px;
+  background-color: transparent;
+  font-size: 12px;
+
+  option {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+  }
 }
 
 .login-form {

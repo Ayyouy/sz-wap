@@ -31,7 +31,7 @@
                     年化收益
                   </el-col>
                   <el-col :span="16" class="text-center">
-                    每份净值：{{ item.perValue }}；每期天数：{{ item.blackoutPeriod }}天
+                    每份净值：${{ item.perValue }}；每期天数：{{ item.blackoutPeriod }}天
                   </el-col>
                 </el-row>
               </div>

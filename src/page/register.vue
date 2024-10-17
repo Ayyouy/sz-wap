@@ -7,7 +7,7 @@
       <div class="register-form-item input-model" style="margin-top: 1.11rem">
         <img v-if="theme" src="../assets/ico/loginuser-red.png"/>
         <img v-else src="../assets/ico/loginuser.png"/>
-        <select v-model="select">
+        <select class="form-select-option-style" v-model="select">
           <option label="+1" value="+1"></option>
           <option label="+852" value="+852"></option>
           <option label="+91" value="+91"></option>
@@ -343,6 +343,22 @@ body {
 
 #app .body-box {
   height: 100%;
+}
+
+.form-select-option-style {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-left: 5px;
+  padding-top: 3px;
+  background-color: transparent;
+  font-size: 12px;
+
+  option {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 12px;
+  }
 }
 
 .wrapper {

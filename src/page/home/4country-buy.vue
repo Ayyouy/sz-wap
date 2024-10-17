@@ -94,7 +94,7 @@
     </div>
     <div class="box-tab" style="padding-top: 0.5rem;border-bottom: none">
       <p style="margin-bottom: 0.5rem">
-        实际购买价：{{Number(detail.nowPrice).toFixed(2)}}*(1-{{detail.discount}})=${{
+        实际购买价：{{ Number(detail.nowPrice).toFixed(2) }}*(1-{{ detail.discount }})=${{
           Number(Number(detail.nowPrice).toFixed(2) * (1 - detail.discount)).toFixed(2)
         }}
       </p>
@@ -106,10 +106,12 @@
     </div>
     <div class="box-tab" style="padding-top: 0.5rem;border-bottom: none">
       <p style="margin-bottom: 0.5rem">
-        折扣率：等待接口返回%
+        <!--        todo 等待接口返回 %-->
+        折扣率：
       </p>
       <p>
-        封锁期：等待接口返回天
+        <!--        todo 等待接口返回 天-->
+        封锁期：
       </p>
     </div>
     <div class="footer-btn">
