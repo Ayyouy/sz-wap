@@ -4,8 +4,8 @@
       <div class="box-contain clearfix">
         <div class="account text-center">
           <p class="title">现金账户余额</p>
-          <p class="red number" v-show="selected==1">${{ accountMoney || 0 }}</p>
-          <p class="red number" v-show="selected==2">${{ $store.state.userInfo.enableAmt || 0 }}</p>
+<!--          <p class="red number" v-show="selected==1">${{ // accountMoney || 0 }}</p>-->
+          <p class="red number">${{ $store.state.userInfo.enableAmt || 0 }}</p>
         </div>
       </div>
     </div>
