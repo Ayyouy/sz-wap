@@ -6,7 +6,8 @@
       </div>
       <div class="box-center">
         <div class="box-center-clean">
-          <span class="fund-content">{{ (detail.oneIncome / detail.blackoutPeriod).toFixed(2) * 365 }}%</span>
+<!--          <span class="fund-content">{{ (detail.oneIncome / detail.blackoutPeriod).toFixed(2) * 365 }}%</span>-->
+          <span class="fund-content">{{ detail.annualizedReturn }}%</span>
         </div>
         <div class="box-center-clean">
           <span class="fund-content">${{ detail.perValue }}</span>
@@ -46,7 +47,8 @@
           <span>年化收益率</span>
         </div>
         <div class="box-right">
-          <span>{{ (detail.oneIncome / detail.blackoutPeriod).toFixed(2) * 365 }}%</span>
+<!--          <span>{{ // (detail.oneIncome / detail.blackoutPeriod).toFixed(2) * 365 }}%</span>-->
+          <span>{{ detail.annualizedReturn }}%</span>
         </div>
       </div>
       <div class="box-center">
