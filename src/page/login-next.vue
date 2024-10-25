@@ -7,8 +7,8 @@
       <div class="login-form-item input-model" style="margin-top: 1.32rem;">
         <img v-if="theme" src="../assets/ico/loginuser-red.png"/>
         <img v-else src="../assets/ico/loginuser.png"/>
-        <select class="form-select-option-style" v-model="form.select">
-          <option v-for="item in options" :key="item" :label="item" :value="item"/>
+        <select v-model="form.select">
+          <option v-for="item in options" :key="item" :label="item" :value="item">{{ item }}</option>
         </select>
         <input placeholder="请输入账户" type="tel" pattern="[0-9]*" v-model="form.phone"/>
       </div>
@@ -129,22 +129,6 @@ export default {
   align-items: center;
 }
 
-.form-select-option-style {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding-left: 5px;
-  padding-top: 3px;
-  background-color: transparent;
-  font-size: 12px;
-
-  option {
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 12px;
-  }
-}
-
 .login-form {
   display: block;
   width: 6.13rem;
@@ -180,30 +164,38 @@ export default {
 
     &.input-model {
       background-color: #121319;
-      padding: 0 0.33rem;
       display: flex;
+      flex-direction: row;
       align-items: center;
 
       img {
+        margin-left: 0.3rem;
         width: 0.2rem;
         height: 0.23rem;
       }
 
       select {
-        flex: 1;
-        margin-left: 0.1rem;
+        margin-left: 0.2rem;
         background-color: #121319;
         border: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        font-size: 13px;
+        padding-top: 1px;
+        flex: 1;
       }
 
-      select:after {
-        border: none;
+      option {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+        font-size: 13px;
       }
 
       input {
         flex: 1;
         margin: 0 0.2rem;
-        font-size: 0.24rem;
+        font-size: 13px;
 
         &::-webkit-input-placeholder {
           color: #363636;
@@ -240,5 +232,6 @@ export default {
       }
     }
   }
+
 }
 </style>

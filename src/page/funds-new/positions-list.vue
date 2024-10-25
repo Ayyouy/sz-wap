@@ -16,12 +16,12 @@
               infinite-scroll-distance="0">
             <li v-for="(item) in list" :key="item.id">
               <div class="order-info-box">
-                <el-row class="self-el-row">
+                <el-row class="self-el-row" v-show="item.redemptionPortion!=0">
                   <el-col :span="8" class="text-left">
                     <span>预期总收益</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span style="color: #1b8e5d"> ${{ Number(item.dueIncome).toFixed(2) }}</span>
+                    <span style="color: #1b8e5d"> ${{ Number(item.dueIncome).toFixed(3) }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -29,7 +29,7 @@
                     <span>已获得收益</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span style="color: #1b8e5d"> ${{ Number(item.income).toFixed(2) }}</span>
+                    <span style="color: #1b8e5d"> ${{ Number(item.income).toFixed(3) }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -64,15 +64,15 @@
                     <span> {{ new Date(item.buyTime) | timeFormat }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="!item.flag">
+                <el-row class="self-el-row" v-show="item.redemptionPortion===0">
                   <el-col :span="8" class="text-left">
-                    <span>解封时间</span>
+                    <span>完全赎回时间</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ new Date(item.lockTime) | timeFormat }}</span>
+                    <span> {{ new Date(item.redemptionTime)| timeFormat }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.flag">
+                <el-row class="self-el-row" v-show="item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
                     <span>赎回金额（份额）</span>
                   </el-col>
@@ -80,7 +80,7 @@
                     <span> ${{ item.perValue * item.redeemedPortion }}（{{ item.redeemedPortion }}份）</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.flag">
+                <el-row class="self-el-row" v-show="item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
                     <span>持仓金额（份额）</span>
                   </el-col>
@@ -88,20 +88,40 @@
                     <span> ${{ item.perValue * item.redemptionPortion }}（{{ item.redemptionPortion }}份）</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.flag">
+                <el-row class="self-el-row">
+                  <el-col :span="8" class="text-left">
+                    <span>申购手续费</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> ${{ item.subscriptionFee }}</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.buyDays>item.blackoutPeriod">
+                  <el-col :span="8" class="text-left">
+                    <span>赎回手续费</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> ${{ item.backEndLoad }}</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.redemptionPortion!=0&&item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
                     <span>离本期结算天数</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.nextDay }}天</span>
+                    <span> {{ item.lastPerDays }}天</span>
                   </el-col>
                 </el-row>
                 <div class="btn-bg">
-                  <el-button v-if="item.flag" type="success" @click="btnShowDialog(item)">
+                  <el-button type="info" v-if="item.redemptionPortion===0">
+                    已全部赎回
+                  </el-button>
+                  <el-button v-else-if="item.redemptionPortion!=0&&(item.buyDays>item.blackoutPeriod)" type="success"
+                             @click="btnShowDialog(item)">
                     赎回
                   </el-button>
-                  <el-button v-else type="info">
-                    封锁中（{{ new Date(item.lockTime) | timeFormat }}解封）
+                  <el-button v-else-if="item.redemptionPortion!=0&&(item.buyDays<=item.blackoutPeriod)" type="info">
+                    封锁中（{{ new Date(item.lockEndDate) | timeFormat }}解封）
                   </el-button>
                 </div>
               </div>
@@ -118,11 +138,11 @@
       </mt-tab-container-item>
     </mt-tab-container>
     <Foot></Foot>
-    <el-dialog center top="40vh" title="赎回" width="80%" :visible.sync="dialogVisible">
+    <el-dialog center top="40vh" title="赎回" width="80%" :visible.sync="dialogVisible" :show-close="false">
       <div>
         <el-form :inline="false" :model="form" size="mini" ref="ruleForm" :rules="rule">
           <el-form-item label="赎回份额" prop="buyNum">
-            <el-input v-model="form.buyNum" placeholder="请输入" type="number" @input="handleInput"></el-input>
+            <el-input v-model="form.buyNum" placeholder="请输入" type="number"></el-input>
           </el-form-item>
           <span></span>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
@@ -146,8 +166,8 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="submit('ruleForm')">确 定</el-button>
+              <el-button @click="cancelDialog1">取 消</el-button>
+              <el-button type="primary" @click="submit()">确 定</el-button>
             </span>
     </el-dialog>
     <el-dialog center top="40vh" title="确定赎回" width="80%" :visible.sync="dialogVisible2">
@@ -155,15 +175,13 @@
         说明：
         <div style="margin-top: 10px;">
           您本次赎回资金，将损失<span
-          style="color: #1ba6d0">${{
-            (form.buyNum * choiceNext.perValue) * (choiceNext.perIncome / 100) / (choiceNext.blackoutPeriod * choiceNext.moreDays)
-          }}</span>投资收益，您确认赎回？
+          style="color: #1ba6d0">${{ buyMoney }}</span>投资收益，您确认赎回？
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button @click="dialogVisible2 = false">取 消</el-button>
               <el-button type="primary" @click="submitNext()">确 定</el-button>
-            </span>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -202,14 +220,12 @@ export default {
       },
       list: [],
       total: 0, // 记录总值,
-      selected: '2' // 选中
+      selected: '2', // 选中
+      buyMoney: ''
     }
   },
   methods: {
     validateNumber (rule, value, callback) {
-      if (!value) {
-        return callback(new Error('输入不能为空'))
-      }
       if (value <= 0) {
         return callback(new Error('输入值需大于零'))
       }
@@ -218,27 +234,37 @@ export default {
       }
       const regex = /^[1-9]\d*$/
       if (!regex.test(value)) {
-        return callback(new Error('输入值需要正整数'))
+        return callback(new Error('赎回值需要正整数'))
       }
       callback()
     },
-    handleInput (value) {
-      // 使用正则表达式来判断是否为正整数
-      const regex = /^[1-9]\d*$/
-      // 如果输入的值不符合正整数的正则表达式，则将其设置为上一个有效值
-      if (!regex.test(value)) {
-        this.form.buyNum = this.form.buyNum.substring(0, this.inputValue.length - 1)
-      }
+    cancelDialog1 () {
+      this.dialogVisible = false
+      this.$refs.ruleForm.clearValidate()
     },
-    submit (formName) {
-      this.$refs[formName].validate(async (valid) => {
+    submit () {
+      this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
           this.dialogVisible = false
-          this.dialogVisible2 = true
+          console.log(this.$refs.ruleForm)
+          await this.callRedeemLoss()
         } else {
           return false
         }
       })
+    },
+    async callRedeemLoss () {
+      let opts = {
+        fuId: this.choice.fuId,
+        redeemPortion: this.form.buyNum
+      }
+      let data = await api.redeemCountLoss(opts)
+      if (data.status === 0) {
+        this.buyMoney = data.data
+      } else {
+        Toast(data.msg)
+      }
+      this.dialogVisible2 = true
     },
     submitNext () {
       this.dialogVisible2 = false
@@ -263,6 +289,7 @@ export default {
       }
     },
     btnShowDialog (val) {
+      this.form.buyNum = ''
       this.choice = val
       this.getRedeemCount()
     },
@@ -282,7 +309,7 @@ export default {
       let opts = {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
-        isRedeem: 0
+        isRedeem: -1
       }
       this.getStatus2 = true
       if (this.pageNum === 1) {
@@ -292,19 +319,13 @@ export default {
       if (data.status === 0) {
         this.getStatus2 = false
         this.total = data.data.total
-        const now = new Date()
         data.data.list.forEach(item => {
-          const date = new Date(item.buyTime)
-          const oldDate = date
-          date.setDate(date.getDate() + item.blackoutPeriod)
-          // 为true时表示可以回购
-          item.flag = date < now
-          if (item.flag) {
-            let nextDay = Math.ceil(Math.abs(oldDate - now) / (1000 * 60 * 60 * 24))
-            item.nextDay = item.blackoutPeriod - (nextDay % item.blackoutPeriod)
-          } else {
-            item.lockTime = date
-          }
+          // redemptionPortion= 0 // 表示已经申购完毕
+          // 申购完成的时间字段：redemptionTime
+          // item.buyDays > item.blackoutPeriod 通过这两个字段来判断是否在封锁期
+          // lastPerDays:离本期结束天数
+          // lockEndDate:解封时间
+          // redemptionPortion:为0时表示已申购完毕，否则就可以申购
           this.list.push(item)
         })
       } else {

@@ -6,7 +6,7 @@
     <div class="forget-form">
       <div class="form-item input-model">
         <select v-model="select">
-          <option v-for="item in options" :key="item" :label="item" :value="item"/>
+          <option v-for="item in options" :key="item" :label="item" :value="item">{{item}}</option>
         </select>
         <input placeholder="请输入手机号" type="tel" pattern="[0-9]*" v-model="phone"/>
       </div>
@@ -279,13 +279,26 @@ export default {
       }
 
       select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        font-size: 13px;
         flex: 1;
         margin-left: 0.1rem;
         background-color: #121319;
         border: none;
+        option {
+          font-size: 13px;
+          padding-right: 5px;
+          padding-left: 5px;
+        }
       }
 
       select:after {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        font-size: 13px;
         border: none;
       }
 

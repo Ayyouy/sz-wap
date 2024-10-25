@@ -22,47 +22,138 @@
               infinite-scroll-distance="0">
             <li v-for="(item) in list" :key="item.id">
               <div class="order-info-box">
-                <el-row class="self-el-row" v-show="item.orderNum!=undefined">
+                <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>订单编号</span>
+                    <span>基金账户</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span style="color: #1b8e5d"> {{ item.orderNum }}</span>
+                    <span style="color: #1b8e5d"> ${{ Number(item.amount).toFixed(2) }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.realName!=undefined">
+                <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>姓名/ID</span>
+                    <span>来源</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.realName }}/{{ item.userId }}</span>
+                    <span> {{ item.type }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.agentRealName!=undefined">
+                <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>归属代理/ID</span>
+                    <span>购买人</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.agentRealName }}/{{ item.agentId }}</span>
+                    <span> {{ item.realName }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row"  v-show="item.agentLevel!=undefined">
+                <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>代理等级</span>
+                    <span>购买账号</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.agentLevel + 1 }}级</span>
+                    <span> {{ item.buyUserPhone }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.amount!=undefined">
+                <el-row class="self-el-row" v-show="item.typeFlagValue===1||item.typeFlagValue===6">
                   <el-col :span="8" class="text-left">
-                    <span>变动金额</span>
+                    <span>时间</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span>  {{ item.amount }}</span>
+                    <span> {{ new Date(item.addTime)|timeFormat }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.balance!=undefined">
+                <el-row class="self-el-row" v-show="item.typeFlagValue>1&&item.typeFlagValue<7">
+                  <el-col :span="8" class="text-left">
+                    <span>基金名称</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{ item.fundName }}</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===4">
+                  <el-col :span="8" class="text-left">
+                    <span>持仓天数</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{ item.day }}天</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===2||item.typeFlagValue===4">
+                  <el-col :span="8" class="text-left">
+                    <span v-show="item.typeId==='bug_fund'">购买份额</span>
+                    <span v-show="item.typeId==='back_fund'||item.typeId==='shuhui_income'">赎回份额</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{ item.portion }}份</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===6">
+                  <el-col :span="8" class="text-left">
+                    <span v-show="item.typeId==='shengou'">申购费率</span>
+                    <span v-show="item.typeId==='shuhui'">赎回费率</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{ item.rates }}%</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===6">
+                  <el-col :span="8" class="text-left">
+                    <span v-show="item.typeId==='shengou'">申购金额</span>
+                    <span v-show="item.typeId==='shuhui'">赎回金额</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> ${{ item.money }}（{{ item.portion }}份）</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===3">
+                  <el-col :span="8" class="text-left">
+                    <span>持仓金额</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> ${{ item.money }}</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===5">
+                  <el-col :span="8" class="text-left">
+                    <span>购买金额</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> ${{ item.money }}</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===5">
+                  <el-col :span="8" class="text-left">
+                    <span>奖励比例</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{ item.rates }}%</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===5">
+                  <el-col :span="8" class="text-left">
+                    <span>推荐奖励</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> ${{ item.money }}</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===3">
+                  <el-col :span="8" class="text-left">
+                    <span>持仓份额</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{ item.portion }}份</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue===3">
+                  <el-col :span="8" class="text-left">
+                    <span>收益率</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{ item.rates }}%</span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeFlagValue!=5">
                   <el-col :span="8" class="text-left">
                     <span>基金账户余额</span>
                   </el-col>
@@ -70,28 +161,12 @@
                     <span> ${{ Number(item.balance).toFixed(2) }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.addTime!=undefined">
+                <el-row class="self-el-row" v-show="item.typeFlagValue!=5">
                   <el-col :span="8" class="text-left">
-                    <span>时间</span>
+                    <span>订单编号</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ new Date(item.addTime) | timeFormat }}</span>
-                  </el-col>
-                </el-row>
-                <el-row class="self-el-row" v-show="item.type!=undefined">
-                  <el-col :span="8" class="text-left">
-                    <span>类型</span>
-                  </el-col>
-                  <el-col :span="16" class="text-right">
-                    <span> {{ item.type }}</span>
-                  </el-col>
-                </el-row>
-                <el-row class="self-el-row" v-show="item.remark!=undefined">
-                  <el-col :span="8" class="text-left">
-                    <span>说明</span>
-                  </el-col>
-                  <el-col :span="16" class="text-right">
-                    <span> {{ item.remark }}</span>
+                    <span> {{ item.orderNum }}</span>
                   </el-col>
                 </el-row>
               </div>
@@ -118,8 +193,11 @@
                          :value="item.type"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="时间" prop="buyTime">
-            <el-input v-model="form.buyTime" placeholder="请输入" type="date"></el-input>
+          <el-form-item label="开始时间" prop="buyTimeStart">
+            <el-input v-model="form.buyTimeStart" placeholder="请输入" type="date" :max="form.buyTimeEnd"></el-input>
+          </el-form-item>
+          <el-form-item label="结束时间" prop="buyTimeEnd">
+            <el-input v-model="form.buyTimeEnd" placeholder="请输入" type="date" :min="form.buyTimeStart"></el-input>
           </el-form-item>
           <el-form-item label="订单编号" prop="orderNum">
             <el-input v-model="form.orderNum" placeholder="请输入"></el-input>
@@ -127,7 +205,7 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button @click="cancelAndClearForm">取 消</el-button>
               <el-button type="primary" @click="submit()">确 定</el-button>
             </span>
     </el-dialog>
@@ -150,13 +228,14 @@ export default {
       isRefresh: false, // 是否正在刷新
       getStatus: false, // 是否正在数据
       pageNum: 1,
-      pageSize: 10,
+      pageSize: 100,
       currentNum: 10,
       dialogVisible: false,
       types: [],
       form: {
         orderNum: '',
-        buyTime: '',
+        buyTimeStart: '',
+        buyTimeEnd: '',
         type: ''
       },
       list: [],
@@ -176,6 +255,13 @@ export default {
       this.dialogVisible = false
       this.getList()
     },
+    cancelAndClearForm () {
+      this.dialogVisible = false
+      this.form.orderNum = ''
+      this.form.buyTimeStart = ''
+      this.form.buyTimeEnd = ''
+      this.form.type = ''
+    },
     async getTypes () {
       let data = await api.getFinancialTypes()
       if (data.status === 0) {
@@ -189,7 +275,8 @@ export default {
         pageSize: this.pageSize,
         pageNum: this.pageNum,
         orderNum: this.form.orderNum,
-        buyTime: this.form.buyTime,
+        buyTimeStart: this.form.buyTimeStart,
+        buyTimeEnd: this.form.buyTimeEnd,
         type: this.form.type
       }
       this.getStatus = true
@@ -201,11 +288,53 @@ export default {
         this.getStatus = false
         this.total = data.data.total
         data.data.records.forEach(item => {
+          switch (item.typeId) {
+            case 'zhuan_ru_zijin' || 'zhuan_chu_jinyi':
+              // "转入资金账户"
+              // "转出至交易账户"
+              item.typeFlagValue = 1
+              break
+            case 'bug_fund' || 'back_fund':
+              // "购买基金"
+              // "赎回基金"
+              item.typeFlagValue = 2
+              break
+            case 'one_income' || 'two_income' || 'three_income' || 'four_income' || 'always_income':
+              // "一期收益"
+              // "二期收益"
+              // "三期收益"
+              // "四期收益"
+              // "持续收益"
+              item.typeFlagValue = 3
+              break
+            case 'shuhui_income':
+              // "赎回收益"
+              item.typeFlagValue = 4
+              break
+            case 'tuijian_jiang':
+              // "推荐奖"
+              item.typeFlagValue = 5
+              break
+            case 'shengou' || 'shuhui':
+              // "申购手续费"
+              // "赎回手续费"
+              item.typeFlagValue = 6
+              break
+            case 'zhike_jiang' || 'daili_jiang':
+              // 一般没有这两个
+              // "直客奖"
+              // "代理奖"
+              item.typeFlagValue = 7
+              break
+            default:
+              item.typeFlagValue = 8
+          }
           this.list.push(item)
         })
       } else {
         Toast(data.msg)
       }
+      this.cancelAndClearForm()
     },
     async loadMore () {
       if (this.list.length < this.pageSize || this.loading || this.total <= this.currentNum) {

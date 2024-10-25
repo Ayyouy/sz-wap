@@ -505,9 +505,14 @@ export function redeem (options) {
   return post('/api/fundUser/redeem.do', options)
 }
 
-// 赎回弹窗数据
+// 赎回弹窗1数据
 export function redeemCount (options) {
   return get('/api/fundUser/redeemCount.do', options)
+}
+
+// 赎回弹窗2数据
+export function redeemCountLoss (options) {
+  return get('api/fundUser/redeemCountLoss.do', options)
 }
 
 // 我的邀请

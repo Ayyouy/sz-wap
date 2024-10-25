@@ -13,6 +13,7 @@ module.exports = {
       '/': {
         // target:'http://103.214.142.174:8101/',
         target:'http://129.204.23.247:8101/',
+        // target:'http://192.168.31.192:8080/',
         secure: false,
         changeOrigin: true,
         pathRewrite: {

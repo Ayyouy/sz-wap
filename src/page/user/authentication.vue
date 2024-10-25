@@ -243,6 +243,7 @@ export default {
       if (data.status === 0) {
         Toast('提交成功!')
         this.goBack()
+        this.$store.state.userInfo.isActive = 1
       } else {
         Toast(data.msg)
       }

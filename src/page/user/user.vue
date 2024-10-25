@@ -362,13 +362,13 @@
               <i class="iconfont el-icon-circle-check"></i>
               认证中
             </span>
+             <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 2">
+              <i class="iconfont el-icon-circle-check"></i>
+             已认证
+            </span>
              <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 3">
               <i class="iconfont el-icon-circle-close"></i>
              认证失败
-            </span>
-            <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 2">
-              <i class="iconfont el-icon-circle-check"></i>
-             已认证
             </span>
             <icon name="right66" class="right" slot="icon"></icon>
           </span>

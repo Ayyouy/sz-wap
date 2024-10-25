@@ -18,9 +18,6 @@
               <div class="order-info-box" @click="btnFundDetailView(item.id)">
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-center">
-                    <!--                    <span style="font-size: 30px;color: #1b8e5d;line-height: 30px;height: 30px;">{{-->
-                    <!--                        (item.oneIncome / item.blackoutPeriod).toFixed(2) * 365-->
-                    <!--                      }}%</span>-->
                     <span style="font-size: 30px;color: #1b8e5d;line-height: 30px;height: 30px;">{{item.annualizedReturn}}%</span>
                   </el-col>
                   <el-col :span="16" class="text-center" style="font-size: 20px;line-height: 30px;height: 30px;">
