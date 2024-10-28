@@ -7,11 +7,8 @@
       <div class="register-form-item input-model" style="margin-top: 1.11rem">
         <img v-if="theme" src="../assets/ico/loginuser-red.png"/>
         <img v-else src="../assets/ico/loginuser.png"/>
-        <select class="form-select-option-style" v-model="select">
-          <option label="+1" value="+1"></option>
-          <option label="+852" value="+852"></option>
-          <option label="+91" value="+91"></option>
-          <option label="+81" value="+81"></option>
+        <select v-model="select">
+          <option v-for="item in options" :key="item" :label="item" :value="item">{{ item }}</option>
         </select>
         <input class="login-input" placeholder="请输入账号" type="tel" pattern="[0-9]*" v-model="phone"/>
       </div>
@@ -152,6 +149,7 @@ export default {
       imgCodeTime: 0,
       countryId: 0,
       select: '+1',
+      options: ['+1', '+852', '+91', '+81'],
       theme: this.$state.theme === 'red',
       flagNextRegister: false // 防止重复点击
     }
@@ -416,14 +414,21 @@ body {
       }
 
       select {
-        flex: 1;
         margin-left: 0.1rem;
         background-color: #121319;
         border: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        font-size: 13px;
+        padding-top: 1px;
+        flex: 1;
       }
 
-      select:after {
-        border: none;
+      option {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+        font-size: 13px;
       }
 
       .register-input {

@@ -27,7 +27,9 @@
                     <span>基金账户</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span style="color: #1b8e5d"> ${{ Number(item.amount).toFixed(2) }}</span>
+                    <span :style="item.amount>=0?'color:green':'color:red'"> ${{
+                        Number(item.amount).toFixed(2)
+                      }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -54,7 +56,8 @@
                     <span> {{ item.buyUserPhone }}</span>
                   </el-col>
                 </el-row>
-                <el-row class="self-el-row" v-show="item.typeFlagValue===1||item.typeFlagValue===6">
+                <!-- 备注：时间又改为全部显示 v-show="item.typeFlagValue===1||item.typeFlagValue===6" -->
+                <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
                     <span>时间</span>
                   </el-col>
@@ -84,7 +87,16 @@
                     <span v-show="item.typeId==='back_fund'||item.typeId==='shuhui_income'">赎回份额</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.portion }}份</span>
+                    <span> {{ item.portion }}份<span v-show="item.typeId==='shuhui_income'">（{{ item.period }}期）</span>
+                    </span>
+                  </el-col>
+                </el-row>
+                <el-row class="self-el-row" v-show="item.typeId==='shuhui_income'">
+                  <el-col :span="8" class="text-left">
+                    <span>收益率</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{ item.rates}}%</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===6">

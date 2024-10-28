@@ -121,7 +121,7 @@
                     赎回
                   </el-button>
                   <el-button v-else-if="item.redemptionPortion!=0&&(item.buyDays<=item.blackoutPeriod)" type="info">
-                    封锁中（{{ new Date(item.lockEndDate) | timeFormat }}解封）
+                    封锁中（{{ new Date(item.lockEndDate) | dateFormat }}解封）
                   </el-button>
                 </div>
               </div>
@@ -160,9 +160,9 @@
         <div style="margin-top: 10px;">
           您的持仓基金，目前正处理于<span style="color: #1ba6d0">第{{ choiceNext.per }}期</span>阶段，
           收益率为<span style="color: #1ba6d0">{{ choiceNext.perIncome }}%</span>，
-          若您赎回该份额，赎回资金将按<span style="color: #1ba6d0">第{{ Number.parseInt(choiceNext.per) - 1 }}期</span>收益率为
+          若您赎回该份额，赎回资金将按<span style="color: #1ba6d0">第{{ choiceNext.perLast }}期</span>收益率为
           <span style="color: #1ba6d0">{{ choiceNext.lastPerIncome }}%</span>，
-          计算 <span style="color: #1ba6d0">{{ choiceNext.moreDays }}</span>天的持仓收益。
+          计算 <span style="color: #1ba6d0">{{ choiceNext.blackoutPeriod - choiceNext.moreDays }}</span>天的持仓收益。
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
