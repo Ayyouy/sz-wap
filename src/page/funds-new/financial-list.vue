@@ -96,7 +96,7 @@
                     <span>收益率</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.rates}}%</span>
+                    <span> {{ item.rates }}%</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===6">
@@ -200,9 +200,9 @@
         <el-form :inline="false" :model="form" size="mini">
           <el-form-item label="来源" prop="type">
             <el-select clearable filterable placeholder="所有" value-key="type"
-                       style="width: 100%" v-model="form.type">
-              <el-option v-for="item in types" :key="item.type" :label="item.value"
-                         :value="item.type"></el-option>
+                       v-model="form.type" style="width: 100%;">
+              <el-option v-for="item in types" style="width: 100%;" :label="item.value" :value="item.type" :key="item.type">{{ item.value }}
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="开始时间" prop="buyTimeStart">
@@ -467,6 +467,19 @@ export default {
 .self-el-row {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.select-dropdown .el-scrollbar__view {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.select-dropdown .el-select-dropdown__item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btn-bg {

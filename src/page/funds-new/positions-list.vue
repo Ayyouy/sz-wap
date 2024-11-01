@@ -21,7 +21,7 @@
                     <span>订单编号</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{item.orderNum }}</span>
+                    <span> {{ item.orderNum }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.redemptionPortion!=0">
@@ -112,6 +112,14 @@
                     <span> ${{ item.backEndLoad }}</span>
                   </el-col>
                 </el-row>
+                <el-row class="self-el-row" v-show="item.redemptionPortion!=0">
+                  <el-col :span="8" class="text-left">
+                    <span>当前周期</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span>第{{ item.currentPeriod }}期</span>
+                  </el-col>
+                </el-row>
                 <el-row class="self-el-row" v-show="item.redemptionPortion!=0&&item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
                     <span>离本期结算天数</span>
@@ -182,7 +190,7 @@
       <div>
         说明：
         <div style="margin-top: 10px;">
-          您本次赎回资金，将损失<span
+          您本次赎回资金，<span v-show="choiceNext.per>4">每日</span>将损失<span
           style="color: #1ba6d0">${{ buyMoney }}</span>投资收益，您确认赎回？
         </div>
       </div>
@@ -334,6 +342,17 @@ export default {
           // lastPerDays:离本期结束天数
           // lockEndDate:解封时间
           // redemptionPortion:为0时表示已申购完毕，否则就可以申购
+          if (item.redemptionPortion !== 0) {
+            let days = Number(item.buyDays)
+            let lock = Number(item.blackoutPeriod)
+            let currentPeriod = parseInt(days / lock)
+            let buyPeriod = days % lock
+            console.log(item.orderNum, days, lock, currentPeriod, buyPeriod)
+            if (buyPeriod !== 0) {
+              currentPeriod += 1
+            }
+            item.currentPeriod = currentPeriod
+          }
           this.list.push(item)
         })
       } else {
