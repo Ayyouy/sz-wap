@@ -58,18 +58,22 @@ export default {
   },
   methods: {
     getLocalPhone () {
-      let tmpPhone = this.$store.state.userInfo.phone
-      let len = tmpPhone.length
-      if (len === 11) {
-        this.form.phone = tmpPhone
-      } else if (len === 13) {
-        this.form.phone = tmpPhone.substring(2, 13)
-      } else if (len === 14) {
-        this.form.phone = tmpPhone.substring(3, 14)
-      } else if (len === 15) {
-        this.form.phone = tmpPhone.substring(4, 15)
+      let selectPhone = String(this.$store.state.userInfo.phone)
+      if (selectPhone.includes('+1')) {
+        this.form.select = '+1'
+        this.form.phone = selectPhone.replace('+1', '')
+      } else if (selectPhone.includes('+852')) {
+        this.form.select = '+852'
+        this.form.phone = selectPhone.replace('+852', '')
+      } else if (selectPhone.includes('+91')) {
+        this.form.select = '+91'
+        this.form.phone = selectPhone.replace('+91', '')
+      } else if (selectPhone.includes('+81')) {
+        this.form.select = '+81'
+        this.form.phone = selectPhone.replace('+81', '')
       } else {
-        this.form.phone = this.$store.state.userInfo.phone
+        this.form.select = '+1'
+        this.form.phone = selectPhone
       }
     },
     btnJump (val) {
