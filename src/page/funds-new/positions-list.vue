@@ -16,6 +16,14 @@
               infinite-scroll-distance="0">
             <li v-for="(item) in list" :key="item.id">
               <div class="order-info-box">
+                <el-row class="self-el-row" style="padding-top: 0.4rem">
+                  <el-col :span="8" class="text-left">
+                    <span>订单编号</span>
+                  </el-col>
+                  <el-col :span="16" class="text-right">
+                    <span> {{item.orderNum }}</span>
+                  </el-col>
+                </el-row>
                 <el-row class="self-el-row" v-show="item.redemptionPortion!=0">
                   <el-col :span="8" class="text-left">
                     <span>预期总收益</span>
