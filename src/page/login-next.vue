@@ -45,7 +45,8 @@ export default {
         psd: '',
         select: '+1'
       },
-      options: ['+1', '+852', '+91', '+81'],
+      // options: ['+1', '+852', '+91', '+81'],
+      options: ['+1', '+852', '+91', '+81', '+86', '+88', '+00', '+99'],
       theme: this.$state.theme === 'red',
       logging: false
     }
@@ -71,6 +72,18 @@ export default {
       } else if (selectPhone.includes('+81')) {
         this.form.select = '+81'
         this.form.phone = selectPhone.replace('+81', '')
+      } else if (selectPhone.includes('+86')) {
+        this.form.select = '+86'
+        this.form.phone = selectPhone.replace('+86', '')
+      } else if (selectPhone.includes('+88')) {
+        this.form.select = '+88'
+        this.form.phone = selectPhone.replace('+88', '')
+      } else if (selectPhone.includes('+00')) {
+        this.form.select = '+00'
+        this.form.phone = selectPhone.replace('+00', '')
+      } else if (selectPhone.includes('+99')) {
+        this.form.select = '+99'
+        this.form.phone = selectPhone.replace('+99', '')
       } else {
         this.form.select = '+1'
         this.form.phone = selectPhone

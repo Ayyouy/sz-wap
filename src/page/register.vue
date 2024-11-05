@@ -149,7 +149,7 @@ export default {
       imgCodeTime: 0,
       countryId: 0,
       select: '+1',
-      options: ['+1', '+852', '+91', '+81'],
+      options: ['+1', '+852', '+91', '+81', '+86', '+88', '+00', '+99'],
       theme: this.$state.theme === 'red',
       flagNextRegister: false // 防止重复点击
     }

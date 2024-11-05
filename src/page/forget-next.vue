@@ -71,7 +71,7 @@ export default {
   props: {},
   data () {
     return {
-      options: ['+1', '+852', '+91', '+81'],
+      options: ['+1', '+852', '+91', '+81', '+86', '+88', '+00', '+99'],
       phone: '',
       password: '',
       password2: '',

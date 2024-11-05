@@ -78,7 +78,7 @@ export default {
     async getCardDetail () {
       // 获取银行卡信息
       let opts = {
-        code: this.$route.query.code,
+        code: this.$route.query.code
       }
       let data = await api.getBankCard(opts)
       if (data.status === 0) {
