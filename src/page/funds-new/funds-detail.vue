@@ -176,14 +176,15 @@ export default {
       this.buyNumFlag = /[.]/.test(val)
     },
     validateNumber (rule, value, callback) {
-      if (!value) {
-        return callback(new Error('输入不能为空'))
-      }
       if (value <= 0) {
         return callback(new Error('输入值需大于零'))
       }
       if (value > this.detail.maxNum) {
         return callback(new Error('输入值超过最大购买份额'))
+      }
+      const regex = /^[1-9]\d*$/
+      if (!regex.test(value)) {
+        return callback(new Error('输入值需要正整数'))
       }
       if (Number(value) * Number(this.detail.perValue) > this.accountMoney) {
         return callback(new Error('余额不足，请减少购买份额'))

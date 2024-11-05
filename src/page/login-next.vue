@@ -45,7 +45,6 @@ export default {
         psd: '',
         select: '+1'
       },
-      // options: ['+1', '+852', '+91', '+81'],
       options: ['+1', '+852', '+91', '+81', '+86', '+88', '+00', '+99'],
       theme: this.$state.theme === 'red',
       logging: false
