@@ -34,7 +34,9 @@
           <span style="font-weight: bold">{{ detail.name }}</span>
         </div>
       </div>
-      <div v-html="detail.info" style="margin: 20px .1rem .1rem;"></div>
+      <div style="margin: 20px .1rem .1rem;">
+        <p style="font-size: 12px;margin-bottom: 0.2rem;text-indent: 2em;line-height: 18px" v-for="item in detail.info.split('\n')" :key="item">{{item}}</p>
+      </div>
     </div>
     <div class="box-bg" style="margin-bottom: 200px">
       <div class="box-center">
