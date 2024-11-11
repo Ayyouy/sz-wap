@@ -373,7 +373,6 @@ export default {
             let lock = Number(item.blackoutPeriod)
             let currentPeriod = parseInt(days / lock)
             let buyPeriod = days % lock
-            console.log(item.orderNum, days, lock, currentPeriod, buyPeriod)
             if (buyPeriod !== 0) {
               currentPeriod += 1
             }

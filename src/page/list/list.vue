@@ -41,7 +41,6 @@
 
 <script>
 import foot from '@/components/foot/foot'
-// import List0 from './list-all'
 import List1 from './list-index'
 import List2 from './list-stock'
 import List3 from './list-kechuang'
@@ -78,6 +77,7 @@ export default {
   mounted () {
     if (this.$route.query.index) {
       this.selected = this.$route.query.index
+      console.log('list selected：', this.selected)
     }
   },
   methods: {

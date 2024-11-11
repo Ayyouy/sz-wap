@@ -157,7 +157,7 @@ export default {
       let data = await api.addOption({code: val.code})
       if (data.status === 0) {
         Toast('添加自选成功')
-        this.getStock()
+        await this.getStock()
       } else {
         Toast(data.msg)
       }
@@ -166,7 +166,7 @@ export default {
       let data = await api.delOption({code: val.code})
       if (data.status === 0) {
         Toast('删除自选股成功')
-        this.getStock()
+        await this.getStock()
       } else {
         Toast(data.msg)
       }

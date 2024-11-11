@@ -204,7 +204,7 @@ export default {
       this.checkMessage = ''
       this.form.buyNum = ''
     },
-    submit () {
+    async submit () {
       this.checkNumber(this.form.buyNum)
       if (this.checkMessage !== '') {
         return false
@@ -214,7 +214,7 @@ export default {
         fundId: this.detail.id,
         userId: localStorage.getItem('wap-id')
       }
-      let data = api.buyFundsNew(opts)
+      let data = await api.buyFundsNew(opts)
       if (data.status === 0) {
         this.form.buyNum = ''
         Toast('购买成功')
