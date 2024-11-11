@@ -2,6 +2,32 @@
   <div class="wrapper">
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="2">
+        <div class="account-container">
+          <div class="account-center">
+            <span>基金账户</span>
+          </div>
+          <div class="account-box">
+            <div class="content">
+              <ul class="clearfix">
+                <li>
+                  <i class="iconfont icon-zijin1"></i>
+                  <div class="name">持仓金额</div>
+                  <p class="number red"> $ </p>
+                </li>
+                <li>
+                  <i class="iconfont icon-keyongzijin"></i>
+                  <div class="name">可用资金</div>
+                  <p class="number yellow">$</p>
+                </li>
+                <li>
+                  <i class="iconfont icon-yingkuixuanzhong"></i>
+                  <div class="name">收益金额</div>
+                  <p class="number green">$</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <div v-if="list.length<=0 && !getStatus2" class="empty text-center">
           暂无我的基金信息!
         </div>
@@ -106,7 +132,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
-                    <span>赎回手续费</span>
+                    <span>已赎回手续费</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.backEndLoad }}</span>
@@ -154,11 +180,14 @@
       </mt-tab-container-item>
     </mt-tab-container>
     <Foot></Foot>
-    <el-dialog center top="40vh" title="赎回" width="80%" :visible.sync="dialogVisible" :show-close="false">
+    <el-dialog center top="25vh" title="赎回" width="80%" :visible.sync="dialogVisible" :show-close="false" :close-on-click-modal="false">
       <div>
-        <el-form :inline="false" :model="form" size="mini" ref="ruleForm" :rules="rule">
+        <el-form :inline="false" :model="form" size="mini">
           <el-form-item label="赎回份额" prop="buyNum">
-            <el-input v-model="form.buyNum" placeholder="请输入" type="number"></el-input>
+            <el-input v-model="form.buyNum" placeholder="请输入" type="number" @input="checkNumber"></el-input>
+            <div class="el-form-item__error">
+              {{ checkMessage }}
+            </div>
           </el-form-item>
           <span></span>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
@@ -222,18 +251,12 @@ export default {
       currentNum: 10,
       dialogVisible: false,
       dialogVisible2: false,
+      checkMessage: '',
       form: {
         buyNum: ''
       },
       choice: {},
       choiceNext: {},
-      rule: {
-        name: [{required: true, message: '不可为空', trigger: 'blur'}],
-        buyNum: [
-          {required: true, message: '请输入赎回份额', trigger: 'blur'},
-          {validator: this.validateNumber, trigger: 'blur'}
-        ]
-      },
       list: [],
       total: 0, // 记录总值,
       selected: '2', // 选中
@@ -241,33 +264,36 @@ export default {
     }
   },
   methods: {
-    validateNumber (rule, value, callback) {
-      if (value <= 0) {
-        return callback(new Error('输入值需大于零'))
+    checkNumber (val) {
+      if (this.form.buyNum === '' || this.form.buyNum <= 0) {
+        this.checkMessage = '输入值需大于零'
+        return false
       }
-      if (value > this.choice.redemptionPortion) {
-        return callback(new Error('超过最大赎回值'))
+      if (Number.parseInt(this.form.buyNum) > Number.parseInt(this.choice.redemptionPortion)) {
+        this.checkMessage = '超过最大赎回值'
+        return false
       }
       const regex = /^[1-9]\d*$/
-      if (!regex.test(value)) {
-        return callback(new Error('赎回值需要正整数'))
+      if (!regex.test(this.form.buyNum)) {
+        this.checkMessage = '赎回值需要正整数'
+        return false
+      } else {
+        this.checkMessage = ''
+        return true
       }
-      callback()
     },
     cancelDialog1 () {
       this.dialogVisible = false
-      this.$refs.ruleForm.clearValidate()
+      this.checkMessage = ''
     },
     submit () {
-      this.$refs.ruleForm.validate(async (valid) => {
-        if (valid) {
-          this.dialogVisible = false
-          console.log(this.$refs.ruleForm)
-          await this.callRedeemLoss()
-        } else {
-          return false
-        }
-      })
+      this.checkNumber(this.form.buyNum)
+      if (this.checkMessage !== '') {
+        return false
+      } else {
+        this.dialogVisible = false
+        this.callRedeemLoss()
+      }
     },
     async callRedeemLoss () {
       let opts = {
@@ -379,6 +405,214 @@ export default {
 
 .wrapper /deep/ .mint-tab-item-label {
   font-size: 0.264rem;
+}
+
+.order-list {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.account-container {
+  // margin: .28rem;
+  width: 6.9rem;
+  margin: 0.28rem auto;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #1f2636;
+
+  .pcx {
+    margin: 0.2rem;
+    // background-color: #1F2636;
+    background: #1a1e29;
+  }
+
+  .account-center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem;
+
+    span {
+      font-size: 20px;
+    }
+  }
+
+  .account-preview {
+    display: flex;
+    padding: 0.3rem 0.2rem 0.28rem;
+
+    .acc-pre-left {
+      width: 1.92rem;
+      height: 1.92rem;
+      background-image: url(../../assets/ico/round.png);
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      position: relative;
+
+      img {
+        width: 0.36rem;
+        height: 0.36rem;
+        margin-bottom: 0.1rem;
+      }
+
+      span.ti {
+        font-size: 0.24rem;
+        color: #ccc;
+        margin-bottom: 0.1rem;
+      }
+
+      span.de {
+        font-size: 0.24rem;
+        color: #009c46;
+        font-family: lightnumber;
+
+        .account {
+          font-family: lightnumber;
+        }
+      }
+
+      &::after {
+        display: block;
+        content: "";
+        width: 0.67rem;
+        height: 2.21rem;
+        position: absolute;
+        top: -0.16rem;
+        right: -0.44rem;
+        background-image: url(../../assets/ico/round-r.png);
+        background-size: cover;
+      }
+    }
+
+    .acc-pre-center {
+      margin-left: 0.45rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      font-family: lightnumber;
+      color: #ccc;
+
+      span {
+        color: #fff;
+        font-family: lightnumber;
+        font-weight: 300;
+      }
+    }
+
+    .acc-pre-right {
+      flex: 1;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      .btn {
+        color: #fff;
+        padding: 0 10px;
+        border-radius: 0.2rem;
+      }
+
+      .redbtn {
+        background-color: #e6003e;
+      }
+
+      .bluebtn {
+        background-color: #024da1;
+      }
+    }
+  }
+}
+
+.account-box {
+  // margin-bottom: 0.12rem;
+  padding: 0 0.2rem;
+  // padding: 0 0.35rem;
+  background-color: #1f2636;
+
+  .header {
+    font-size: 0.22rem;
+    line-height: 0.7rem;
+    height: 0.7rem;
+    display: flex;
+    justify-content: space-between;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    img.iconfont {
+      color: #f5ca07;
+      width: 0.3rem;
+      height: 0.3rem;
+      display: inline-block;
+      margin-right: 0.2rem;
+
+      &.jian {
+        background-image: url(../../assets/ico/jian.png);
+      }
+    }
+
+    .iconfont {
+      font-size: 0.24rem;
+      vertical-align: middle;
+      margin: 0 0.05rem;
+    }
+  }
+
+  .content {
+    padding: 0 0.2rem 0.18rem;
+
+    li {
+      width: 50%;
+      float: left;
+      padding: 0.2rem 0.2rem 0.04rem 0.56rem;
+      line-height: 0.36rem;
+      position: relative;
+
+      &:nth-child(2) {
+        .iconfont {
+          color: #2f97fc;
+        }
+      }
+
+      &:nth-child(3) {
+        .iconfont {
+          color: #17b780;
+        }
+      }
+
+      &:nth-child(3) {
+        .iconfont {
+          color: #ff7602;
+        }
+      }
+
+      .iconfont {
+        position: absolute;
+        top: 0.38rem;
+        left: 0;
+        font-size: 0.42rem;
+        color: #fd4256;
+      }
+
+      .name {
+        color: #888;
+        font-size: 0.22rem;
+      }
+
+      .number {
+        font-size: 0.27rem;
+      }
+    }
+  }
 }
 
 .mint-navbar .mint-tab-item.is-selected {

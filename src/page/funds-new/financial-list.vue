@@ -24,7 +24,7 @@
               <div class="order-info-box">
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>基金账户</span>
+                    <span>变动金额</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span :style="item.amount>=0?'color:green':'color:red'"> ${{
@@ -143,7 +143,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>推荐奖励</span>
+                    <span>基金账户余额</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.money }}</span>

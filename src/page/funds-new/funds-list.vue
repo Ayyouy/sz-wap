@@ -18,7 +18,10 @@
               <div class="order-info-box" @click="btnFundDetailView(item.id)">
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-center">
-                    <span style="font-size: 30px;color: #1b8e5d;line-height: 30px;height: 30px;">{{item.annualizedReturn}}%</span>
+                    <span
+                      style="font-size: 30px;color: #1b8e5d;line-height: 30px;height: 30px;">{{
+                        item.annualizedReturn
+                      }}%</span>
                   </el-col>
                   <el-col :span="16" class="text-center" style="font-size: 20px;line-height: 30px;height: 30px;">
                     {{ item.name }}
@@ -29,7 +32,9 @@
                     年化收益
                   </el-col>
                   <el-col :span="16" class="text-center">
-                    每份净值：${{ item.perValue }}<span style="margin-left: 30px">每期天数：{{ item.blackoutPeriod }}天</span>
+                    每份净值：${{ item.perValue }}<span style="margin-left: 30px">每期天数：{{
+                      item.blackoutPeriod
+                    }}天</span>
                   </el-col>
                 </el-row>
               </div>
@@ -103,10 +108,19 @@ export default {
       this.currentNum = this.pageNum * this.pageSize
       this.loading = false
     },
-    btnFundDetailView (val) {
-      this.$router.push({
-        path: '/fundsdetail?id=' + val
-      })
+    async btnFundDetailView (val) {
+      let opts = {
+        userId: localStorage.getItem('wap-id')
+      }
+      let data = await api.wallets(opts)
+      if (data.status === 0) {
+        let accountMoney = Number(data.data.walletBalance).toFixed(2)
+        await this.$router.push({
+          path: '/fundsdetail?id=' + val + '&am=' + accountMoney
+        })
+      } else {
+        Toast(data.msg)
+      }
     }
   }
 }

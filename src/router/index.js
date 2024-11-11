@@ -562,7 +562,7 @@ export default new Router({
       path: '/fundsdetail',
       name: 'fundsdetail',
       meta: {
-        title: '基金',
+        title: '基金详情',
         iconLeft: true
       },
       component: FundsNewDetail
