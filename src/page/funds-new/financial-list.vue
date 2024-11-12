@@ -143,7 +143,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>基金账户余额</span>
+                    <span>推荐奖励</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.money }}</span>

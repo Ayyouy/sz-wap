@@ -104,10 +104,10 @@
     <div class="box-bottom">
       <div class="box-bottom-left">
         <div class="box-bottom-money">
-          <span>基金账户余额：${{ accountMoney }}</span>
+          <span style="font-size: 12px">基金账户余额：${{ accountMoney }}</span>
         </div>
         <div class="box-bottom-money">
-          <span>最大可购买：${{ Number(detail.newPerValue * detail.maxBuyNum).toFixed(2) }}（{{
+          <span style="font-size: 12px">最大可购买：${{ Number(detail.newPerValue * detail.maxBuyNum).toFixed(2) }}（{{
               detail.maxBuyNum
             }}份）</span>
         </div>
@@ -185,6 +185,7 @@ export default {
         this.checkMessage = '输入值超过最大购买份额'
         return false
       }
+      // 是否要判断最大申购量
       const regex = /^[1-9]\d*$/
       if (!regex.test(this.form.buyNum)) {
         this.checkMessage = '输入值需要正整数'
