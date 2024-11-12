@@ -237,7 +237,7 @@
     </div>
     <div class="account-container">
       <div class="account-center">
-        <span>基金账户（$此字段及下面三个字段都未定）</span>
+        <span>基金账户</span>
       </div>
       <div v-for="item in account" :key="item.key">
         <div class="account-box" v-if="item.isDisplay">
@@ -246,102 +246,17 @@
               <li>
                 <i class="iconfont icon-zijin1"></i>
                 <div class="name">持仓金额</div>
-                <p v-if="item.name == '指数'" class="number yellow">
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.userIndexAmt).toFixed(2)
-                  }}
-                </p>
-                <p v-if="item.name == '沪深'" class="number yellow">
-                  {{
-                    $store.state.hide ? '****' : Number($store.state.userInfo.userAmt).toFixed(2)
-                  }}
-                </p>
-                <p v-if="item.name == '期货'" class="number yellow">
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.userFuturesAmt).toFixed(2)
-                  }}
-                </p>
+                <p class="number red"> ${{ Number(fundInfo.buyMoney).toFixed(2) }}</p>
               </li>
               <li>
                 <i class="iconfont icon-keyongzijin"></i>
                 <div class="name">可用资金</div>
-                <p v-if="item.name == '指数'" class="number yellow">
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.enableIndexAmt).toFixed(2)
-                  }}
-                </p>
-                <p v-if="item.name == '沪深'" class="number yellow">
-                  {{
-                    $store.state.hide ? '****' : Number($store.state.userInfo.enableAmt).toFixed(2)
-                  }}
-                </p>
-                <p v-if="item.name == '期货'" class="number yellow">
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.enableFuturesAmt).toFixed(2)
-                  }}
-                </p>
+                <p class="number yellow">${{ Number(fundInfo.balance).toFixed(2) }}</p>
               </li>
               <li>
                 <i class="iconfont icon-yingkuixuanzhong"></i>
                 <div class="name">收益金额</div>
-                <p
-                  v-if="item.name == '指数'"
-                  :class="
-                    $store.state.userInfo.allIndexProfitAndLose > 0
-                      ? 'number red'
-                      : $store.state.userInfo.allIndexProfitAndLose < 0
-                      ? 'number green'
-                      : 'number'
-                  "
-                >
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.allIndexProfitAndLose).toFixed(2)
-                  }}
-                </p>
-                <p
-                  v-if="item.name == '沪深'"
-                  :class="
-                    $store.state.userInfo.allProfitAndLose > 0
-                      ? 'number red'
-                      : $store.state.userInfo.allProfitAndLose < 0
-                      ? 'number green'
-                      : 'number'
-                  "
-                >
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number($store.state.userInfo.allProfitAndLose).toFixed(2)
-                  }}
-                </p>
-                <p
-                  v-if="item.name == '期货'"
-                  :class="
-                    $store.state.userInfo.allFuturesProfitAndLose > 0
-                      ? 'number red'
-                      : $store.state.userInfo.allFuturesProfitAndLose < 0
-                      ? 'number green'
-                      : 'number'
-                  "
-                >
-                  {{
-                    $store.state.hide
-                      ? '****'
-                      : Number(
-                        $store.state.userInfo.allFuturesProfitAndLose
-                      ).toFixed(2)
-                  }}
-                </p>
+                <p class="number green">${{ Number(fundInfo.amount).toFixed(2) }}</p>
               </li>
             </ul>
           </div>
@@ -516,6 +431,11 @@ export default {
   },
   data () {
     return {
+      fundInfo: {
+        amount: 0,
+        balance: 0,
+        buyMoney: 0
+      },
       user: {
         img: ''
       },
@@ -548,6 +468,7 @@ export default {
     this.styleName = window.localStorage.getItem('styleName') ? window.localStorage.getItem('styleName') : 'red'
   },
   mounted () {
+    this.getBalance()
     this.getSettingInfo()
     this.getIndexSettingInfo()
     this.getFuturesSetting()
@@ -558,6 +479,14 @@ export default {
     }
   },
   methods: {
+    async getBalance () {
+      let data = await api.getBalanceFunds({})
+      if (data.status === 0) {
+        this.fundInfo = data.data
+      } else {
+        Toast(data.msg)
+      }
+    },
     async getProductSetting () {
       let data = await api.getProductSetting()
       if (data.status === 0) {
