@@ -490,6 +490,11 @@ export function getPositionsList (options) {
   return get('/api/fundUser/list.do', options)
 }
 
+// 持仓列表（基金信息）
+export function getBalanceFunds (options) {
+  return get('/api/fundWallet/countBalance.do', options)
+}
+
 // 资金明细
 export function financial (options) {
   return get('/api/fundUserDetail/listDetail.do', options)

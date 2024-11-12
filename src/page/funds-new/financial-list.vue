@@ -201,7 +201,8 @@
           <el-form-item label="来源" prop="type">
             <el-select clearable filterable placeholder="所有" value-key="type"
                        v-model="form.type" style="width: 100%;">
-              <el-option v-for="item in types" style="width: 100%;" :label="item.value" :value="item.type" :key="item.type">{{ item.value }}
+              <el-option v-for="item in types" style="width: 100%;" :label="item.value" :value="item.type"
+                         :key="item.type">{{ item.value }}
               </el-option>
             </el-select>
           </el-form-item>
@@ -301,17 +302,23 @@ export default {
         this.total = data.data.total
         data.data.records.forEach(item => {
           switch (item.typeId) {
-            case 'zhuan_ru_zijin' || 'zhuan_chu_jinyi':
+            case 'zhuan_ru_zijin':
+            case 'zhuan_chu_jinyi':
               // "转入资金账户"
               // "转出至交易账户"
               item.typeFlagValue = 1
               break
-            case 'bug_fund' || 'back_fund':
+            case 'bug_fund':
+            case 'back_fund':
               // "购买基金"
               // "赎回基金"
               item.typeFlagValue = 2
               break
-            case 'one_income' || 'two_income' || 'three_income' || 'four_income' || 'always_income':
+            case 'one_income':
+            case 'two_income':
+            case 'three_income':
+            case 'four_income':
+            case 'always_income':
               // "一期收益"
               // "二期收益"
               // "三期收益"
@@ -327,12 +334,14 @@ export default {
               // "推荐奖"
               item.typeFlagValue = 5
               break
-            case 'shengou' || 'shuhui':
+            case 'shengou':
+            case 'shuhui':
               // "申购手续费"
               // "赎回手续费"
               item.typeFlagValue = 6
               break
-            case 'zhike_jiang' || 'daili_jiang':
+            case 'zhike_jiang':
+            case 'daili_jiang':
               // 一般没有这两个
               // "直客奖"
               // "代理奖"

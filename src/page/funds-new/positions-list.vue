@@ -12,17 +12,17 @@
                 <li>
                   <i class="iconfont icon-zijin1"></i>
                   <div class="name">持仓金额</div>
-                  <p class="number red"> $ </p>
+                  <p class="number red"> ${{Number(fundInfo.buyMoney).toFixed(2)}}</p>
                 </li>
                 <li>
                   <i class="iconfont icon-keyongzijin"></i>
                   <div class="name">可用资金</div>
-                  <p class="number yellow">$</p>
+                  <p class="number yellow">${{Number(fundInfo.balance).toFixed(2)}}</p>
                 </li>
                 <li>
                   <i class="iconfont icon-yingkuixuanzhong"></i>
                   <div class="name">收益金额</div>
-                  <p class="number green">$</p>
+                  <p class="number green">${{Number(fundInfo.income).toFixed(2)}}</p>
                 </li>
               </ul>
             </div>
@@ -180,7 +180,8 @@
       </mt-tab-container-item>
     </mt-tab-container>
     <Foot></Foot>
-    <el-dialog center top="25vh" title="赎回" width="80%" :visible.sync="dialogVisible" :show-close="false" :close-on-click-modal="false">
+    <el-dialog center top="25vh" title="赎回" width="80%" :visible.sync="dialogVisible" :show-close="false"
+               :close-on-click-modal="false">
       <div>
         <el-form :inline="false" :model="form" size="mini">
           <el-form-item label="赎回份额" prop="buyNum">
@@ -255,6 +256,7 @@ export default {
       form: {
         buyNum: ''
       },
+      fundInfo: {},
       choice: {},
       choiceNext: {},
       list: [],
@@ -380,6 +382,14 @@ export default {
           }
           this.list.push(item)
         })
+      } else {
+        Toast(data.msg)
+      }
+    },
+    async getBalance () {
+      let data = await api.getBalanceFunds({})
+      if (data.status === 0) {
+        this.fundInfo = data.data
       } else {
         Toast(data.msg)
       }

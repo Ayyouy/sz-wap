@@ -55,6 +55,9 @@ export default {
         this.$nextTick(() => {
           this.$refs[`indexList${val}`].pageNum = 1
           this.$refs[`indexList${val}`].getList()
+          if (val === '2') {
+            this.$refs[`indexList${val}`].getBalance()
+          }
         })
       },
       immediate: true
