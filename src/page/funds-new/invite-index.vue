@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
     <div class="mint-navbar top-navbar is-fixed" style="top: 1.84rem !important;background-color: #16171d">
-      <div class="header-bg">
+      <div class="header-bg" @click="copyUrl">
         <el-row class="self-el-row">
           <el-col :span="4" class="text-left">
             <span>邀请链接</span>
           </el-col>
           <el-col :span="20" class="text-right">
-            <span>-</span>
+            <span style="color: #1b8e5d">{{ url }}</span>
           </el-col>
         </el-row>
         <el-row class="self-el-row">
@@ -15,7 +15,7 @@
             <span>邀请码</span>
           </el-col>
           <el-col :span="20" class="text-right">
-            <span style="color: #1b8e5d">{{code}}</span>
+            <span style="color: #1b8e5d">{{ code }}</span>
           </el-col>
         </el-row>
       </div>
@@ -40,7 +40,7 @@
                     <span>被邀请人姓名</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span>{{item.realName}}</span>
+                    <span>{{ item.realName }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -48,7 +48,7 @@
                     <span>邀请人账号</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span>{{item.phone}}</span>
+                    <span>{{ item.phone }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
@@ -56,7 +56,7 @@
                     <span>直推奖</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span>{{item.recommendTotal}}</span>
+                    <span>{{ item.recommendTotal }}</span>
                   </el-col>
                 </el-row>
               </div>
@@ -80,6 +80,8 @@
 import Foot from '@/components/foot/foot'
 import {Toast} from 'mint-ui'
 import * as api from '@/axios/api'
+import APIUrl from '@/axios/api.url'
+import Clipboard from 'clipboard'
 
 export default {
   components: {
@@ -90,10 +92,25 @@ export default {
       loading: false,
       code: '',
       list: [],
-      selected: '4' // 选中
+      selected: '4', // 选中
+      url: APIUrl.registerURL
     }
   },
   methods: {
+    copyUrl () {
+      Toast('拷贝成功')
+      const clipboard = new Clipboard('.btn', {
+        text: this.url + '#/register?code=' + this.code
+      })
+      clipboard.on('success', () => {
+        Toast('复制成功')
+        clipboard.destroy()
+      })
+      clipboard.on('error', () => {
+        Toast('复制失败')
+        clipboard.destroy()
+      })
+    },
     async getList () {
       this.loading = true
       let opts = {

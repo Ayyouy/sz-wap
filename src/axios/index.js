@@ -7,7 +7,6 @@ import {Toast} from 'mint-ui'
 import qs from 'qs' // 引入qs
 import router from '@/router'
 import APIUrl from './api.url'
-import {logout} from './api'
 
 // axios 默认配置  更多配置查看Axios中文文档
 axios.defaults.timeout = 50000 // 超时默认值

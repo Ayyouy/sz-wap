@@ -156,6 +156,7 @@ export default {
   },
   mounted: function () {
     if (this.$route.query.code) {
+      console.log('invitecode', this.$route.query.code)
       this.invitecode = this.$route.query.code
     }
     this.getInfoSite()

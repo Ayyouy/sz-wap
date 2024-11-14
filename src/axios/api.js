@@ -1,5 +1,5 @@
 import {post, get} from '@/axios/index'
-// import APIUrl from '@/axios/api.url'
+
 
 // var img_url = APIUrl.util.image // 这个就是图片上传的api url
 

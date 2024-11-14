@@ -45,7 +45,7 @@
                     <span>购买人</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.realName }}</span>
+                    <span> {{ item.buyUserName }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===5">
@@ -154,7 +154,8 @@
                     <span>持仓份额</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.portion }}份</span>
+                    <!-- <span> {{ item.portion }}份</span> -->
+                    <span> {{ item.period }}份</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===3">
