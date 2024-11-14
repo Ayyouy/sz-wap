@@ -1,7 +1,9 @@
 <template>
   <div class="wrapper">
     <div class="mint-navbar top-navbar is-fixed" style="top: 1.84rem !important;background-color: #16171d">
-      <div class="header-bg" @click="copyUrl">
+      <div class="header-bg" v-clipboard:copy="url + '#/register?code=' + code"
+           v-clipboard:success="onCopySuccess"
+           v-clipboard:error="onCopyError">
         <el-row class="self-el-row">
           <el-col :span="4" class="text-left">
             <span>邀请链接</span>
@@ -97,19 +99,11 @@ export default {
     }
   },
   methods: {
-    copyUrl () {
-      Toast('拷贝成功')
-      const clipboard = new Clipboard('.btn', {
-        text: this.url + '#/register?code=' + this.code
-      })
-      clipboard.on('success', () => {
-        Toast('复制成功')
-        clipboard.destroy()
-      })
-      clipboard.on('error', () => {
-        Toast('复制失败')
-        clipboard.destroy()
-      })
+    onCopySuccess () {
+      Toast('复制成功！')
+    },
+    onCopyError () {
+      Toast('复制失败，请重试！')
     },
     async getList () {
       this.loading = true
