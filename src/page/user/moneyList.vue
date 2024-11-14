@@ -10,14 +10,14 @@
       <mt-tab-container-item id="1">
         <MoneyList1 ref="moneyList1" :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item id="4">
-        <MoneyList4 ref="moneyList4" :selectedNumber="selected"/>
-      </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <MoneyList2 ref="moneyList2" :selectedNumber="selected"/>
       </mt-tab-container-item>
       <mt-tab-container-item id="3">
         <MoneyList3 ref="moneyList3" :selectedNumber="selected"/>
+      </mt-tab-container-item>
+      <mt-tab-container-item id="4">
+        <MoneyList4 ref="moneyList4" :selectedNumber="selected"/>
       </mt-tab-container-item>
     </mt-tab-container>
     <!-- <foot></foot> -->

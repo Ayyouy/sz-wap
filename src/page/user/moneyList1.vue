@@ -63,7 +63,7 @@
         <el-form-item label="时间"
         >
           <el-date-picker
-            v-model="searchForm.bbb"
+            v-model="searchForm.orderDate"
             type="daterange"
             align="right"
             unlink-panels
@@ -107,9 +107,9 @@ export default {
       payTypeArr: ['支付宝', '银行卡', '泰达币'],
       drawerShow: false,
       searchForm: {
-        aaa: '0',
-        bbb: '',
-        ccc: ''
+        orderStatus: '',
+        orderDate: '',
+        orderSn: ''
       },
       pickerOptions: {
         shortcuts: [
@@ -151,9 +151,9 @@ export default {
         orderStatus: this.searchForm.orderStatus, // 订单状态
         orderSn: this.searchForm.orderSn
       }
-      if (this.searchForm.bbb) {
-        opt.beginTime = new Date(this.searchForm.bbb[0])
-        opt.endTime = new Date(this.searchForm.bbb[1])
+      if (this.searchForm.orderDate) {
+        opt.beginTime = new Date(this.searchForm.orderDate[0])
+        opt.endTime = new Date(this.searchForm.orderDate[1])
       }
       let data = await api.rechargeList(opt)
       if (data.status === 0) {
@@ -162,6 +162,13 @@ export default {
       } else {
         Toast(data.msg)
       }
+      this.clearForm()
+    },
+    clearForm () {
+      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+      this.searchForm.orderStatus = ''
+      this.searchForm.orderDate = ''
+      this.searchForm.orderSn = ''
     },
     searchOpen () {
       this.drawerShow = true

@@ -1,40 +1,42 @@
 <template>
   <div class="listContainer">
     <div class="topBtn" @click="searchOpen">筛选</div>
-    <div v-for="item in list" :key="item.gg" class="item">
+    <div v-for="item in list" :key="item.id" class="item">
       <div class="title">
-        <div class="left">{{ item.aa }}</div>
+        <div class="left">{{ item.orderSn }}</div>
+        <div class="right">
+          <el-tag :type="tagTypeArr[item.orderStatus]">{{ tagTextArr[item.orderStatus] }}</el-tag>
+        </div>
       </div>
       <div class="content">
-        <div class="left">转账金额</div>
-        <div class="right">{{ item.cc }}$</div>
+        <div class="left">出金金额</div>
+        <div class="right">${{ item.realAmt }}</div>
       </div>
       <div class="content">
-        <div class="left">实际到账金额</div>
-        <div class="right">等待接口</div>
+        <div class="left">出金方式</div>
+        <div class="right">{{ payTypeArr[item.payChannel] }}</div>
       </div>
       <div class="content">
-        <div class="left">手续费</div>
-        <div class="right">等待接口</div>
+        <div class="left">汇率</div>
+        <div class="right">1:
+          {{ item.rate }}
+        </div>
       </div>
       <div class="content">
-        <div class="left">转账类型</div>
-        <div class="right">{{ typeArr[item.dd] }}</div>
-      </div>
-      <div class="content">
-        <div class="left">基金账户余额</div>
-        <div class="right">{{ item.ee }}$</div>
+        <div class="left">出金金额</div>
+        <div class="right">{{ item.symbol }}{{ Number(item.payAmt).toFixed(2) }}</div>
       </div>
       <div class="content">
         <div class="left">现金账户余额</div>
-        <div class="right">{{ item.ff }}$</div>
+        <div class="right">${{ item.nowEnableAmt }}</div>
       </div>
       <div class="content">
         <div class="left">说明</div>
-        <div class="right">等待接口</div>
+        <!--    todo 等待接口返回 -->
+        <div class="right"></div>
       </div>
       <div class="footer">
-        {{ item.gg }}
+        {{ new Date(item.addTime) | timeFormat }}
       </div>
     </div>
 
@@ -51,32 +53,33 @@
         label-position="top"
       >
         <el-form-item label="状态">
-          <el-radio-group v-model="searchForm.aaa">
-            <el-radio label="0" border style="border: none">全部</el-radio>
-            <el-radio label="1" border style="border: none">转入现金账户</el-radio>
-            <el-radio label="2" border style="border: none">转入基金账户</el-radio>
+          <el-radio-group v-model="searchForm.orderStatus">
+            <el-radio label="" border style="border: none">全部</el-radio>
+            <el-radio label="1" border style="border: none">审核成功</el-radio>
+            <el-radio label="2" border style="border: none">审核失败</el-radio>
+            <el-radio label="3" border style="border: none">待审核</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="时间"
-        >
+        <el-form-item label="时间">
           <el-date-picker
-            v-model="searchForm.bbb"
+            v-model="searchForm.orderDate"
             type="daterange"
             align="right"
             unlink-panels
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
             :picker-options="pickerOptions"
-            style="border: none"
+            style="border:none"
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="订单编号" style="border: none">
-          <input v-model="searchForm.ccc" class="el-input__inner" placeholder="请输入"/>
+        <el-form-item label="订单编号">
+          <input v-model="searchForm.orderSn" class="el-input__inner" placeholder="请输入"/>
         </el-form-item>
         <el-form-item class="footer">
-          <el-button>取消</el-button>
+          <el-button @click="() => this.drawerShow = false">取消</el-button>
           <el-button type="primary" @click="searchSubmit">确定</el-button>
         </el-form-item>
       </el-form>
@@ -98,12 +101,14 @@ export default {
   data () {
     return {
       list: [],
-      typeArr: ['转入现金账户', '转入基金账户'],
+      tagTypeArr: ['primary', 'success', 'danger'],
+      tagTextArr: ['审核中', '审核通过', '审核失败'],
+      payTypeArr: ['支付宝', '银行卡', '泰达币'],
       drawerShow: false,
       searchForm: {
-        aaa: '0',
-        bbb: '',
-        ccc: ''
+        orderStatus: '',
+        orderDate: '',
+        orderSn: ''
       },
       pickerOptions: {
         shortcuts: [
@@ -138,27 +143,31 @@ export default {
       }
     }
   },
-  mounted () {
-    this.getList()
-  },
   methods: {
     async getList () {
-      // todo 待定
-      // let opt = {
-      //   payChannel: '', // 支付方式
-      //   withStatus: this.searchForm.withStatus // 订单状态
-      // }
-      // if (this.searchForm.bbb) {
-      //   opt.beginTime = new Date(this.searchForm.bbb[0])
-      //   opt.endTime = new Date(this.searchForm.bbb[1])
-      // }
-      // let data = await api.getMoneyList(opt)
-      // if (data.status === 0) {
-      // this.list = data.data.list
-      //   this.total = data.data.total
-      // } else {
-      //   Toast(data.msg)
-      // }
+      console.log('有没有走这个方法?')
+      let opt = {
+        payChannel: '', // 支付方式
+        orderStatus: this.searchForm.orderStatus, // 订单状态
+        orderSn: this.searchForm.orderSn
+      }
+      if (this.searchForm.orderDate) {
+        opt.beginTime = new Date(this.searchForm.orderDate[0])
+        opt.endTime = new Date(this.searchForm.orderDate[1])
+      }
+      let data = await api.rechargeList(opt)
+      if (data.status === 0) {
+        this.list = data.data.list
+        this.total = data.data.total
+      } else {
+        Toast(data.msg)
+      }
+      this.clearForm()
+    },
+    clearForm () {
+      this.searchForm.orderStatus = ''
+      this.searchForm.orderDate = ''
+      this.searchForm.orderSn = ''
     },
     searchOpen () {
       this.drawerShow = true
@@ -173,7 +182,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .el-input__inner {
   border: none !important;
   box-shadow: none !important;
