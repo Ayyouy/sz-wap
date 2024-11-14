@@ -71,6 +71,22 @@
               @click="toSure">确定</span>
       </div>
     </div>
+    <el-dialog
+      top="30vh"
+      width="80%"
+      :title="dialogObj.title"
+      class="submitDialog"
+      :visible.sync="dialogObj.flag"
+      :close-on-click-modal="false"
+    >
+      <p>
+        {{ dialogObj.content }}
+      </p>
+      <span slot="footer">
+        <el-button type="danger" size="mini" @click="dialogObj.cancel">取消</el-button>
+        <el-button type="primary" size="mini" @click="dialogObj.success">{{ dialogObj.successTitle }}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -97,6 +113,14 @@ export default {
         payType: '0',
         rate: 1
       },
+      dialogObj: {
+        flag: false,
+        title: '',
+        content: '',
+        successTitle: '',
+        success: Function,
+        cancel: Function
+      },
       doubleSubmit: false,
       doubleTitle: '禁止重复提交', // 第一遍时提示此消息，第二遍时就提示返回重拾，这种是应对服务器异常，而导致doubleSubmit值没变过来的情况
       outMoneyTitle: (this.$store.state.bankInfo.currency == null || this.$store.state.bankInfo.currency === undefined) ? '' : this.$store.state.bankInfo.currency
@@ -109,6 +133,18 @@ export default {
     }
   },
   mounted () {
+    if (!this.$store.state.bankInfo.bankNo) {
+      this.doubleSubmit = false
+      this.dialogObj.flag = true
+      this.dialogObj.title = '银行卡提示'
+      this.dialogObj.content = '尚未添加银行卡'
+      this.dialogObj.successTitle = '去添加'
+      this.dialogObj.cancel = this.dialogCancel
+      this.dialogObj.success = () => {
+        this.dialogObj.flag = false
+        this.$router.push('/addCard')
+      }
+    }
     if (this.$state.theme === 'red') {
       document.body.classList.remove('black-bg')
       document.body.classList.add('red-bg')
@@ -121,6 +157,13 @@ export default {
     }
   },
   methods: {
+    dialogCancel () {
+      this.dialogObj.flag = false
+      this.dialogObj.title = ''
+      this.dialogObj.content = ''
+      this.dialogObj.success = () => {
+      }
+    },
     changeAllNumber () {
       this.formData.amt = this.$store.state.userInfo.enableAmt
     },
@@ -144,14 +187,28 @@ export default {
       // 未实名认证和添加银行卡不能提现
       if (!this.$store.state.userInfo.isActive) {
         this.doubleSubmit = false
-        Toast('尚未实名认证')
-        this.$router.push('/authentication')
+        this.dialogObj.flag = true
+        this.dialogObj.title = '实名认证'
+        this.dialogObj.content = '尚未实名认证'
+        this.dialogObj.successTitle = '去实名'
+        this.dialogObj.cancel = this.dialogCancel
+        this.dialogObj.success = () => {
+          this.dialogObj.flag = false
+          this.$router.push('/authentication')
+        }
         return
       }
       if (!this.$store.state.bankInfo.bankNo) {
         this.doubleSubmit = false
-        Toast('尚未添加银行卡')
-        this.$router.push('/addCard')
+        this.dialogObj.flag = true
+        this.dialogObj.title = '银行卡提示'
+        this.dialogObj.content = '尚未添加银行卡'
+        this.dialogObj.successTitle = '去添加'
+        this.dialogObj.cancel = this.dialogCancel
+        this.dialogObj.success = () => {
+          this.dialogObj.flag = false
+          this.$router.push('/addCard')
+        }
         return
       }
       if (!this.formData.amt || this.formData.amt <= 0) {

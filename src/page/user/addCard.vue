@@ -151,6 +151,7 @@ export default {
   computed: {},
   created() {},
   mounted() {
+    // todo 注意添加或修改之前判断是否实名认证额了，等待接口修改好后再完成这个
     this.type = this.$route.query.type ? "修改" : "添加";
     if (this.$store.state.bankInfo) {
       this.bankName = this.$store.state.bankInfo.bankName;

@@ -6,8 +6,6 @@
           暂未绑定银行卡和泰达币钱包
         </div>
         <div v-if="cardInfo.length > 0" class="back-info">
-          <!-- 银行卡信息 -->
-<!--          <p class="name">银行账户</p>-->
           <ul>
             <li class="clearfix" v-for="i in cardInfo" :key="i.key">
               <div class="col-xs-3">

@@ -9,6 +9,22 @@
         <span class="max">最高: {{ i.channelMaxLimit }}</span>
       </div>
     </div>
+    <el-dialog
+      top="30vh"
+      width="80%"
+      :title="dialogObj.title"
+      class="submitDialog"
+      :visible.sync="dialogObj.flag"
+      :close-on-click-modal="false"
+    >
+      <p>
+        {{ dialogObj.content }}
+      </p>
+      <span slot="footer">
+        <el-button type="danger" size="mini" @click="dialogObj.cancel">取消</el-button>
+        <el-button type="primary" size="mini" @click="dialogObj.success">{{ dialogObj.successTitle }}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -19,11 +35,28 @@ import {Toast} from 'mint-ui'
 export default {
   data () {
     return {
-      optionsPay: []
+      optionsPay: [],
+      dialogObj: {
+        flag: false,
+        title: '实名认证',
+        content: '尚未实名认证',
+        successTitle: '去实名',
+        success: Function,
+        cancel: Function
+      }
     }
   },
   mounted () {
-    this.getPayInfo()
+    if (!this.$store.state.userInfo.isActive) {
+      this.dialogObj.flag = true
+      this.dialogObj.cancel = this.dialogCancel
+      this.dialogObj.success = () => {
+        this.dialogObj.flag = false
+        this.$router.push('/authentication')
+      }
+    } else {
+      this.getPayInfo()
+    }
   },
   methods: {
     async getPayInfo () {

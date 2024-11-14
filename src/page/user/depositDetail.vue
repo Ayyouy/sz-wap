@@ -178,7 +178,7 @@ export default {
         withTimeBegin: 13, // 提现开始时间
         withTimeEnd: 15, // 提现结束时间
         withFeeSingle: 3, // 提现单笔手续费
-        withFeePercent: 0.008, // 提现单笔手续费
+        withFeePercent: 0.008 // 提现单笔手续费
       },
       payInfo: {},
       payId: '',
@@ -187,7 +187,7 @@ export default {
         amt: '', // 转账金额（美元）
         payType: '', // 渠道类型 #0：支付包 1：银行转账 2：虚拟货币
         currency: '', // 货币简称
-        rechargeImg: '', // 转账凭证截图
+        rechargeImg: '' // 转账凭证截图
       },
       dialogVisible: false,
       imgSrc: '',
