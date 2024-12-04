@@ -1,22 +1,22 @@
 <template>
   <div class="wrapper">
     <div v-if="list.length <= 0" class="empty text-center">
-      暂无订单信息!
+      {{ $t('title2') }}
     </div>
     <div v-if="list.length > 0">
       <ul
         class="order-info-box-wrap"
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="loading"
-        infinite-scroll-distance="10"
-      >
+        infinite-scroll-distance="10">
         <li v-for="item in list" :key="item.key">
           <div class="order-info-box">
             <div class="order-title">
               <span class="main">{{ item.stockCode }}</span>
               <span class="secondary">{{ item.stockName }}</span>
-              <span v-if="item.stockPlate == '科创'" :class="item.stockPlate == '科创' ? 'type' : ''">科创</span>
-              <span class="pull-right">总盈亏:
+              <span v-if="item.stockPlate == '科创'"
+                    :class="item.stockPlate == '科创' ? 'type' : ''">{{ $t('title1') }}</span>
+              <span class="pull-right">{{ $t('own.notice4') }}
                 <b :class="
                   item.rateProfitAndLose > 0
                   ? 'space green'
@@ -29,28 +29,28 @@
             </div>
             <div class="order-info">
               <p class="clearfix">
-                <span class="col-xs-6">买入价格:<b class="space">{{ item.stopTargetPrice }}</b></span>
-                <span class="col-xs-6">市值:<b class="space">{{ item.orderTotalPrice }}</b></span>
+                <span class="col-xs-6">{{ $t('own.price') }}<b class="space">{{ item.stopTargetPrice }}</b></span>
+                <span class="col-xs-6">{{ $t('own.mkt') }}<b class="space">{{ item.orderTotalPrice }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">实际购买价格:<b class="space">{{ item.buyOrderPrice }}</b></span>
-                <span class="col-xs-6">卖出价格:<b class="space">{{ item.sellOrderPrice }}</b></span>
+                <span class="col-xs-6">{{ $t('own.actual') }}<b class="space">{{ item.buyOrderPrice }}</b></span>
+                <span class="col-xs-6">{{ $t('sell4') }}<b class="space">{{ item.sellOrderPrice }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">数量:<b class="space">{{ item.orderNum }}</b></span>
-                <span class="col-xs-6">手续费:<b class="space">{{ item.orderFee }}</b></span>
+                <span class="col-xs-6">{{ $t('own.vol') }}<b class="space">{{ item.orderNum }}</b></span>
+                <span class="col-xs-6">{{ $t('own.fee') }}<b class="space">{{ item.orderFee }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">封锁期:<b class="space">{{ item.lockTime / (60 * 24) }}天</b></span>
-                <span class="col-xs-6">汇率:<b class="space">{{ item.rate }}</b></span>
+                <span class="col-xs-6">{{ $t('own.lock') }}<b class="space">{{ item.lockTime / (60 * 24) }}天</b></span>
+                <span class="col-xs-6">{{ $t('own.fx') }}<b class="space">{{ item.rate }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">印花税:<b class="space">{{ item.orderSpread }}</b></span>
-                <span class="col-xs-6">留仓费:<b class="space">{{ item.orderStayFee }}</b></span>
+                <span class="col-xs-6">{{ $t('own.notice1') }}<b class="space">{{ item.orderSpread }}</b></span>
+                <span class="col-xs-6">{{ $t('own.notice2') }}<b class="space">{{ item.orderStayFee }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">留仓天数:<b class="space">{{ item.orderStayDays }}</b></span>
-                <span class="col-xs-6">浮动盈亏:
+                <span class="col-xs-6">{{ $t('day') }}<b class="space">{{ item.orderStayDays }}</b></span>
+                <span class="col-xs-6">{{ $t('pl1') }}
                   <b :class="
                     item.profitAndLose<0
                     ?'space green'
@@ -61,7 +61,7 @@
                 </span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-12">总盈亏:
+                <span class="col-xs-12">{{ $t('pl') }}
                   <b v-if="item.now_price == 0">-</b>
                   <b v-else :class="
                     item.allProfitAndLose < 0
@@ -75,12 +75,12 @@
               </p>
               <p class="clearfix">
                 <span class="secondary col-xs-6" style=" font-size: 12px;">
-                  买入:
+                  {{ $t('own.buy') }}
                   <b v-if="item.buyOrderTime">{{ new Date(item.buyOrderTime) | timeFormat }}</b>
                   <b v-else></b>
                 </span>
                 <span class="secondary col-xs-6" style=" font-size: 12px;">
-                  卖出:
+                 {{ $t('sell2') }}
                   <b v-if="item.sellOrderTime">{{ new Date(item.sellOrderTime) | timeFormat }}</b>
                   <b v-else></b>
                 </span>
@@ -91,10 +91,10 @@
       </ul>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
+        {{ $t('market.loading') }}
       </div>
       <div v-show="!loading" class="load-all text-center">
-        已全部加载
+        {{ $t('own.all') }}
       </div>
     </div>
   </div>
@@ -105,7 +105,6 @@ import {Toast} from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
-  components: {},
   props: {
     selectedNumber: {
       type: String
@@ -141,9 +140,6 @@ export default {
       }
     }
   },
-  // mounted () {
-  //   this.getListDetail()
-  // },
   methods: {
     async loadMore () {
       if (

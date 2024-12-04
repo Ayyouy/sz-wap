@@ -6,7 +6,7 @@
            v-clipboard:error="onCopyError">
         <el-row class="self-el-row">
           <el-col :span="4" class="text-left">
-            <span>邀请链接</span>
+            <span>{{ $t('invitation.link') }}</span>
           </el-col>
           <el-col :span="20" class="text-right">
             <span style="color: #1b8e5d">{{ url }}</span>
@@ -14,7 +14,7 @@
         </el-row>
         <el-row class="self-el-row">
           <el-col :span="4" class="text-left">
-            <span>邀请码</span>
+            <span>{{ $t('invitation.code') }}</span>
           </el-col>
           <el-col :span="20" class="text-right">
             <span style="color: #1b8e5d">{{ code }}</span>
@@ -25,11 +25,11 @@
     <mt-tab-container class="order-list" v-model="selected" style="margin-top: 1.9rem !important;">
       <mt-tab-container-item id="4">
         <div v-if="list.length<=0 && !loading" class="empty text-center">
-          暂无邀请信息!
+          {{ $t('msg1') }}
         </div>
         <div v-if="list.length<=0 && loading" class="empty text-center">
           <mt-spinner type="fading-circle"></mt-spinner>
-          加载中...
+          {{ $t('market.loading') }}
         </div>
         <div v-if="list.length>0">
           <ul class="order-info-box-wrap"
@@ -39,7 +39,7 @@
               <div class="order-info-box">
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>被邀请人姓名</span>
+                    <span>{{ $t('invitation.name') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span>{{ item.realName }}</span>
@@ -47,7 +47,7 @@
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>邀请人账号</span>
+                    <span>{{ $t('invitation.account') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span>{{ item.phone }}</span>
@@ -55,7 +55,7 @@
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>直推奖</span>
+                    <span>{{ $t('invitation.bonus') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span>{{ item.recommendTotal }}</span>
@@ -66,10 +66,10 @@
           </ul>
           <div v-show="loading" class="load-all text-center">
             <mt-spinner type="fading-circle"></mt-spinner>
-            加载中...
+            {{ $t('market.loading') }}
           </div>
           <div v-show="!loading" class="load-all text-center">
-            已全部加载
+            {{ $t('invitation.all') }}
           </div>
         </div>
       </mt-tab-container-item>
@@ -83,7 +83,6 @@ import Foot from '@/components/foot/foot'
 import {Toast} from 'mint-ui'
 import * as api from '@/axios/api'
 import APIUrl from '@/axios/api.url'
-import Clipboard from 'clipboard'
 
 export default {
   components: {
@@ -100,10 +99,12 @@ export default {
   },
   methods: {
     onCopySuccess () {
-      Toast('复制成功！')
+      // Toast('复制成功！')
+      Toast(this.$t('recharge.success'))
     },
     onCopyError () {
-      Toast('复制失败，请重试！')
+      // Toast('复制失败，请重试！')
+      Toast(this.$t('recharge.msgCopy'))
     },
     async getList () {
       this.loading = true

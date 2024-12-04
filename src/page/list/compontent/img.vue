@@ -1,14 +1,12 @@
 <template>
   <div class="img">
     <mt-navbar v-model="selected">
-      <mt-tab-item id="1">分时</mt-tab-item>
-      <mt-tab-item id="2">5分</mt-tab-item>
-      <mt-tab-item id="3">15分</mt-tab-item>
-      <mt-tab-item id="4">30分</mt-tab-item>
-      <mt-tab-item id="5">日线</mt-tab-item>
+      <mt-tab-item id="1">{{$t('line.tick')}}</mt-tab-item>
+      <mt-tab-item id="2">{{$t('line.five')}}</mt-tab-item>
+      <mt-tab-item id="3">{{$t('line.fiveTen')}}</mt-tab-item>
+      <mt-tab-item id="4">{{$t('line.threeTen')}}</mt-tab-item>
+      <mt-tab-item id="5">{{$t('line.day')}}</mt-tab-item>
     </mt-navbar>
-
-    <!-- tab-container -->
     <mt-tab-container v-model="selected">
       <mt-tab-container-item id="1">
         <chart1 :selected="selected" :code="code"></chart1>
@@ -20,7 +18,6 @@
         <chart3 :selected="selected" :code="code"></chart3>
       </mt-tab-container-item>
       <mt-tab-container-item id="4">
-        <!-- <img class="img" :src="imgList.monthImg" alt=""> -->
         <chart4 :selected="selected" :code="code"></chart4>
       </mt-tab-container-item>
       <mt-tab-container-item id="5">
@@ -63,11 +60,7 @@ export default {
   watch: {
     selected () {
     }
-  },
-  computed: {},
-  created () {},
-  mounted () {},
-  methods: {}
+  }
 }
 </script>
 <style lang="less" scoped>

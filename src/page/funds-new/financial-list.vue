@@ -9,11 +9,11 @@
     <mt-tab-container class="order-list" v-model="selected" style="margin-top: 1rem !important;">
       <mt-tab-container-item id="3">
         <div v-if="list.length<=0 && !getStatus" class="empty text-center">
-          暂无资金信息!
+          {{ $t('msg2') }}
         </div>
         <div v-if="list.length<=0 && getStatus" class="empty text-center">
           <mt-spinner type="fading-circle"></mt-spinner>
-          加载中...
+          {{ $t('market.loading') }}
         </div>
         <div v-if="list.length>0">
           <ul class="order-info-box-wrap"
@@ -24,7 +24,7 @@
               <div class="order-info-box">
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>变动金额</span>
+                    <span>{{ $t('capital.amount') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span :style="item.amount>=0?'color:green':'color:red'"> ${{
@@ -34,7 +34,7 @@
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>来源</span>
+                    <span>{{ $t('capital.item') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.type }}</span>
@@ -42,7 +42,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>购买人</span>
+                    <span>{{ $t('msg3') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.buyUserName }}</span>
@@ -50,7 +50,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>购买账号</span>
+                    <span>{{ $t('msg4') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.buyUserPhone }}</span>
@@ -59,7 +59,7 @@
                 <!-- 备注：时间又改为全部显示 v-show="item.typeFlagValue===1||item.typeFlagValue===6" -->
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>时间</span>
+                    <span>{{ $t('capital.time') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ new Date(item.addTime)|timeFormat }}</span>
@@ -67,7 +67,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue>1&&item.typeFlagValue<7">
                   <el-col :span="8" class="text-left">
-                    <span>基金名称</span>
+                    <span>{{ $t('capital.name') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.fundName }}</span>
@@ -75,25 +75,29 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===4">
                   <el-col :span="8" class="text-left">
-                    <span>持仓天数</span>
+                    <span>{{ $t('capital.period') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.day }}天</span>
+                    <span> {{ item.day }}{{ $t('capital.day') }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===2||item.typeFlagValue===4">
                   <el-col :span="8" class="text-left">
-                    <span v-show="item.typeId==='bug_fund'">购买份额</span>
-                    <span v-show="item.typeId==='back_fund'||item.typeId==='shuhui_income'">赎回份额</span>
+                    <span v-show="item.typeId==='bug_fund'">{{ $t('capital.number') }}</span>
+                    <span
+                      v-show="item.typeId==='back_fund'||item.typeId==='shuhui_income'">{{
+                        $t('capital.amount1')
+                      }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.portion }}份<span v-show="item.typeId==='shuhui_income'">（{{ item.period }}期）</span>
+                    <span> {{ item.portion }}{{ $t('capital.units') }}<span
+                      v-show="item.typeId==='shuhui_income'">（{{ item.period }}{{ $t('capital.periods') }}）</span>
                     </span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeId==='shuhui_income'">
                   <el-col :span="8" class="text-left">
-                    <span>收益率</span>
+                    <span>{{ $t('capital.rate') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.rates }}%</span>
@@ -101,8 +105,8 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===6">
                   <el-col :span="8" class="text-left">
-                    <span v-show="item.typeId==='shengou'">申购费率</span>
-                    <span v-show="item.typeId==='shuhui'">赎回费率</span>
+                    <span v-show="item.typeId==='shengou'">{{ $t('capital.rate1') }}</span>
+                    <span v-show="item.typeId==='shuhui'">{{ $t('capital.rate2') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.rates }}%</span>
@@ -110,16 +114,16 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===6">
                   <el-col :span="8" class="text-left">
-                    <span v-show="item.typeId==='shengou'">申购金额</span>
-                    <span v-show="item.typeId==='shuhui'">赎回金额</span>
+                    <span v-show="item.typeId==='shengou'">{{ $t('capital.amount2') }}</span>
+                    <span v-show="item.typeId==='shuhui'">{{ $t('capital.amount1') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> ${{ item.money }}（{{ item.portion }}份）</span>
+                    <span> ${{ item.money }}（{{ item.portion }}{{ $t('capital.units') }}）</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===3">
                   <el-col :span="8" class="text-left">
-                    <span>持仓金额</span>
+                    <span>{{ $t('capital.used') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.money }}</span>
@@ -127,7 +131,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>购买金额</span>
+                    <span>{{ $t('msg5') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.money }}</span>
@@ -135,7 +139,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>奖励比例</span>
+                    <span>{{ $t('msg6') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.rates }}%</span>
@@ -143,7 +147,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===5">
                   <el-col :span="8" class="text-left">
-                    <span>推荐奖励</span>
+                    <span>{{ $t('msg7') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.money }}</span>
@@ -151,16 +155,15 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===3">
                   <el-col :span="8" class="text-left">
-                    <span>持仓份额</span>
+                    <span>{{ $t('capital.posNum') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <!-- <span> {{ item.portion }}份</span> -->
-                    <span> {{ item.period }}份</span>
+                    <span> {{ item.period }}{{ $t('capital.units') }}</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue===3">
                   <el-col :span="8" class="text-left">
-                    <span>收益率</span>
+                    <span>{{ $t('capital.rate') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.rates }}%</span>
@@ -168,7 +171,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue!=5">
                   <el-col :span="8" class="text-left">
-                    <span>基金账户余额</span>
+                    <span>{{ $t('capital.balance') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ Number(item.balance).toFixed(2) }}</span>
@@ -176,7 +179,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.typeFlagValue!=5">
                   <el-col :span="8" class="text-left">
-                    <span>订单编号</span>
+                    <span>{{ $t('capital.order') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.orderNum }}</span>
@@ -187,41 +190,43 @@
           </ul>
           <div v-show="loading" class="load-all text-center">
             <mt-spinner type="fading-circle"></mt-spinner>
-            加载中...
+            {{ $t('market.loading') }}
           </div>
           <div v-show="!loading" class="load-all text-center">
-            已全部加载
+            {{ $t('invitation.all') }}
           </div>
-
         </div>
       </mt-tab-container-item>
     </mt-tab-container>
-    <el-dialog center top="25vh" title="筛选" width="80%" :visible.sync="dialogVisible" :show-close="false">
+    <el-dialog center top="25vh" :title="$t('capital.screen')" width="80%" :visible.sync="dialogVisible"
+               :show-close="false">
       <div>
         <el-form :inline="false" :model="form" size="mini">
-          <el-form-item label="来源" prop="type">
-            <el-select clearable filterable placeholder="所有" value-key="type"
+          <el-form-item :label="$t('capital.item')" prop="type">
+            <el-select clearable filterable :placeholder="$t('capital.all')" value-key="type"
                        v-model="form.type" style="width: 100%;">
               <el-option v-for="item in types" style="width: 100%;" :label="item.value" :value="item.type"
                          :key="item.type">{{ item.value }}
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="开始时间" prop="buyTimeStart">
-            <el-input v-model="form.buyTimeStart" placeholder="请输入" type="date" :max="form.buyTimeEnd"></el-input>
+          <el-form-item :label="$t('msg8')" prop="buyTimeStart">
+            <el-input v-model="form.buyTimeStart" :placeholder="$t('capital.input')" type="date"
+                      :max="form.buyTimeEnd"></el-input>
           </el-form-item>
-          <el-form-item label="结束时间" prop="buyTimeEnd">
-            <el-input v-model="form.buyTimeEnd" placeholder="请输入" type="date" :min="form.buyTimeStart"></el-input>
+          <el-form-item :label="$t('msg9')" prop="buyTimeEnd">
+            <el-input v-model="form.buyTimeEnd" :placeholder="$t('capital.input')" type="date"
+                      :min="form.buyTimeStart"></el-input>
           </el-form-item>
-          <el-form-item label="订单编号" prop="orderNum">
-            <el-input v-model="form.orderNum" placeholder="请输入"></el-input>
+          <el-form-item :label="$t('capital.order')" prop="orderNum">
+            <el-input v-model="form.orderNum" :placeholder="$t('capital.input')"></el-input>
           </el-form-item>
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-              <el-button @click="cancelAndClearForm">取 消</el-button>
-              <el-button type="primary" @click="submit()">确 定</el-button>
-            </span>
+              <el-button @click="cancelAndClearForm">{{ $t('capital.cancel') }}</el-button>
+              <el-button type="primary" @click="submit()">{{ $t('capital.confirm') }}</el-button>
+      </span>
     </el-dialog>
     <Foot></Foot>
   </div>

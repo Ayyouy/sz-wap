@@ -35,7 +35,7 @@
         <div class="pull-right col-xs-5">
           <ul class="price-detail text-center">
             <li>
-              <p class="title">昨收</p>
+              <p class="title">{{ $t('line.prev') }}</p>
               <p
                 :class="
                   detail.nowPrice - detail.preclose_px >= 0
@@ -47,7 +47,7 @@
               </p>
             </li>
             <li>
-              <p class="title">今开</p>
+              <p class="title">{{ $t('line.open') }}</p>
               <p
                 :class="
                   detail.nowPrice - detail.preclose_px >= 0
@@ -59,7 +59,7 @@
               </p>
             </li>
             <li>
-              <p class="title">最高</p>
+              <p class="title">{{ $t('line.high') }}</p>
               <p
                 :class="
                   detail.nowPrice - detail.preclose_px >= 0
@@ -71,7 +71,7 @@
               </p>
             </li>
             <li>
-              <p class="title">最低</p>
+              <p class="title">{{ $t('line.low') }}</p>
               <p
                 :class="
                   detail.nowPrice - detail.preclose_px >= 0
@@ -87,48 +87,43 @@
       </div>
       <div class="row detail-list">
         <div class="col-xs-4">
-          <p class="title">成交量</p>
+          <p class="title">{{ $t('line.vol') }}</p>
           <p class="number">
-            {{ (Number(detail.business_amount) / 100 / 10000).toFixed(2) }}万
+            {{ (Number(detail.business_amount) / 100 / 10000).toFixed(2) }}{{ $t('line.thou') }}
           </p>
         </div>
         <div class="col-xs-6">
-          <p class="title">成交额</p>
+          <p class="title">{{ $t('line.tran') }}</p>
           <p class="number">
-            {{ (Number(detail.business_balance) / 100000000).toFixed(2) }}亿
+            {{ (Number(detail.business_balance) / 100000000).toFixed(2) }}{{ $t('line.mill') }}
           </p>
         </div>
       </div>
     </div>
     <div class="page-part box-part">
-      <!-- 图 -->
       <imgBox :code="$route.query.code" :imgList="detail"/>
     </div>
     <div class="explain">
-      <p class="title">说明:</p>
+      <p class="title">{{ $t('line.explain') }}</p>
       <div class="content" v-html="detail.remark"/>
     </div>
     <div class="agree-footer text-center">
       <div class="btn-box clearfix">
-        <a
-          v-if="!isOptionOpt"
+        <a v-if="!isOptionOpt"
           class="pull-left bottom-btn"
           href="javascript:;"
-          @click="addOptions"
-        >添加自选</a
-        >
-        <a
-          v-if="isOptionOpt"
-          class="pull-left bottom-btn"
-          href="javascript:;"
-          @click="deteleOptions"
-        >删除自选</a
-        >
-        <a class="pull-left bottom-btn on" href="javascript:;" @click="toBuy"
-        >马上下单</a
-        >
-        <!-- <mt-button :class="agree?'btn btn-red':'btn btn-default'" size="small" @click="toBuy()">确定</mt-button> -->
-        <!-- <mt-button class="btn btn-cancel" size="small" @click="toBuy">取消</mt-button> -->
+          @click="addOptions">
+          {{ $t('line.add') }}
+        </a>
+        <a v-if="isOptionOpt"
+           class="pull-left bottom-btn"
+           href="javascript:;"
+           @click="deteleOptions">
+          {{ $t('line.remove') }}
+        </a>
+        <a class="pull-left bottom-btn on" href="javascript:;" @click="toBuy">
+          {{ $t('line.order') }}
+        </a>
       </div>
     </div>
   </div>
@@ -198,8 +193,6 @@ export default {
       loading: false
     }
   },
-  watch: {},
-  computed: {},
   created () {
     this.timer = setInterval(this.refreshList, 5000)
   },
@@ -215,8 +208,6 @@ export default {
       // 获取用户信息
       this.getUserInfo()
     }
-    // this.qhinfo = this.$route.query.qhinfo;
-    // this.zsinfo = this.$route.query.zsinfo;
   },
   methods: {
     toSearch () {
@@ -227,7 +218,7 @@ export default {
       let data = await api.getUserInfo()
       if (data.status === 0) {
         this.$store.state.userInfo = data.data
-        this.getOpation()
+        await this.getOpation()
       } else {
         Toast(data.msg)
       }
@@ -237,7 +228,7 @@ export default {
       if (this.loading) {
         return
       }
-      this.getDetail()
+      await this.getDetail()
     },
     async getOpation () {
       let opts = {
@@ -273,7 +264,8 @@ export default {
       //   }
       let data = await api.addOption({code: this.$route.query.code})
       if (data.status === 0) {
-        Toast('添加自选成功')
+        // Toast('添加自选成功')
+        Toast(this.$t('line.addSuccess'))
         this.isOptionOpt = true
       } else {
         Toast(data.msg)
@@ -282,7 +274,8 @@ export default {
     async deteleOptions () {
       let data = await api.delOption({code: this.$route.query.code})
       if (data.status === 0) {
-        Toast('删除自选股成功')
+        // Toast('删除自选股成功')
+        Toast(this.$t('line.removeSuccess'))
         this.isOptionOpt = false
       } else {
         Toast(data.msg)

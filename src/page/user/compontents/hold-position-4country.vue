@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
     <div v-if="list.length <= 0 && !getStatus" class="empty text-center">
-      暂无订单信息!
+      {{$t('title2')}}
     </div>
     <div v-if="list.length <= 0 && getStatus" class="empty text-center">
       <mt-spinner type="fading-circle"></mt-spinner>
-      加载中...
+      {{$t('market.loading')}}
     </div>
     <div v-if="list.length > 0">
       <ul
@@ -19,7 +19,7 @@
             <div class="order-title">
               <span @click="toDetail(item.stockCode)" class="main">{{ item.stockCode }}</span>
               <span class="secondary">{{ item.stockName }}</span>
-              <span v-if="item.stockPlate == '科创'" :class="item.stockPlate == '科创' ? 'type' : ''">科创</span>
+              <span v-if="item.stockPlate == '科创'" :class="item.stockPlate == '科创' ? 'type' : ''">{{$t('title1')}}</span>
               <span class="direction pull-right big-font">
                 <b v-if="item.now_price == 0">-</b>
                 <b v-else
@@ -34,27 +34,27 @@
             </div>
             <div class="order-info">
               <p class="clearfix">
-                <span class="col-xs-6">买入价格:<b class="space">{{ item.stopTargetPrice }}</b></span>
-                <span class="col-xs-6">折扣率:<b class="space">{{ (item.discount * 100).toFixed(2) }}%</b></span>
+                <span class="col-xs-6">{{$t('own.price')}}<b class="space">{{ item.stopTargetPrice }}</b></span>
+                <span class="col-xs-6">{{$t('own.rate')}}<b class="space">{{ (item.discount * 100).toFixed(2) }}%</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">实际购买价格:<b class="space">{{ item.buyOrderPrice }}</b></span>
-                <span class="col-xs-6">数量:<b class="space">{{ item.orderNum }}</b></span>
+                <span class="col-xs-6">{{$t('own.actual')}}<b class="space">{{ item.buyOrderPrice }}</b></span>
+                <span class="col-xs-6">{{$t('own.vol')}}<b class="space">{{ item.orderNum }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">手续费:<b class="space">{{ item.orderFee }}</b></span>
-                <span class="col-xs-6">市值:<b class="space">{{ item.orderTotalPrice }}</b></span>
+                <span class="col-xs-6">{{$t('own.fee')}}<b class="space">{{ item.orderFee }}</b></span>
+                <span class="col-xs-6">{{$t('own.mkt')}}<b class="space">{{ item.orderTotalPrice }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">封锁期:<b class="space">{{ item.lockTime / (60 * 24) }}天</b></span>
-                <span class="col-xs-6">汇率:<b class="space">{{ item.rate }}</b></span>
+                <span class="col-xs-6">{{$t('own.lock')}}<b class="space">{{ item.lockTime / (60 * 24) }}天</b></span>
+                <span class="col-xs-6">{{$t('own.fx')}}<b class="space">{{ item.rate }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">印花税:<b class="space">{{ item.orderSpread }}</b></span>
-                <span class="col-xs-6">留仓费:<b class="space">{{ item.orderStayFee }}</b></span>
+                <span class="col-xs-6">{{$t('own.notice1')}}<b class="space">{{ item.orderSpread }}</b></span>
+                <span class="col-xs-6">{{$t('own.notice2')}}<b class="space">{{ item.orderStayFee }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">浮动盈亏:
+                <span class="col-xs-6">{{$t('own.notice3')}}
                   <b v-if="item.now_price == 0">-</b>
                   <b v-else :class="
                      item.rateProfitAndLose < 0
@@ -65,7 +65,7 @@
                     {{ item.symnol }} {{ item.rateProfitAndLose }}
                   </b>
                 </span>
-                <span class="col-xs-6">总盈亏:
+                <span class="col-xs-6">{{$t('own.notice4')}}
                   <b v-if="item.now_price == 0">-</b>
                   <b v-else :class="
                       item.allProfitAndLose < 0
@@ -83,7 +83,7 @@
                 style="text-align: left;color: #666;padding: 0;font-size: 12px;"
                 class="col-xs-6"
               >
-                <b v-if="item.buyOrderTime">买入:{{
+                <b v-if="item.buyOrderTime">{{$t('own.buy')}}{{
                     new Date(item.buyOrderTime) | timeFormat
                   }}</b>
               </div>
@@ -91,7 +91,7 @@
                 style="text-align: left;color: #666;padding: 0;font-size: 12px;"
                 class="col-xs-6"
               >
-                <b v-if="item.unlockTime">解封:{{
+                <b v-if="item.unlockTime">{{$t('own.unlock')}}{{
                     new Date(item.unlockTime) | timeFormat
                   }}</b>
               </div>
@@ -99,7 +99,7 @@
             <div class="order-foot clearfix">
               <div @click="sell(item.positionSn)" class="foot-btn">
                 <i class="font-icon"></i>
-                平仓
+                {{$t('own.closes')}}
               </div>
             </div>
           </div>
@@ -107,10 +107,10 @@
       </ul>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
+        {{$t('market.loading')}}
       </div>
       <div v-show="!loading" class="load-all text-center">
-        已全部加载
+        {{$t('own.all')}}
       </div>
     </div>
   </div>
@@ -156,12 +156,6 @@ export default {
       }
     }
   },
-  // mounted () {
-  //   if (!this.$store.state.userInfo.idCard) {
-  //     this.getUserInfo()
-  //   }
-  //   this.getListDetail()
-  // },
   methods: {
     async getUserInfo () {
       // 获取用户信息
@@ -255,7 +249,7 @@ export default {
       return true
     },
     sell (val) {
-      MessageBox.confirm('您确定要平仓吗?').then(async action => {
+      MessageBox.confirm(this.$t('title')).then(async action => {
         let opt = {
           positionSn: val
         }
@@ -264,7 +258,7 @@ export default {
           Toast(data.msg)
           this.hasChangeSell = true
           this.handleOptions(this.hasChangeSell)
-          this.getListDetail()
+          await this.getListDetail()
         } else {
           Toast(data.msg)
         }

@@ -37,7 +37,7 @@
                       item.stock_type
                       == 'sz' ? '深' : '沪'
                     }}</i>
-                  <i v-else class="iconfont kechuang-mark">科创</i>
+                  <i v-else class="iconfont kechuang-mark">{{ $t('title1') }}</i>
                   {{ item.code }}
                 </p>
               </li>
@@ -111,9 +111,6 @@ export default {
   },
   beforeDestroy () {
     clearInterval(this.timer)
-  },
-  mounted () {
-    //   this.getStock()
   },
   methods: {
     async getStock () {

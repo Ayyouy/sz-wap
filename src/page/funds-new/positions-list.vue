@@ -4,24 +4,24 @@
       <mt-tab-container-item id="2">
         <div class="account-container">
           <div class="account-center">
-            <span>基金账户</span>
+            <span>{{ $t('myFund.account') }}</span>
           </div>
           <div class="account-box">
             <div class="content">
               <ul class="clearfix">
                 <li>
                   <i class="iconfont icon-zijin1"></i>
-                  <div class="name">持仓金额</div>
+                  <div class="name">{{ $t('myFund.used') }}</div>
                   <p class="number red"> ${{ Number(fundInfo.buyMoney).toFixed(2) }}</p>
                 </li>
                 <li>
                   <i class="iconfont icon-keyongzijin"></i>
-                  <div class="name">可用资金</div>
+                  <div class="name">{{ $t('myFund.available') }}</div>
                   <p class="number yellow">${{ Number(fundInfo.balance).toFixed(2) }}</p>
                 </li>
                 <li>
                   <i class="iconfont icon-yingkuixuanzhong"></i>
-                  <div class="name">收益金额</div>
+                  <div class="name">{{ $t('myFund.pl') }}</div>
                   <p class="number green">${{ Number(fundInfo.amount).toFixed(2) }}</p>
                 </li>
               </ul>
@@ -29,11 +29,11 @@
           </div>
         </div>
         <div v-if="list.length<=0 && !getStatus2" class="empty text-center">
-          暂无我的基金信息!
+          {{ $t('msg0') }}
         </div>
         <div v-if="list.length<=0 && getStatus2" class="empty text-center">
           <mt-spinner type="fading-circle"></mt-spinner>
-          加载中...
+          {{ $t('market.loading') }}
         </div>
         <div v-if="list.length>0">
           <ul class="order-info-box-wrap"
@@ -44,7 +44,7 @@
               <div class="order-info-box">
                 <el-row class="self-el-row" style="padding-top: 0.4rem">
                   <el-col :span="8" class="text-left">
-                    <span>订单编号</span>
+                    <span>{{ $t('myFund.order') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.orderNum }}</span>
@@ -52,7 +52,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.redemptionPortion!=0">
                   <el-col :span="8" class="text-left">
-                    <span>预期总收益</span>
+                    <span>{{ $t('myFund.total') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span style="color: #1b8e5d"> ${{ Number(item.dueIncome).toFixed(3) }}</span>
@@ -60,7 +60,7 @@
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>已获得收益</span>
+                    <span>{{ $t('myFund.real') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span style="color: #1b8e5d"> ${{ Number(item.income).toFixed(3) }}</span>
@@ -68,7 +68,7 @@
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>基金名称</span>
+                    <span>{{ $t('myFund.name') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ item.fundName }}</span>
@@ -76,7 +76,7 @@
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>每份净值</span>
+                    <span>{{ $t('myFund.nav') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.perValue }}</span>
@@ -84,15 +84,15 @@
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>申购金额（份额）</span>
+                    <span>{{ $t('myFund.units') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> ${{ item.perValue * item.buyPortion }}（{{ item.buyPortion }}份）</span>
+                    <span> ${{ item.perValue * item.buyPortion }}（{{ item.buyPortion }}{{ $t('myFund.unit') }}）</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>申购时间</span>
+                    <span>{{ $t('myFund.time') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ new Date(item.buyTime) | timeFormat }}</span>
@@ -100,7 +100,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.redemptionPortion===0">
                   <el-col :span="8" class="text-left">
-                    <span>完全赎回时间</span>
+                    <span>{{ $t('note1') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> {{ new Date(item.redemptionTime)| timeFormat }}</span>
@@ -108,23 +108,27 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
-                    <span>赎回金额（份额）</span>
+                    <span>{{ $t('myFund.red') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> ${{ item.perValue * item.redeemedPortion }}（{{ item.redeemedPortion }}份）</span>
+                    <span> ${{ item.perValue * item.redeemedPortion }}（{{
+                        item.redeemedPortion
+                      }}{{ $t('myFund.unit') }}）</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
-                    <span>持仓金额（份额）</span>
+                    <span>{{ $t('myFund.pos') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> ${{ item.perValue * item.redemptionPortion }}（{{ item.redemptionPortion }}份）</span>
+                    <span> ${{ item.perValue * item.redemptionPortion }}（{{
+                        item.redemptionPortion
+                      }}{{ $t('myFund.unit') }}）</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-left">
-                    <span>申购手续费</span>
+                    <span>{{ $t('myFund.fee') }}）</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.subscriptionFee }}</span>
@@ -132,7 +136,7 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
-                    <span>已赎回手续费</span>
+                    <span>{{ $t('myFund.paid') }}）</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
                     <span> ${{ item.backEndLoad }}</span>
@@ -140,30 +144,30 @@
                 </el-row>
                 <el-row class="self-el-row" v-show="item.redemptionPortion!=0">
                   <el-col :span="8" class="text-left">
-                    <span>当前周期</span>
+                    <span>{{ $t('myFund.current') }}）</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span>第{{ item.currentPeriod }}期</span>
+                    <span>{{ $t('myFund.periodStart') }}）{{ item.currentPeriod }}{{ $t('myFund.periodEnd') }}）</span>
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row" v-show="item.redemptionPortion!=0&&item.buyDays>item.blackoutPeriod">
                   <el-col :span="8" class="text-left">
-                    <span>离本期结算天数</span>
+                    <span>{{ $t('myFund.days') }}</span>
                   </el-col>
                   <el-col :span="16" class="text-right">
-                    <span> {{ item.lastPerDays }}天</span>
+                    <span> {{ item.lastPerDays }}{{ $t('capital.day') }}</span>
                   </el-col>
                 </el-row>
                 <div class="btn-bg">
                   <el-button type="info" v-if="item.redemptionPortion===0">
-                    已全部赎回
+                    {{ $t('note2') }}
                   </el-button>
                   <el-button v-else-if="item.redemptionPortion!=0&&(item.buyDays>item.blackoutPeriod)" type="success"
                              @click="btnShowDialog(item)">
-                    赎回
+                    {{ $t('redeem.red') }}
                   </el-button>
                   <el-button v-else-if="item.redemptionPortion!=0&&(item.buyDays<=item.blackoutPeriod)" type="info">
-                    封锁中（{{ new Date(item.lockEndDate) | dateFormat }}解封）
+                    {{ $t('myFund.lockStart') }}{{ new Date(item.lockEndDate) | dateFormat }}{{ $t('myFund.lockEnd') }}
                   </el-button>
                 </div>
               </div>
@@ -171,21 +175,22 @@
           </ul>
           <div v-show="loading2" class="load-all text-center">
             <mt-spinner type="fading-circle"></mt-spinner>
-            加载中...
+            {{ $t('market.loading') }}
           </div>
           <div v-show="!loading2" class="load-all text-center">
-            已全部加载
+            {{ $t('market.loaded') }}
           </div>
         </div>
       </mt-tab-container-item>
     </mt-tab-container>
     <Foot></Foot>
-    <el-dialog center top="25vh" title="赎回" width="80%" :visible.sync="dialogVisible" :show-close="false"
+    <el-dialog center top="25vh" :title="$t('redeem.red')" width="80%" :visible.sync="dialogVisible" :show-close="false"
                :close-on-click-modal="false">
       <div>
         <el-form :inline="false" :model="form" size="mini">
-          <el-form-item label="赎回份额" prop="buyNum">
-            <el-input v-model="form.buyNum" placeholder="请输入" type="number" @input="checkNumber"></el-input>
+          <el-form-item :label="$t('redeem.units')" prop="buyNum">
+            <el-input v-model="form.buyNum" :placeholder="$t('redeem.input')" type="number"
+                      @input="checkNumber"></el-input>
             <div class="el-form-item__error">
               {{ checkMessage }}
             </div>
@@ -193,45 +198,58 @@
           <span></span>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
             <el-col :span="21" class="text-right">
-              最大可赎回：${{ choice.perValue * choice.redemptionPortion }}（{{ choice.redemptionPortion }}份）
+              {{ $t('redeem.start') }}{{ choice.perValue * choice.redemptionPortion }}（{{
+                choice.redemptionPortion
+              }}{{ $t('myFund.unit') }}）
             </el-col>
             <el-col :span="3" class="text-right">
-              <span style="color: #1ba6d0" @click="form.buyNum=choice.redemptionPortion">填入</span>
+              <span style="color: #1ba6d0" @click="form.buyNum=choice.redemptionPortion">{{ $t('redeem.fill') }}</span>
             </el-col>
           </el-row>
         </el-form>
       </div>
       <div>
-        说明：
+        {{ $t('redeem.explain') }}
         <div style="margin-top: 10px;">
-          您的持仓基金，目前正处理于<span style="color: #1ba6d0">第{{ choiceNext.per }}期</span>阶段，
-          收益率为<span style="color: #1ba6d0">{{ choiceNext.perIncome }}%</span>，
-          若您赎回该份额，赎回资金将按<span style="color: #1ba6d0">第{{ choiceNext.perLast }}期</span>收益率为
-          <span style="color: #1ba6d0">{{ choiceNext.lastPerIncome }}%</span>，
-          计算 <span style="color: #1ba6d0">{{ choiceNext.blackoutPeriod - choiceNext.moreDays }}</span>天的持仓收益。
+          {{ $t('redeem.p1') }}
+          <span style="color: #1ba6d0">{{ $t('myFund.periodStart') }}）{{
+              choiceNext.per
+            }}{{ $t('myFund.periodEnd') }}）</span>
+          {{ $t('redeem.p2') }}
+          <span style="color: #1ba6d0">{{ choiceNext.perIncome }}</span>
+          {{ $t('redeem.p3') }}
+          <span style="color: #1ba6d0">{{ $t('myFund.periodStart') }}）{{
+              choiceNext.perLast
+            }}{{ $t('myFund.periodEnd') }}）</span>
+          {{ $t('redeem.p4') }}
+          <span style="color: #1ba6d0">{{ choiceNext.lastPerIncome }}</span>，
+          {{ $t('redeem.p5') }}
+          <span style="color: #1ba6d0">{{ choiceNext.blackoutPeriod - choiceNext.moreDays }}</span>
+          {{ $t('redeem.p6') }}
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-              <el-button @click="cancelDialog1">取 消</el-button>
-              <el-button type="primary" @click="submit()">确 定</el-button>
+              <el-button @click="cancelDialog1">{{ $t('redeem.cancel') }}</el-button>
+              <el-button type="primary" @click="submit()">{{ $t('redeem.confirm') }}</el-button>
             </span>
     </el-dialog>
-    <el-dialog center top="40vh" title="确定赎回" width="80%" :visible.sync="dialogVisible2">
+    <el-dialog center top="40vh" :title="$t('redeem.redemption')" width="80%" :visible.sync="dialogVisible2">
       <div>
-        说明：
+        {{ $t('redeem.explain') }}
         <div style="margin-top: 10px;">
-          您本次赎回资金，<span v-show="choiceNext.per>4">每日</span>将损失<span
-          style="color: #1ba6d0">${{ buyMoney }}</span>投资收益，您确认赎回？
+          <span v-if="choiceNext.per>4">{{ $t('redeem.p9') }}</span>
+          <span v-else>{{ $t('redeem.p7') }}</span>
+          <span style="color: #1ba6d0">${{ buyMoney }}</span>
+          {{ $t('redeem.p8') }}
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible2 = false">取 消</el-button>
-              <el-button type="primary" @click="submitNext()">确 定</el-button>
+              <el-button @click="dialogVisible2 = false">{{ $t('redeem.cancel') }}</el-button>
+              <el-button type="primary" @click="submitNext()">{{ $t('redeem.confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
-
 <script>
 import Foot from '@/components/foot/foot'
 import {Toast} from 'mint-ui'
@@ -272,16 +290,16 @@ export default {
   methods: {
     checkNumber (val) {
       if (this.form.buyNum === '' || this.form.buyNum <= 0) {
-        this.checkMessage = '输入值需大于零'
+        this.checkMessage = this.$t('buy.zero')
         return false
       }
       if (Number.parseInt(this.form.buyNum) > Number.parseInt(this.choice.redemptionPortion)) {
-        this.checkMessage = '超过最大赎回值'
+        this.checkMessage = this.$t('redeem.exceed')
         return false
       }
       const regex = /^[1-9]\d*$/
       if (!regex.test(this.form.buyNum)) {
-        this.checkMessage = '赎回值需要正整数'
+        this.checkMessage = this.$t('note3')
         return false
       } else {
         this.checkMessage = ''
@@ -326,7 +344,8 @@ export default {
       }
       let data = await api.redeem(opts)
       if (data.status === 0) {
-        Toast('赎回成功')
+        // Toast('赎回成功')
+        Toast(this.$t('redeem.success'))
         this.pageNum = 1
         this.currentNum = this.pageSize
         this.total = 0

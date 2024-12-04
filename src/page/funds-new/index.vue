@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper">
     <mt-navbar class="top-navbar" v-model="selected" fixed>
-      <mt-tab-item class="top-nav-item" id="1">基金列表</mt-tab-item>
-      <mt-tab-item class="top-nav-item" id="2">我的基金</mt-tab-item>
-      <mt-tab-item class="top-nav-item" id="3">资金明细</mt-tab-item>
-      <mt-tab-item class="top-nav-item" id="4">我的邀请</mt-tab-item>
+      <mt-tab-item class="top-nav-item" id="1">{{$t('fundList.list')}}</mt-tab-item>
+      <mt-tab-item class="top-nav-item" id="2">{{$t('fundList.position')}}</mt-tab-item>
+      <mt-tab-item class="top-nav-item" id="3">{{$t('fundList.report')}}</mt-tab-item>
+      <mt-tab-item class="top-nav-item" id="4">{{$t('fundList.invitation')}}</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="1">

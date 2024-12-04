@@ -5,19 +5,19 @@
 </template>
 <script>
 import echarts from 'echarts'
-import { Toast } from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
-  components: {},
   props: {
     code: {
       type: String,
-      default: function () {}
+      default: function () {
+      }
     },
     selected: {
       type: String,
-      default: function () {}
+      default: function () {
+      }
     }
   },
   data () {
@@ -34,33 +34,26 @@ export default {
       }
     }
   },
-  computed: {},
   created () {
     this.getDate()
     this.classStyle = localStorage.getItem('styleName') ? localStorage.getItem('styleName') : 'red'
   },
-  mounted () {
-  },
   methods: {
     async getDate () {
-      //期货
-      if(this.code.indexOf('hf_')!=-1){
-        let data = await api.getFuturesMinKEcharts({code: this.code, time: 30,size: 50})
+      // 期货
+      if (this.code.indexOf('hf_') !== -1) {
+        let data = await api.getFuturesMinKEcharts({code: this.code, time: 30, size: 50})
         if (data.status === 0) {
           this.initEchartMap(data.data)
           this.hasload = true
-        } else {
-          //Toast(data.msg)
         }
-      } else if(this.code.indexOf('sh')!=-1 || this.code.indexOf('sz')!=-1){
-        let data = await api.getIndexMinKEcharts({code: this.code, time: 30,size: 50})
+      } else if (this.code.indexOf('sh') !== -1 || this.code.indexOf('sz') !== -1) {
+        let data = await api.getIndexMinKEcharts({code: this.code, time: 30, size: 50})
         if (data.status === 0) {
           this.initEchartMap(data.data)
           this.hasload = true
-        } else {
-          //Toast(data.msg)
         }
-      } else{
+      } else {
         let opts = {
           code: this.code,
           time: 30,
@@ -71,8 +64,6 @@ export default {
         if (data.status === 0) {
           this.initEchartMap(data.data)
           this.hasload = true
-        } else {
-          //Toast(data.msg)
         }
       }
     },
@@ -92,14 +83,14 @@ export default {
       }
     },
     calculateMA (dayCount, data) {
-      var result = []
+      const result = []
       for (var i = 0, len = data.values.length; i < len; i++) {
         if (i < dayCount) {
           result.push('-')
           continue
         }
-        var sum = 0
-        for (var j = 0; j < dayCount; j++) {
+        let sum = 0
+        for (let j = 0; j < dayCount; j++) {
           sum += data.values[i - j][1]
         }
         result.push(+(sum / dayCount).toFixed(3))
@@ -134,13 +125,13 @@ export default {
             color: '#000'
           },
           position: function (pos, params, el, elRect, size) {
-            var obj = { top: 20 }
+            var obj = {top: 20}
             obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30
             return obj
           },
           formatter: function (param) {
             let param2
-            if (param[0].seriesName === '成交量') {
+            if (param[0].seriesName === this.$t('line.vol')) {
               param2 = param[0]
               param = param[1]
             } else {
@@ -150,18 +141,17 @@ export default {
 
             return [
               param.seriesName + '<hr size=1 style="margin: 3px 0">',
-              '开盘: ' + param.data[1] + '<br/>',
-              '收盘: ' + param.data[2] + '<br/>',
-              '最低: ' + param.data[3] + '<br/>',
-              '最高: ' + param.data[4] + '<br/>',
-              '成交量(手): ' + param2.data[1] / 100 + '<br/>',
+              this.$t('title8') + param.data[1] + '<br/>',
+              this.$t('title7') + param.data[2] + '<br/>',
+              this.$t('recharge.min') + param.data[3] + '<br/>',
+              this.$t('recharge.max') + param.data[4] + '<br/>',
+              this.$t('line.vol') + '(' + this.$t('order.lot') + ')' + ':' + param2.data[1] / 100 + '<br/>',
               param.name
             ].join('')
           }
-          // extraCssText: 'width: 170px'
         },
         axisPointer: { // 坐标轴指示器
-          link: { xAxisIndex: 'all' },
+          link: {xAxisIndex: 'all'},
           label: {
             backgroundColor: '#777' // hover  number bg
           }
@@ -215,8 +205,8 @@ export default {
             data: data.date,
             scale: true,
             boundaryGap: false,
-            axisLine: { onZero: false },
-            splitLine: { show: false },
+            axisLine: {onZero: false},
+            splitLine: {show: false},
             splitNumber: 20,
             min: 'dataMin',
             max: 'dataMax',
@@ -237,25 +227,13 @@ export default {
             data: data.date,
             scale: true,
             boundaryGap: false,
-            axisLine: { onZero: false },
-            axisTick: { show: false },
-            splitLine: { show: false },
-            axisLabel: { show: false },
+            axisLine: {onZero: false},
+            axisTick: {show: false},
+            splitLine: {show: false},
+            axisLabel: {show: false},
             splitNumber: 20,
             min: 'dataMin',
             max: 'dataMax'
-            // axisPointer: {
-            //     label: {
-            //         formatter: function (params) {
-            //             var seriesValue = (params.seriesData[0] || {}).value;
-            //             return params.value
-            //             + (seriesValue != null
-            //                 ? '\n' + echarts.format.addCommas(seriesValue)
-            //                 : ''
-            //             );
-            //         }
-            //     }
-            // }
           }
         ],
         yAxis: [
@@ -285,10 +263,10 @@ export default {
             scale: true,
             gridIndex: 1,
             splitNumber: 2,
-            axisLabel: { show: false },
-            axisLine: { show: false },
-            axisTick: { show: false },
-            splitLine: { show: false }
+            axisLabel: {show: false},
+            axisLine: {show: false},
+            axisTick: {show: false},
+            splitLine: {show: false}
           }
         ],
         dataZoom: [
@@ -324,16 +302,16 @@ export default {
               formatter: function (param) {
                 param = param[0]
                 return [
-                  '开盘: ' + param.data[0] + '<br/>',
-                  '收盘: ' + param.data[1] + '<br/>',
-                  '最低: ' + param.data[2] + '<br/>',
-                  '最高: ' + param.data[3] + '<br/>'
+                  this.$t('title8') + param.data[0] + '<br/>',
+                  this.$t('title7') + param.data[1] + '<br/>',
+                  this.$t('recharge.min') + param.data[2] + '<br/>',
+                  this.$t('recharge.max') + param.data[3] + '<br/>'
                 ].join('')
               }
             }
           },
           {
-            name: '成交量',
+            name: this.$t('line.vol'),
             type: 'bar',
             xAxisIndex: 1,
             yAxisIndex: 1,
@@ -342,25 +320,15 @@ export default {
         ]
       }
       myChart.setOption(option)
-      // myChart.dispatchAction({
-      //     type: 'brush',
-      //     areas: [
-      //         {
-      //             brushType: 'lineX',
-      //             coordRange: ['2016-06-02', '2016-06-20'],
-      //             xAxisIndex: 0
-      //         }
-      //     ]
-      // });
     }
   }
 }
 </script>
 <style lang="less" scoped>
-  .chartBox {
-    height: 380px;
-    width: 100%;
-    width: 7.5rem;
-    margin-top: -6.3%;
-  }
+.chartBox {
+  height: 380px;
+  width: 100%;
+  width: 7.5rem;
+  margin-top: -6.3%;
+}
 </style>
