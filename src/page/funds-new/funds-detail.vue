@@ -6,25 +6,24 @@
       </div>
       <div class="box-center">
         <div class="box-center-clean">
-          <!--          <span class="fund-content">{{ (detail.oneIncome / detail.blackoutPeriod).toFixed(2) * 365 }}%</span>-->
           <span class="fund-content">{{ detail.annualizedReturn }}%</span>
         </div>
         <div class="box-center-clean">
           <span class="fund-content">${{ detail.perValue }}</span>
         </div>
         <div class="box-center-clean">
-          <span class="fund-content">{{ detail.blackoutPeriod }}天</span>
+          <span class="fund-content">{{ detail.blackoutPeriod }}{{ $t('fundDetail.days') }}</span>
         </div>
       </div>
       <div class="box-center">
         <div class="box-center-clean">
-          <span>年化收益</span>
+          <span>{{ $t('fundDetail.arr') }}</span>
         </div>
         <div class="box-center-clean">
-          <span>每份净值</span>
+          <span>{{ $t('fundDetail.nav2') }}</span>
         </div>
         <div class="box-center-clean">
-          <span>封锁期</span>
+          <span>{{ $t('fundDetail.lock') }}</span>
         </div>
       </div>
     </div>
@@ -35,18 +34,19 @@
         </div>
       </div>
       <div style="margin: 20px .1rem .1rem;">
-        <p style="font-size: 12px;margin-bottom: 0.2rem;text-indent: 2em;line-height: 18px" v-for="item in detail.info.split('\n')" :key="item">{{item}}</p>
+        <p style="font-size: 12px;margin-bottom: 0.2rem;text-indent: 2em;line-height: 18px"
+           v-for="item in detail.info.split('\n')" :key="item">{{ item }}</p>
       </div>
     </div>
     <div class="box-bg" style="margin-bottom: 200px">
       <div class="box-center">
         <div style="margin: .1rem">
-          <span style="font-weight: bold">基金信息</span>
+          <span style="font-weight: bold">{{ $t('fundDetail.info') }}</span>
         </div>
       </div>
       <div class="box-center">
         <div class="box-left">
-          <span>年化收益率</span>
+          <span>{{ $t('fundDetail.arr2') }}</span>
         </div>
         <div class="box-right">
           <span>{{ detail.annualizedReturn }}%</span>
@@ -54,7 +54,7 @@
       </div>
       <div class="box-center">
         <div class="box-left">
-          <span>每份净值</span>
+          <span>{{ $t('fundDetail.nav2') }}</span>
         </div>
         <div class="box-right">
           <span>${{ detail.perValue }}</span>
@@ -62,7 +62,7 @@
       </div>
       <div class="box-center">
         <div class="box-left">
-          <span>最大申购量</span>
+          <span>{{ $t('fundDetail.max') }}</span>
         </div>
         <div class="box-right">
           <span>{{ detail.maxNum }}</span>
@@ -70,7 +70,7 @@
       </div>
       <div class="box-center">
         <div class="box-left">
-          <span>发行份数</span>
+          <span>{{ $t('fundDetail.issued') }}</span>
         </div>
         <div class="box-right">
           <span>{{ detail.totalNum }}</span>
@@ -78,15 +78,15 @@
       </div>
       <div class="box-center">
         <div class="box-left">
-          <span>封锁期</span>
+          <span>{{ $t('fundDetail.lock') }}</span>
         </div>
         <div class="box-right">
-          <span>{{ detail.blackoutPeriod }}天</span>
+          <span>{{ detail.blackoutPeriod }}{{ $t('fundDetail.days') }}</span>
         </div>
       </div>
       <div class="box-center">
         <div class="box-left">
-          <span>申购费率</span>
+          <span>{{ $t('fundDetail.sub') }}</span>
         </div>
         <div class="box-right">
           <span>{{ detail.purchaseRates }}%</span>
@@ -94,7 +94,7 @@
       </div>
       <div class="box-center">
         <div class="box-left">
-          <span>赎回费率</span>
+          <span>{{ $t('fundDetail.red') }}</span>
         </div>
         <div class="box-right">
           <span>{{ detail.redemptionRate }}%</span>
@@ -104,48 +104,56 @@
     <div class="box-bottom">
       <div class="box-bottom-left">
         <div class="box-bottom-money">
-          <span style="font-size: 12px">基金账户余额：${{ accountMoney }}</span>
+          <span style="font-size: 12px">{{ $t('fundDetail.balance') }}${{ accountMoney }}</span>
         </div>
         <div class="box-bottom-money">
-          <span style="font-size: 12px">最大可购买：${{ Number(detail.newPerValue * detail.maxBuyNum).toFixed(2) }}（{{
+          <span style="font-size: 12px">{{ $t('fundDetail.purchase') }}${{
+              Number(detail.newPerValue * detail.maxBuyNum).toFixed(2)
+            }}（{{
               detail.maxBuyNum
-            }}份）</span>
+            }}{{ $t('buy.units') }}）</span>
         </div>
       </div>
-      <div class="box-bottom-right" @click="dialogVisible=true">购买</div>
+      <div class="box-bottom-right" @click="dialogVisible=true">{{ $t('fundDetail.buy') }}</div>
     </div>
-    <el-dialog center top="25vh" title="购买" width="80%" :visible.sync="dialogVisible" :show-close="false"
+    <el-dialog center top="25vh" :title="$t('fundDetail.buy')" width="80%" :visible.sync="dialogVisible"
+               :show-close="false"
                :close-on-click-modal="false">
       <div>
         <el-form :inline="false" :model="form" size="mini">
-          <el-form-item label="购买份额" prop="buyNum">
-            <el-input v-model="form.buyNum" placeholder="请输入" type="number" @input="checkNumber"></el-input>
+          <el-form-item :label="$t('buy.purchase')" prop="buyNum">
+            <el-input v-model="form.buyNum" :placeholder="$t('redeem.input')" type="number"
+                      @input="checkNumber"></el-input>
             <div class="el-form-item__error">{{ checkMessage }}</div>
           </el-form-item>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
-            <el-col :span="24" class="text-right">需支付：${{
+            <el-col :span="24" class="text-right">{{ $t('buy.pay') }}${{
                 Number(form.buyNum * detail.newPerValue).toFixed(2)
               }}
             </el-col>
           </el-row>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
-            <el-col :span="21" class="text-right">最大可购买：${{
+            <el-col :span="21" class="text-right">{{ $t('fundDetail.purchase') }}${{
                 Number(detail.newPerValue * detail.maxBuyNum).toFixed(2)
-              }}（{{ detail.maxBuyNum }}份）
+              }}（{{ detail.maxBuyNum }}{{ $t('buy.units') }}）
             </el-col>
             <el-col :span="3" class="text-right">
-              <span style="color: #1ba6d0" @click="buyAllNumber">填入</span>
+              <span style="color: #1ba6d0" @click="buyAllNumber">{{ $t('buy.fill') }}</span>
             </el-col>
           </el-row>
         </el-form>
       </div>
       <div>
-        说明：
-        <div style="margin-top: 10px;">封锁期为{{ detail.blackoutPeriod }}天，封锁期内没有收益</div>
+        {{ $t('buy.explain') }}
+        <div style="margin-top: 10px;">
+          {{ $t('buy.lockStart') }}
+          {{ detail.blackoutPeriod }}
+          {{ $t('buy.lockEnd') }}
+        </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelDialog">取 消</el-button>
-        <el-button type="primary" @click="submit()">确 定</el-button>
+        <el-button @click="cancelDialog">{{ $t('buy.cancel') }}</el-button>
+        <el-button type="primary" @click="submit()">{{ $t('buy.confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -178,21 +186,21 @@ export default {
   methods: {
     checkNumber (val) {
       if (this.form.buyNum === '' || this.form.buyNum <= 0) {
-        this.checkMessage = '输入值需大于零'
+        this.checkMessage = this.$t('buy.zero')
         return false
       }
       if (Number.parseInt(this.form.buyNum) > this.detail.maxBuyNum) {
-        this.checkMessage = '输入值超过最大购买份额'
+        this.checkMessage = this.$t('buy.limit')
         return false
       }
       // 是否要判断最大申购量
       const regex = /^[1-9]\d*$/
       if (!regex.test(this.form.buyNum)) {
-        this.checkMessage = '输入值需要正整数'
+        this.checkMessage = this.$t('note3')
         return false
       }
       if (Number.parseInt(this.form.buyNum) * this.detail.newPerValue > this.accountMoney) {
-        this.checkMessage = '余额不足，请减少购买份额'
+        this.checkMessage = this.$t('note4')
         return false
       }
       this.checkMessage = ''
@@ -220,8 +228,9 @@ export default {
       let data = await api.buyFundsNew(opts)
       if (data.status === 0) {
         this.form.buyNum = ''
-        Toast('购买成功')
-        this.$router.push('/fundsnew?index=2')
+        // Toast('购买成功')
+        Toast(this.$t('buy.success'))
+        await this.$router.push('/fundsnew?index=2')
       } else {
         Toast(data.msg)
       }

@@ -670,5 +670,6 @@ export default {
   msg0: 'My fund information is currently unavailable!',
   note1: 'Full Redemption Time',
   note2: 'All redeemed',
-  note3: 'Redemption value requires a positive integer',
+  note3: 'This value requires a positive integer',
+  note4: 'Insufficient balance, please reduce purchase share'
 }
