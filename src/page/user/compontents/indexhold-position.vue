@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
     <div v-if="list.length<=0 && !getStatus"
-    class="empty text-center">
-      暂无订单信息!
+         class="empty text-center">
+      {{ $t('title2') }}
     </div>
     <div v-if="list.length<=0 && getStatus"
-    class="empty text-center">
+         class="empty text-center">
       <mt-spinner type="fading-circle"></mt-spinner>
-      加载中...
+      {{ $t('market.loading') }}
     </div>
     <div v-if="list.length>0">
       <ul
@@ -18,119 +18,113 @@
         <li v-for="(item) in list" :key="item.key">
           <div class="order-info-box">
             <div class="order-title">
-              <span @click="toDetail(item.indexCode)" class="main">{{item.indexName}}</span>
-              
-              
+              <span @click="toDetail(item.indexCode)" class="main">{{ item.indexName }}</span>
               <span class="direction pull-right big-font">
-                        总盈亏:
+                        {{ $t('pl') }}
                         <b v-if="item.now_price == 0">-</b>
                         <b v-else
-                           :class="item.allProfitAndLose<0?'space green':item.allProfitAndLose==0?'space':'space red'">{{item.allProfitAndLose}}</b>
+                           :class="item.allProfitAndLose<0?'space green':item.allProfitAndLose==0?'space':'space red'">{{
+                            item.allProfitAndLose
+                          }}</b>
                     </span>
-              <!-- <span class="red direction pull-right">{{item.orderDirection}}<i class="iconfont icon-up"></i></span> -->
-              <!-- <span class="secondary ">123456789</span> -->
             </div>
             <div class="code">
-              <span class="secondary">({{item.indexCode}})</span>
+              <span class="secondary">({{ item.indexCode }})</span>
             </div>
             <div class="order-info">
-              <!-- <p class="font"><span class="col-xs-4 text-center pull-right red">审核中</span></p> -->
               <p v-if="false" class="clearfix">
-                <span class="col-xs-4">买入点数:<b class="space">{{item.buyOrderPrice}}</b></span>
-                <span class="col-xs-4 text-center">数量:<b class="space">{{item.orderNum}}</b>(手)</span>
-                <span class="col-xs-4 text-right">保证金:<b class="space">{{item.allDepositAmt}}</b></span>
+                <span class="col-xs-4"> {{ $t('buy1') }}<b class="space">{{ item.buyOrderPrice }}</b></span>
+                <span class="col-xs-4 text-center"> {{ $t('own.vol') }}<b class="space">{{
+                    item.orderNum
+                  }}</b>(手)</span>
+                <span class="col-xs-4 text-right"> {{ $t('money') }}:<b class="space">{{
+                    item.allDepositAmt
+                  }}</b></span>
               </p>
               <p v-if="false" class="clearfix">
-                <span class="col-xs-4">手续费:<b class="space">{{item.orderFee}}</b></span>
-                <span class="col-xs-4 text-center">浮动盈亏:
+                <span class="col-xs-4"> {{ $t('own.fee') }}<b class="space">{{ item.orderFee }}</b></span>
+                <span class="col-xs-4 text-center"> {{ $t('pl1') }}
                             <b v-if="item.now_price == 0">-</b>
                             <b v-else
-                               :class="item.profitAndLose<0?'space green':item.profitAndLose==0?'space':'space red'">{{item.profitAndLose}}</b>
+                               :class="item.profitAndLose<0?'space green':item.profitAndLose==0?'space':'space red'">{{
+                                item.profitAndLose
+                              }}</b>
                         </span>
-                <span class="col-xs-4 text-right big-font">总盈亏:
+                <span class="col-xs-4 text-right big-font">{{ $t('pl') }}
                             <b v-if="item.now_price == 0">-</b>
                             <b v-else
-                               :class="item.allProfitAndLose<0?'space green':item.allProfitAndLose==0?'space':'space red'">{{item.allProfitAndLose}}</b>
+                               :class="item.allProfitAndLose<0?'space green':item.allProfitAndLose==0?'space':'space red'">{{
+                                item.allProfitAndLose
+                              }}</b>
                         </span>
               </p>
               <div class="table-title clearfix">
-                <span class="col-xs-4">买入/最新</span>
-                <span class="col-xs-4">数量(手)/保证金</span>
-                <span class="col-xs-4">手续费/浮动盈亏</span>
+                <span class="col-xs-4">{{ $t('line.buy') }}/{{ $t('choice.price') }}</span>
+                <span class="col-xs-4">{{ $t('number') }}({{ $t('order.lot') }})/{{ $t('money1') }}</span>
+                <span class="col-xs-4">{{ $t('fee2') }}/{{ $t('pl2') }}</span>
               </div>
               <div class="table-value clearfix">
                 <div class="col-xs-4">
-                  <p>{{item.buyOrderPrice}}</p>
+                  <p>{{ item.buyOrderPrice }}</p>
                   <p>
                     <b v-if="item.now_price == 0">-</b>
                     <b v-else
-                       :class="item.now_price-item.buyOrderPrice<0?'green':item.now_price-item.buyOrderPrice==0?'':' red'">{{Number(item.now_price).toFixed(2)}}</b>
+                       :class="item.now_price-item.buyOrderPrice<0?'green':item.now_price-item.buyOrderPrice==0?'':' red'">{{
+                        Number(item.now_price).toFixed(2)
+                      }}</b>
                   </p>
                 </div>
                 <div class="col-xs-4">
-                  <p>{{item.orderNum}}</p>
-                  <p>{{item.allDepositAmt}}</p>
+                  <p>{{ item.orderNum }}</p>
+                  <p>{{ item.allDepositAmt }}</p>
                 </div>
                 <div class="col-xs-4">
-                  <p>{{item.orderFee}}</p>
+                  <p>{{ item.orderFee }}</p>
                   <p>
                     <b v-if="item.now_price == 0">-</b>
-                    <b v-else :class="item.profitAndLose<0?' green':item.profitAndLose==0?'':' red'">{{item.profitAndLose}}</b>
+                    <b v-else
+                       :class="item.profitAndLose<0?' green':item.profitAndLose==0?'':' red'">{{
+                        item.profitAndLose
+                      }}</b>
                   </p>
                 </div>
               </div>
             </div>
             <div class="order-foot clearfix">
               <div style="text-align: left;color: #666;padding: 0;" class="col-xs-6">
-                <b v-if="item.buyOrderTime">{{new Date(item.buyOrderTime) | timeFormat}}</b>
+                <b v-if="item.buyOrderTime">{{ new Date(item.buyOrderTime) | timeFormat }}</b>
                 <b v-else></b>
               </div>
               <div @click="sell(item.positionSn)" class="foot-btn">
                 <i class='font-icon'></i>
-                我要卖出
+                {{ $t('sell') }}
               </div>
             </div>
           </div>
-
         </li>
       </ul>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
+        {{ $t('market.loading') }}
       </div>
       <div v-show="!loading" class="load-all text-center">
-        已全部加载
+        {{ $t('own.all') }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Toast, MessageBox } from 'mint-ui'
+import {Toast, MessageBox} from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
   components: {},
   props: {
-    // list:{
-    //     type:Array,
-    //     default:{
-    //         return:[]
-    //     }
-    // },
-    // form:{
-    //     type:Object,
-    //     default:{
-    //         return:{}
-    //     }
-    // },
-    // getListDetail:{
-    //     type:Function,
-    //     default: function(){}
-    // },
     handleOptions: {
       type: Function,
-      default: function () {}
+      default: function () {
+      }
     },
     selectedNumber: {
       type: String
@@ -162,15 +156,8 @@ export default {
       }
     }
   },
-  computed: {},
-  created () {
-    // this.timer = setInterval(this.refreshList, 5000)
-  },
   beforeDestroy () {
     clearInterval(this.timer)
-  },
-  mounted () {
-
   },
   methods: {
     async getUserInfo () {
@@ -261,11 +248,12 @@ export default {
       //     return
       // }
       if (!this.$store.state.userInfo.idCard) {
-        Toast('您还未实名认证,请先实名认证了再下单')
+        // Toast('您还未实名认证,请先实名认证了再下单')
+        Toast(this.$t('market.order'))
         this.$router.push('/authentication')
         return
       }
-      MessageBox.confirm('您确定要平仓吗?').then(async action => {
+      MessageBox.confirm(this.$t('title')).then(async action => {
         let opt = {
           positionSn: val
         }
@@ -274,7 +262,7 @@ export default {
           Toast(data.msg)
           this.hasChangeSell = true
           this.handleOptions(this.hasChangeSell)
-          this.getListDetail()
+          await this.getListDetail()
         } else {
           Toast(data.msg)
         }
@@ -292,59 +280,66 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .wrapper {
-    padding-bottom: 0;
-    /deep/.empty {
-      background-color: #16171d;
-    }
+.wrapper {
+  padding-bottom: 0;
+
+  /deep/ .empty {
+    background-color: #16171d;
   }
+}
 
-  .col-xs-3 .iconfont {
-    font-size: 0.22rem;
+.col-xs-3 .iconfont {
+  font-size: 0.22rem;
+}
+
+.table-title {
+  font-size: 0.22rem;
+  line-height: 0.4rem;
+  margin-bottom: 0.1rem;
+
+  .col-xs-4 {
+    padding: 0;
   }
+}
 
-  .table-title {
-    font-size: 0.22rem;
-    line-height: 0.4rem;
-    margin-bottom: 0.1rem;
+.table-value {
+  .col-xs-4 {
+    padding: 0;
 
-    .col-xs-4 {
+    p {
       padding: 0;
+      line-height: 0.32rem;
     }
   }
+}
 
-  .table-value {
-    .col-xs-4 {
-      padding: 0;
+#app.red-theme {
+  .order-info-box {
+    background-color: #fff;
 
-      p {
-        padding: 0;
-        line-height: 0.32rem;
-      }
-    }
-  }
-  #app.red-theme{
-    .order-info-box{
-      background-color: #fff;
-      .order-title{
-        .main {
-          color: #000;
-        }
-      }
-      .order-info{
+    .order-title {
+      .main {
         color: #000;
       }
     }
-    .order-foot {
-      border-top-color: #ccc;
-    }
-    .load-all{
-      background-color: #BB1815;
-      color: #fff;
-    }
-    .empty{
-      background-color: #E9E9E9;
+
+    .order-info {
       color: #000;
     }
   }
+
+  .order-foot {
+    border-top-color: #ccc;
+  }
+
+  .load-all {
+    background-color: #BB1815;
+    color: #fff;
+  }
+
+  .empty {
+    background-color: #E9E9E9;
+    color: #000;
+  }
+}
 </style>

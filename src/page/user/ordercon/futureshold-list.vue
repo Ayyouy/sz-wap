@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
     <div v-if="list.length<=0 && !getStatus" class="empty text-center">
-      暂无订单信息!
+      {{ $t('title2') }}
     </div>
     <div v-if="list.length<=0 && getStatus" class="empty text-center">
       <mt-spinner type="fading-circle"></mt-spinner>
-      加载中...
+      {{ $t('market.loading') }}
     </div>
     <div v-if="list.length>0">
       <ul
@@ -18,54 +18,40 @@
             <div class="order-title">
               <span @click="toDetail(item.futuresCode)" class="main">{{item.futuresName}}</span>
               <span class="secondary">({{item.futuresCode}})</span>
-              我草你妈
               <span class="direction pull-right big-font">
-                        总盈亏:
+                        {{ $t('pl') }}
                         <b v-if="item.nowPrice == 0">-</b>
                         <b v-else
                            :class="item.allProfitAndLose<0?'space green':item.allProfitAndLose==0?'space':'space red'">{{item.allProfitAndLose}} <span
                           class="mini-size">{{item.coinCode}}</span></b>
                         <b class="mini-font-title"> ≈ {{(item.allProfitAndLose * item.coinRate).toFixed(2)}} CNY</b>
                     </span>
-              <!-- <span class="red direction pull-right">{{item.orderDirection}}<i class="iconfont icon-up"></i></span> -->
-              <!-- <span class="secondary ">123456789</span> -->
             </div>
             <div class="order-info">
               <div class="table-title clearfix">
-                <span class="col-xs-3">买入/最新</span>
-                <span class="col-xs-3">数量/保证金</span>
-                <span class="col-xs-3">手续费</span>
-                <span class="col-xs-3">浮动盈亏</span>
+                <span class="col-xs-4">{{ $t('line.buy') }}/{{ $t('choice.price') }}</span>
+                <span class="col-xs-4">{{ $t('number') }}/{{ $t('money1') }}</span>
+                <span class="col-xs-4">{{ $t('fee2') }}/{{ $t('pl2') }}</span>
               </div>
               <div class="table-value clearfix">
                 <div class="col-xs-3">
                   <p>{{item.buyOrderPrice}} <span class="mini-size">{{item.coinCode}}</span></p>
-                  <!-- <p class="mini-font"> ≈ {{(item.buyOrderPrice * item.coinRate).toFixed(2)}} CNY</p> -->
                   <p>
                     <b v-if="item.nowPrice == 0">-</b>
                     <b v-else
                        :class="item.nowPrice-item.buyOrderPrice<0?'green':item.nowPrice-item.buyOrderPrice==0?'':' red'">{{Number(item.nowPrice).toFixed(2)}}
                       <span class="mini-size">{{item.coinCode}}</span></b>
                   </p>
-                  <!-- <p class="mini-font"> ≈ {{(item.nowPrice * item.coinRate).toFixed(2)}} CNY</p> -->
                 </div>
                 <div class="col-xs-3">
-                  <p>{{item.orderNum}} <span class="mini-size">手</span></p>
+                  <p>{{item.orderNum}} <span class="mini-size">{{ $t('order.lot') }}</span></p>
                   <p>{{item.allDepositAmt}} <span class="mini-size">CNY</span></p>
-                  <!-- <p class="mini-font"> ≈ {{(item.allDepositAmt * item.coinRate).toFixed(2)}} CNY</p> -->
                 </div>
                 <div class="col-xs-3">
                   <p>{{item.orderFee}} <span class="mini-size">{{item.coinCode}}</span></p>
                   <p class="mini-font"> ≈ {{(item.orderFee * item.coinRate).toFixed(2)}} CNY</p>
-                  <!-- <p>
-                      <b v-if="item.nowPrice == 0">-</b>
-                      <b v-else :class="item.profitAndLose<0?' green':item.profitAndLose==0?'':' red'">{{item.profitAndLose}} <span class="mini-size">{{item.coinCode}}</span></b>
-                  </p>
-                  <p class="mini-font"> ≈ {{(item.profitAndLose * item.coinRate).toFixed(2)}} CNY</p> -->
                 </div>
                 <div class="col-xs-3">
-                  <!-- <p>{{item.orderFee}} <span class="mini-size">{{item.coinCode}}</span></p>
-                  <p class="mini-font"> ≈ {{(item.orderFee * item.coinRate).toFixed(2)}} CNY</p> -->
                   <p>
                     <b v-if="item.nowPrice == 0">-</b>
                     <b v-else :class="item.profitAndLose<0?' green':item.profitAndLose==0?'':' red'">{{item.profitAndLose}}
@@ -82,19 +68,18 @@
               </div>
               <div @click="sell(item.positionSn)" class="foot-btn">
                 <i class='font-icon'></i>
-                我要卖出
+                {{ $t('sell') }}
               </div>
             </div>
           </div>
-
         </li>
       </ul>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
+        {{ $t('market.loading') }}
       </div>
       <div v-show="!loading" class="load-all text-center">
-        已全部加载
+        {{ $t('market.loaded') }}
       </div>
     </div>
   </div>
@@ -107,22 +92,6 @@ import * as api from '@/axios/api'
 export default {
   components: {},
   props: {
-    // list:{
-    //     type:Array,
-    //     default:{
-    //         return:[]
-    //     }
-    // },
-    // form:{
-    //     type:Object,
-    //     default:{
-    //         return:{}
-    //     }
-    // },
-    // getListDetail:{
-    //     type:Function,
-    //     default: function(){}
-    // },
     handleOptions: {
       type: Function,
       default: function () {}
@@ -157,15 +126,8 @@ export default {
       }
     }
   },
-  computed: {},
-  created () {
-    // this.timer = setInterval(this.refreshList, 5000)
-  },
   beforeDestroy () {
     clearInterval(this.timer)
-  },
-  mounted () {
-
   },
   methods: {
     async getUserInfo () {
@@ -256,11 +218,12 @@ export default {
       //     return
       // }
       if (!this.$store.state.userInfo.idCard) {
-        Toast('您还未实名认证,请先实名认证了再下单')
+        // Toast('您还未实名认证,请先实名认证了再下单')
+        Toast(this.$t('market.order'))
         this.$router.push('/authentication')
         return
       }
-      MessageBox.confirm('您确定要平仓吗?').then(async action => {
+      MessageBox.confirm(this.$t('title')).then(async action => {
         let opt = {
           positionSn: val
         }
@@ -269,7 +232,7 @@ export default {
           Toast(data.msg)
           this.hasChangeSell = true
           this.handleOptions(this.hasChangeSell)
-          this.getListDetail()
+          await this.getListDetail()
         } else {
           Toast(data.msg)
         }

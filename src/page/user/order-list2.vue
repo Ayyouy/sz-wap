@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
     <mt-navbar class="sub-navbar" v-model="selected">
-      <mt-tab-item id="3">指数持仓</mt-tab-item>
-      <mt-tab-item id="4">指数平仓</mt-tab-item>
+      <mt-tab-item id="3">{{$t('title3')}}</mt-tab-item>
+      <mt-tab-item id="4">{{$t('title4')}}</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="3">

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div v-if="list.length<=0" class="empty text-center">
-      暂无订单信息!
+      {{ $t('title2') }}
     </div>
     <div v-if="list.length>0">
       <ul
@@ -14,28 +14,17 @@
             <div class="order-title">
               <span class="main">{{item.futuresName}}</span>
               <span class="secondary">({{item.futuresCode}})</span>
-
-              <span class="pull-right big-font">总盈亏:
+              <span class="pull-right big-font">{{ $t('pl') }}
                         <b :class="item.allProfitAndLose<0?'space green':item.allProfitAndLose==0?'space':'space red'">{{item.allProfitAndLose}}</b> <span
                   class="mini-size">{{item.coinCode}}</span>
                         <b class="mini-font"> ≈ {{(item.allProfitAndLose * item.sellRate).toFixed(2)}} CNY</b>
                     </span>
             </div>
             <div class="order-info">
-              <!-- <p class="clearfix">
-                  <span class="col-xs-4">买入点数:<b class="space">{{item.buyOrderPrice}}</b></span>
-                  <span class="col-xs-4 text-center">数量:<b class="space">{{item.orderNum}}</b></span>
-                  <span class="col-xs-4 text-right">保证金:<b class="space">{{item.allDepositAmt}}</b></span>
-              </p>
-              <p class="clearfix">
-                  <span class="col-xs-4">卖出点数:<b class="space">{{item.sellOrderPrice}}</b></span>
-                  <span class="col-xs-4 text-center">手续费:<b class="space">{{item.orderFee}}</b></span>
-                  <span class="col-xs-4 text-right">浮动盈亏:<b :class="item.profitAndLose<0?'space green':item.profitAndLose==0?'space':'space red'">{{item.profitAndLose}}</b></span>
-              </p> -->
               <div class="table-title clearfix">
-                <span class="col-xs-4">买入/卖出</span>
-                <span class="col-xs-4">数量/保证金</span>
-                <span class="col-xs-4">手续费/浮动盈亏</span>
+                <span class="col-xs-4">{{ $t('line.buy') }}/{{ $t('sell3') }}</span>
+                <span class="col-xs-4">{{ $t('number') }}/{{ $t('money1') }}</span>
+                <span class="col-xs-4">{{ $t('fee2') }}/{{ $t('pl2') }}</span>
               </div>
               <div class="table-value clearfix">
                 <div class="col-xs-4">
@@ -43,7 +32,7 @@
                   <p>{{item.sellOrderPrice}} <span class="mini-size">{{item.coinCode}}</span></p>
                 </div>
                 <div class="col-xs-4">
-                  <p>{{item.orderNum}} <span class="mini-size">手</span></p>
+                  <p>{{item.orderNum}} <span class="mini-size">{{ $t('order.lot') }}</span></p>
                   <p>{{item.allDepositAmt}} <span class="mini-size">CNY</span></p>
                 </div>
                 <div class="col-xs-4">
@@ -52,26 +41,25 @@
                 </div>
               </div>
               <p class="clearfix">
-                        <span class="secondary col-xs-6">买入:
+                        <span class="secondary col-xs-6">{{$t('own.buy')}}
                             <b v-if="item.buyOrderTime">{{new Date(item.buyOrderTime) | timeFormat}}</b>
                             <b v-else></b>
                         </span>
-                <span class="secondary col-xs-6 text-right">卖出:
+                <span class="secondary col-xs-6 text-right">{{$t('sell2')}}
                             <b v-if="item.sellOrderTime">{{new Date(item.sellOrderTime) | timeFormat}}</b>
                             <b v-else></b>
                         </span>
               </p>
             </div>
-
           </div>
         </li>
       </ul>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
+        {{ $t('market.loading') }}
       </div>
       <div v-show="!loading" class="load-all text-center">
-        已全部加载
+        {{ $t('market.loaded') }}
       </div>
     </div>
   </div>
@@ -110,8 +98,6 @@ export default {
       }
     }
   },
-  computed: {},
-  created () {},
   mounted () {
     this.getListDetail()
   },

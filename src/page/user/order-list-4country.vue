@@ -61,7 +61,6 @@ export default {
   methods: {
     handleOptions (opts) {
       this.hasChangeSell = opts
-      //   this.hasChangeSell = { ...this.hasChangeSell, ...opts};
       if (this.hasChangeSell) {
         this.selected = '2'
       }

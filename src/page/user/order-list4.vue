@@ -1,27 +1,14 @@
 <template>
   <div class="wrapper">
-    <!-- <mt-header fixed  title="我的持仓">
-        <router-link to="/" slot="left">
-            <mt-button icon="back"></mt-button>
-        </router-link>
-    </mt-header> -->
     <mt-navbar class="sub-navbar" v-model="selected">
-      <mt-tab-item id="3">期货持仓</mt-tab-item>
-      <mt-tab-item id="4">期货平仓</mt-tab-item>
+      <mt-tab-item id="3">{{$t('title3')}}</mt-tab-item>
+      <mt-tab-item id="4">{{ $t('title4')}}</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="3">
-        <!-- <div class="text-center">
-            <mt-button @click="toSearchName2" type="default">根据股票简拼查询订单</mt-button>
-            <mt-button @click="toSearchCode2" type="default">根据股票代码查询订单</mt-button>
-        </div> -->
         <holdPosition :selectedNumber='selectedNumber' :handleOptions='handleOptions2'/>
       </mt-tab-container-item>
       <mt-tab-container-item id="4">
-        <!-- <div class="text-center">
-            <mt-button @click="toSearchName2" type="default">根据股票简拼查询订单</mt-button>
-            <mt-button @click="toSearchCode2" type="default">根据股票代码查询订单</mt-button>
-        </div> -->
         <HistoryList :selectedNumber='selectedNumber' :hasChangeSell="hasChangeSell2" :handleOptions='handleOptions2'/>
       </mt-tab-container-item>
     </mt-tab-container>
@@ -31,10 +18,8 @@
 
 <script>
 import foot from '@/components/foot/foot'
-// import '@/assets/style/common.less'
 import holdPosition from './ordercon/futureshold-list'
 import HistoryList from './ordercon/futureshistory-list'
-// import * as api from '@/axios/api'
 
 export default {
   components: {
@@ -65,17 +50,9 @@ export default {
       hasChangeSell2: false
     }
   },
-  watch: {},
-  computed: {},
-  created () {},
-  mounted () {
-    //   this.getListDetail()
-    //   this.getListDetail2()
-  },
   methods: {
     handleOptions (opts) {
       this.hasChangeSell = opts
-      //   this.hasChangeSell = { ...this.hasChangeSell, ...opts};
       if (this.hasChangeSell) {
         this.selected = '2'
       }
@@ -222,6 +199,6 @@ export default {
         }
       }
     }
-    
+
   }
 </style>

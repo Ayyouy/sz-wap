@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div v-if="list.length <= 0" class="empty text-center">
-      暂无订单信息!
+      {{ $t('title2')}}
     </div>
     <div v-if="list.length > 0">
       <ul
@@ -19,10 +19,10 @@
               <span
                 v-if="item.stockPlate == '科创'"
                 :class="item.stockPlate == '科创' ? 'type' : ''"
-                >科创</span
+                >{{ $t('title1')}}</span
               >
               <span class="pull-right"
-                >总盈亏:<b
+                >{{ $t('pl')}}<b
                   :class="
                     item.allProfitAndLose < 0
                       ? 'space green'
@@ -37,42 +37,42 @@
             <div class="order-info">
               <p class="clearfix">
                 <span class="col-xs-4"
-                  >买入价格:<b class="space">{{ item.buyOrderPrice }}</b></span
+                  >{{ $t('own.price')}}<b class="space">{{ item.buyOrderPrice }}</b></span
                 >
                 <span class="col-xs-4 text-center"
-                  >数量:<b class="space">{{ item.orderNum }}</b></span
+                  >{{ $t('own.vol')}}<b class="space">{{ item.orderNum }}</b></span
                 >
                 <span class="col-xs-4 text-right"
-                  >市值:<b class="space">{{ item.orderTotalPrice }}</b></span
+                  >{{ $t('own.mkt')}}<b class="space">{{ item.orderTotalPrice }}</b></span
                 >
               </p>
               <p class="clearfix">
                 <span class="col-xs-4"
-                  >卖出价格:<b class="space">{{ item.sellOrderPrice }}</b></span
+                  >{{ $t('sell1')}}<b class="space">{{ item.sellOrderPrice }}</b></span
                 >
                 <span class="col-xs-4 text-center"></span>
                 <span class="col-xs-4 text-right"
-                  >点差费:<b class="space">{{ item.orderStayFee }}</b></span
+                  >{{ $t('fee')}}<b class="space">{{ item.orderStayFee }}</b></span
                 >
               </p>
               <p class="clearfix">
                 <span class="col-xs-4"
-                  >手续费:<b class="space">{{ item.orderFee }}</b></span
+                  >{{ $t('own.fee')}}<b class="space">{{ item.orderFee }}</b></span
                 >
                 <span class="col-xs-4 text-center"
-                  >印花税:<b class="space">{{ item.orderSpread }}</b></span
+                  >{{ $t('own.notice1')}}<b class="space">{{ item.orderSpread }}</b></span
                 >
                 <span class="col-xs-4 text-right"
-                  >留仓费:<b class="space">{{ item.orderStayFee }}</b></span
+                  >{{ $t('fee1')}}<b class="space">{{ item.orderStayFee }}</b></span
                 >
               </p>
 
               <p class="clearfix">
                 <span class="col-xs-5"
-                  >留仓天数:<b class="space">{{ item.orderStayDays }}</b></span
+                  >{{ $t('day')}}<b class="space">{{ item.orderStayDays }}</b></span
                 >
                 <span class="col-xs-7 text-right"
-                  >浮动盈亏:<b
+                  >{{ $t('pl1')}}<b
                     :class="
                       item.profitAndLose < 0
                         ? 'space green'
@@ -86,14 +86,14 @@
               </p>
               <p class="clearfix">
                 <span class="secondary col-xs-6"
-                  >买入:
+                  >{{ $t('line.buy')}}:
                   <b v-if="item.buyOrderTime">{{
                     new Date(item.buyOrderTime) | timeFormat
                   }}</b>
                   <b v-else></b>
                 </span>
                 <span class="secondary col-xs-6 text-right"
-                  >卖出:
+                  >{{ $t('sell2')}}
                   <b v-if="item.sellOrderTime">{{
                     new Date(item.sellOrderTime) | timeFormat
                   }}</b>
@@ -106,18 +106,18 @@
       </ul>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
+        {{ $t('market.loading')}}
       </div>
       <div v-show="!loading" class="load-all text-center">
-        已全部加载
+        {{ $t('own.all')}}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Toast } from "mint-ui";
-import * as api from "@/axios/api";
+import { Toast } from 'mint-ui'
+import * as api from '@/axios/api'
 
 export default {
   components: {},
@@ -127,12 +127,12 @@ export default {
     },
     hasChangeSell: {
       type: Boolean,
-      default: function() {
-        return false;
+      default: function () {
+        return false
       }
     }
   },
-  data() {
+  data () {
     return {
       loading: false,
       pageNum: 1,
@@ -140,58 +140,56 @@ export default {
       currentNum: 0,
       list: [],
       total: 0 // 记录总值
-    };
+    }
   },
   watch: {
-    hasChangeSell(newval) {
+    hasChangeSell (newval) {
       if (newval) {
-        this.list = [];
-        this.getListDetail();
+        this.list = []
+        this.getListDetail()
       }
     }
   },
-  computed: {},
-  created() {},
-  mounted() {
-    this.getListDetail();
+  mounted () {
+    this.getListDetail()
   },
   methods: {
-    async loadMore() {
+    async loadMore () {
       if (
         this.list.length < this.pageSize ||
         this.loading ||
         this.total <= this.currentNum
       ) {
-        return;
+        return
       }
-      this.loading = true;
+      this.loading = true
       // 加载下一页
-      this.pageNum++;
-      await this.getListDetail();
-      this.currentNum = this.pageNum * this.pageSize;
-      this.loading = false;
+      this.pageNum++
+      await this.getListDetail()
+      this.currentNum = this.pageNum * this.pageSize
+      this.loading = false
     },
-    async getListDetail() {
+    async getListDetail () {
       let opt = {
         state: 1,
-        stockCode: "", // 代码
-        stockSpell: "", // 简拼
+        stockCode: '', // 代码
+        stockSpell: '', // 简拼
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         countryId: this.selectedNumber
-      };
-      let data = await api.getOrderList(opt);
+      }
+      let data = await api.getOrderList(opt)
       if (data.status === 0) {
         data.data.list.forEach(element => {
-          this.list.push(element);
-        });
-        this.total = data.data.total;
+          this.list.push(element)
+        })
+        this.total = data.data.total
       } else {
-        Toast(data.msg);
+        Toast(data.msg)
       }
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .wrapper {

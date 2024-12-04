@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
     <div v-if="list.length <= 0 && !getStatus" class="empty text-center">
-      暂无订单信息!
+      {{ $t('title2') }}
     </div>
     <div v-if="list.length <= 0 && getStatus" class="empty text-center">
       <mt-spinner type="fading-circle"></mt-spinner>
-      加载中...
+      {{ $t('market.loading') }}
     </div>
     <div v-if="list.length > 0">
       <ul
@@ -18,17 +18,15 @@
           <div class="order-info-box">
             <div class="order-title">
               <span @click="toDetail(item.stockCode)" class="main">{{
-                item.stockName
-              }}</span>
+                  item.stockName
+                }}</span>
               <span class="secondary">({{ item.stockCode }})</span>
-
               <span
                 v-if="item.stockPlate == '科创'"
                 :class="item.stockPlate == '科创' ? 'type' : ''"
-                >科创</span
-              >
+              >{{ $t('title1') }}</span>
               <span class="direction pull-right big-font">
-                最新:
+                {{ $t('market.price') }}:
                 <b v-if="item.now_price == 0">-</b>
                 <b
                   v-else
@@ -39,39 +37,39 @@
                       ? 'space'
                       : 'space red'
                   "
-                  >{{ item.now_price }}</b
+                >{{ item.now_price }}</b
                 >
               </span>
             </div>
             <div class="order-info">
               <p class="clearfix">
                 <span class="col-xs-4"
-                  >买入价格:<b class="space">{{ item.buyOrderPrice }}</b></span
+                >{{ $t('own.price') }}<b class="space">{{ item.buyOrderPrice }}</b></span
                 >
                 <span class="col-xs-4 text-center"
-                  >数量:<b class="space">{{ item.orderNum }}</b></span
+                >{{ $t('own.vol') }}<b class="space">{{ item.orderNum }}</b></span
                 >
                 <span class="col-xs-4 text-right"
-                  >市值:<b class="space">{{ item.orderTotalPrice }}</b></span
+                >{{ $t('own.mkt') }}<b class="space">{{ item.orderTotalPrice }}</b></span
                 >
               </p>
               <p class="clearfix">
                 <span class="col-xs-4"
-                  >手续费:<b class="space">{{ item.orderFee }}</b></span
+                >{{ $t('own.fee') }}<b class="space">{{ item.orderFee }}</b></span
                 >
                 <span class="col-xs-4 text-center"
-                  >印花税:<b class="space">{{ item.orderSpread }}</b></span
+                >{{ $t('own.notice1') }}<b class="space">{{ item.orderSpread }}</b></span
                 >
                 <span class="col-xs-4 text-right"
-                  >留仓费:<b class="space">{{ item.orderStayFee }}</b></span
+                >{{ $t('fee1') }}<b class="space">{{ item.orderStayFee }}</b></span
                 >
               </p>
               <p class="clearfix">
                 <span class="col-xs-4"
-                  >点差费:<b class="space">{{ item.spreadRatePrice }}</b></span
+                >{{ $t('fee') }}<b class="space">{{ item.spreadRatePrice }}</b></span
                 >
                 <span class="col-xs-4 text-center"
-                  >浮动盈亏:
+                >{{ $t('pl1') }}
                   <b v-if="item.now_price == 0">-</b>
                   <b
                     v-else
@@ -82,11 +80,11 @@
                         ? 'space'
                         : 'space green'
                     "
-                    >{{ item.profitAndLose }}</b
+                  >{{ item.profitAndLose }}</b
                   >
                 </span>
                 <span class="col-xs-4 text-right big-font"
-                  >总盈亏:
+                >{{ $t('pl') }}
                   <b v-if="item.now_price == 0">-</b>
                   <b
                     v-else
@@ -97,7 +95,7 @@
                         ? 'space'
                         : 'space green'
                     "
-                    >{{ item.allProfitAndLose }}</b
+                  >{{ item.allProfitAndLose }}</b
                   >
                 </span>
               </p>
@@ -108,13 +106,13 @@
                 class="col-xs-6"
               >
                 <b v-if="item.buyOrderTime">{{
-                  new Date(item.buyOrderTime) | timeFormat
-                }}</b>
+                    new Date(item.buyOrderTime) | timeFormat
+                  }}</b>
                 <b v-else></b>
               </div>
               <div @click="sell(item.positionSn)" class="foot-btn">
                 <i class="font-icon"></i>
-                我要卖出
+                {{ $t('sell') }}
               </div>
             </div>
           </div>
@@ -122,41 +120,25 @@
       </ul>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
+        {{ $t('market.loading') }}
       </div>
       <div v-show="!loading" class="load-all text-center">
-        已全部加载
+        {{ $t('market.loaded') }}
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Toast, MessageBox } from 'mint-ui'
+import {Toast, MessageBox} from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
-  components: {},
   props: {
-    // list:{
-    //     type:Array,
-    //     default:{
-    //         return:[]
-    //     }
-    // },
-    // form:{
-    //     type:Object,
-    //     default:{
-    //         return:{}
-    //     }
-    // },
-    // getListDetail:{
-    //     type:Function,
-    //     default: function(){}
-    // },
     handleOptions: {
       type: Function,
-      default: function () {}
+      default: function () {
+      }
     },
     selectedNumber: {
       type: String
@@ -177,16 +159,12 @@ export default {
   },
   watch: {
     selectedNumber (val) {
-      // if (val === '1') {
       if (!this.$store.state.userInfo.idCard) {
         this.getUserInfo()
       }
       this.getListDetail()
       clearInterval(this.timer)
       this.timer = setInterval(this.refreshList, 5000)
-      // } else {
-      //   clearInterval(this.timer)
-      // }
     }
   },
   created () {
@@ -238,7 +216,7 @@ export default {
         countryId: this.selectedNumber
       }
       this.getStatus = true
-      if (this.pageNum == 1) {
+      if (this.pageNum === 1) {
         this.list = []
       }
       let data = await api.getOrderList(opt)
@@ -297,7 +275,7 @@ export default {
       //     Toast('不在开盘时间内，暂不能交易！')
       //     return
       // }
-      MessageBox.confirm('您确定要平仓吗?').then(async action => {
+      MessageBox.confirm(this.$t('title')).then(async action => {
         let opt = {
           positionSn: val
         }
@@ -306,7 +284,7 @@ export default {
           Toast(data.msg)
           this.hasChangeSell = true
           this.handleOptions(this.hasChangeSell)
-          this.getListDetail()
+          await this.getListDetail()
         } else {
           Toast(data.msg)
         }
@@ -331,25 +309,31 @@ export default {
 .col-xs-3 .iconfont {
   font-size: 0.22rem;
 }
+
 #app.red-theme {
   .order-info-box {
     background-color: #fff;
+
     .order-title {
       .main {
         color: #000;
       }
     }
+
     .order-info {
       color: #000;
     }
   }
+
   .order-foot {
     border-top-color: #ccc;
   }
+
   .load-all {
     background-color: #bb1815;
     color: #fff;
   }
+
   .empty {
     background-color: #e9e9e9;
     color: #000;
