@@ -6,14 +6,14 @@
       </div>
       <div class="account-info_detail">
         <div class="account-phone">
-          账户：{{ $store.state.userInfo.phone || '未登录' }}
+          {{ $t('my.account') }}{{ $store.state.userInfo.phone }}
         </div>
         <div class="account-name">
-          昵称：{{ $store.state.userInfo.nickName || '未登录' }}
+          {{ $t('my.nick') }}{{ $store.state.userInfo.nickName }}
         </div>
       </div>
       <div class="account-info_ctl" @click="hideNumber">
-        资产状况
+        {{ $t('my.asset') }}
         <i v-show="$store.state.hide" class="iconfont icon-yanjing"></i>
         <i v-show="!$store.state.hide" class="iconfont icon-yanjing1"></i>
       </div>
@@ -21,7 +21,7 @@
     <div class="account-container">
       <div class="account-header">
         <h2 class="title" style="font-size: 20px;">
-          账户总资产
+          {{ $t('my.total') }}
         </h2>
         <div>
           <p
@@ -93,25 +93,22 @@
             size="small"
             type="danger"
             @click="toTransferMoney"
-          >转账
-          </mt-button
-          >
+          >{{ $t('my.transfer') }}
+          </mt-button>
           <mt-button
             class="btn-red pull-right"
             size="small"
             type="danger"
             @click="toWithdraw"
-          >提现
-          </mt-button
-          >
+          >{{ $t('my.withdrawal') }}
+          </mt-button>
           <mt-button
             class="btn-red pull-right"
             size="small"
             type="danger"
             @click="toDeposit"
-          >充值
-          </mt-button
-          >
+          >{{ $t('my.deposit') }}
+          </mt-button>
         </div>
         <mt-progress
           :value="
@@ -124,7 +121,7 @@
         ></mt-progress>
       </div>
       <div class="account-center">
-        <span>现金账户（${{ Number($store.state.userInfo.userAmt).toFixed(2) }}）</span>
+        <span>{{ $t('my.cash') }}（${{ Number($store.state.userInfo.userAmt).toFixed(2) }}）</span>
       </div>
       <div v-for="item in account" :key="item.key">
         <div class="account-box" v-if="item.isDisplay">
@@ -132,7 +129,7 @@
             <ul class="clearfix">
               <li>
                 <i class="iconfont icon-zijin1"></i>
-                <div class="name">持仓市值</div>
+                <div class="name">{{ $t('my.market') }}</div>
                 <p v-if="item.name == '指数'" class="number yellow">
                   {{
                     $store.state.hide
@@ -155,7 +152,7 @@
               </li>
               <li>
                 <i class="iconfont icon-keyongzijin"></i>
-                <div class="name">可用资金</div>
+                <div class="name">{{ $t('my.available') }}</div>
                 <p v-if="item.name == '指数'" class="number yellow">
                   {{
                     $store.state.hide
@@ -178,7 +175,7 @@
               </li>
               <li>
                 <i class="iconfont icon-yingkuixuanzhong"></i>
-                <div class="name">持仓总盈亏</div>
+                <div class="name">{{ $t('my.pl1') }}</div>
                 <p
                   v-if="item.name == '指数'"
                   :class="
@@ -237,7 +234,7 @@
     </div>
     <div class="account-container">
       <div class="account-center">
-        <span>基金账户</span>
+        <span>{{ $t('my.fund') }}</span>
       </div>
       <div v-for="item in account" :key="item.key">
         <div class="account-box" v-if="item.isDisplay">
@@ -245,17 +242,17 @@
             <ul class="clearfix">
               <li>
                 <i class="iconfont icon-zijin1"></i>
-                <div class="name">持仓金额</div>
+                <div class="name">{{ $t('my.used') }}</div>
                 <p class="number red"> ${{ Number(fundInfo.buyMoney).toFixed(2) }}</p>
               </li>
               <li>
                 <i class="iconfont icon-keyongzijin"></i>
-                <div class="name">可用资金</div>
+                <div class="name">{{ $t('my.available') }}</div>
                 <p class="number yellow">${{ Number(fundInfo.balance).toFixed(2) }}</p>
               </li>
               <li>
                 <i class="iconfont icon-yingkuixuanzhong"></i>
-                <div class="name">收益金额</div>
+                <div class="name">{{ $t('my.pl2') }}</div>
                 <p class="number green">${{ Number(fundInfo.amount).toFixed(2) }}</p>
               </li>
             </ul>
@@ -268,22 +265,22 @@
         <li @click="toAuthentication">
           <span>
             <img src="../../assets/ico/shimin.png" style="width: 0.28rem; height: 0.24rem; margin-right: 0.15rem"/>
-            实名认证
+            {{ $t('my.auth1') }}
             <span class="renzhen done" v-if="$store.state.userInfo.isActive == 0">
               <i class="iconfont el-icon-circle-close"></i>
-              未认证
+              {{ $t('my.auth2') }}
             </span>
             <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 1">
               <i class="iconfont el-icon-circle-check"></i>
-              认证中
+              {{ $t('my.auth3') }}
             </span>
              <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 2">
               <i class="iconfont el-icon-circle-check"></i>
-             已认证
+             {{ $t('my.auth4') }}
             </span>
              <span class="renzhen done" v-else-if="$store.state.userInfo.isActive == 3">
               <i class="iconfont el-icon-circle-close"></i>
-             认证失败
+             {{ $t('my.auth5') }}
             </span>
             <icon name="right66" class="right" slot="icon"></icon>
           </span>
@@ -294,7 +291,7 @@
               src="../../assets/ico/yinhangka.png"
               style="width: 0.28rem; height: 0.24rem; margin-right: 0.15rem"
             />
-            银行卡
+            {{ $t('my.card') }}
             <icon name="right66" class="right" slot="icon"></icon>
           </span>
         </li>
@@ -304,7 +301,7 @@
               src="../../assets/ico/gaimima.png"
               style="width: 0.24rem; height: 0.24rem; margin-right: 0.15rem"
             />
-            修改密码
+            {{ $t('my.pwd') }}
             <icon name="right66" class="right" slot="icon"></icon>
           </span>
         </li>
@@ -316,7 +313,7 @@
               src="../../assets/ico/chongzhi.png"
               style="width: 0.27rem; height: 0.27rem; margin-right: 0.15rem"
             />
-            我的持仓
+            {{ $t('my.position') }}
             <icon name="right66" class="right" slot="icon"></icon>
           </span>
         </li>
@@ -326,7 +323,7 @@
               src="../../assets/ico/zijin.png"
               style="width: 0.27rem; height: 0.24rem; margin-right: 0.15rem"
             />
-            资金明细
+            {{ $t('my.report') }}
             <icon name="right66" class="right" slot="icon"></icon>
           </span>
         </li>
@@ -398,7 +395,7 @@
         </p>
       </mt-popup>
       <div class="btnbox">
-        <span class="text-center btnok loginout" @click="toRegister">退出登录</span>
+        <span class="text-center btnok loginout" @click="toRegister">{{ $t('my.logout') }}</span>
       </div>
     </div>
     <el-dialog
@@ -413,8 +410,8 @@
         {{ dialogObj.content }}
       </p>
       <span slot="footer">
-        <el-button type="danger" size="mini" @click="dialogObj.cancel">取消</el-button>
-        <el-button type="primary" size="mini" @click="dialogObj.success">确 定</el-button>
+        <el-button type="danger" size="mini" @click="dialogObj.cancel">{{ $t('recharge.cancel') }}</el-button>
+        <el-button type="primary" size="mini" @click="dialogObj.success">{{ $t('recharge.confirm') }}</el-button>
       </span>
     </el-dialog>
     <foot></foot>
@@ -510,8 +507,8 @@ export default {
     goCard: function () {
       if (this.$store.state.userInfo.isActive !== 2) {
         this.dialogObj.flag = true
-        this.dialogObj.title = '银行卡提示'
-        this.dialogObj.content = '无法添加或编辑银行卡，请先实名认证'
+        this.dialogObj.title = this.$t('my.card')
+        this.dialogObj.content = this.$t('bank.unable')
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
           this.dialogObj.flag = false
@@ -527,8 +524,8 @@ export default {
     toAuthentication: function () {
       if (this.$store.state.userInfo.isActive === 2) {
         this.dialogObj.flag = true
-        this.dialogObj.title = '已实名'
-        this.dialogObj.content = '实名认证已通过，无需重复实名认证'
+        this.dialogObj.title = this.$t('my.auth1')
+        this.dialogObj.content = this.$t('auth.auth4')
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = this.dialogCancel
       } else {
@@ -537,10 +534,10 @@ export default {
     },
     async toRegister () {
       // 注销登陆
-      this.clearCookie()
+      // this.clearCookie()
       let data = await api.logout()
       if (data.status === 0) {
-        this.$router.push('/login')
+        await this.$router.push('/login')
       } else {
         Toast(data.msg)
       }
@@ -548,8 +545,8 @@ export default {
     toDeposit () { // 充值
       if (this.$store.state.userInfo.isActive !== 2) {
         this.dialogObj.flag = true
-        this.dialogObj.title = '充值提示'
-        this.dialogObj.content = '无法充值，请先实名认证'
+        this.dialogObj.title = this.$t('recharge.prompt')
+        this.dialogObj.content = this.$t('recharge.unable')
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
           this.dialogObj.flag = false
@@ -569,8 +566,8 @@ export default {
     toWithdraw () { // 提现
       if (this.$store.state.userInfo.isActive !== 2) {
         this.dialogObj.flag = true
-        this.dialogObj.title = '提现提示'
-        this.dialogObj.content = '无法提现，请先实名认证'
+        this.dialogObj.title = this.$t('withdraw.prompt')
+        this.dialogObj.content = this.$t('withdraw.unable')
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
           this.dialogObj.flag = false
@@ -580,11 +577,11 @@ export default {
         this.$router.push('/withdraw')
       }
     },
-    toTransferMoney () {
+    toTransferMoney () { // 转账
       if (this.$store.state.userInfo.isActive !== 2) {
         this.dialogObj.flag = true
-        this.dialogObj.title = '转账提示'
-        this.dialogObj.content = '无法转账，请先实名认证'
+        this.dialogObj.title = this.$t('transfer.prompt2')
+        this.dialogObj.content = this.$t('transfer.unable2')
         this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = () => {
           this.dialogObj.flag = false
@@ -636,11 +633,12 @@ export default {
     },
     async getUserInfo () {
       // 获取用户信息
-      //   let showcookie = this.getCookie('USER_TOKEN');
       let data = await api.getUserInfo()
+      console.log('get user info data:', data)
       if (data.status === 0) {
-        this.getProductSetting()
         this.$store.state.userInfo = data.data
+        console.log('get user info:', this.$store.state.userInfo)
+        await this.getProductSetting()
       } else {
         Toast(data.msg)
       }

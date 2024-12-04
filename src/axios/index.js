@@ -3,7 +3,7 @@
 // 账户：15888888888     密码:123456
 
 import axios from 'axios' // 引入axios
-import {Toast} from 'mint-ui'
+// import {Toast} from 'mint-ui'
 import qs from 'qs' // 引入qs
 import router from '@/router'
 import APIUrl from './api.url'
@@ -51,7 +51,15 @@ axios.interceptors.response.use(
     let data = response.data
     if (data instanceof Object) {
       if (data.status === 401) {
-        data.msg = '您还未登录,请先登录'
+        const language = navigator.language.toLowerCase()
+        console.log('response:', language)
+        if (language.includes('cn')) {
+          data.msg = '您还未登录,请先登录'
+        } else if (language.includes('tw')) {
+          data.msg = '您還未登錄，請先登錄'
+        } else {
+          data.msg = 'You haven\'t logged in yet, please log in first'
+        }
         localStorage.clear()
         router.push('/openaccount')
       }
@@ -59,7 +67,7 @@ axios.interceptors.response.use(
     return response
   },
   (error) => {
-    Toast('服务异常，请联系管理员')
+    // Toast('服务异常，请联系管理员')
     localStorage.clear()
     return Promise.reject(error)
   }

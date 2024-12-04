@@ -10,15 +10,17 @@
         <select v-model="select">
           <option v-for="item in options" :key="item" :label="item" :value="item">{{ item }}</option>
         </select>
-        <input class="login-input" placeholder="请输入账号" type="tel" pattern="[0-9]*" v-model="phone"/>
+        <input class="login-input" :placeholder="$t('register.inputAccount')" type="tel" pattern="[0-9]*"
+               v-model="phone"/>
       </div>
       <div class="register-form-item input-model">
         <img v-if="theme" src="../assets/ico/vertify-red.png"/>
         <img v-else src="../assets/ico/vertify.png"/>
-        <input class="register-input" style="width: 1.4rem" placeholder="验证码" pattern="[a-zA-Z0-9]+" type="text"
+        <input class="register-input" style="width: 1.4rem" :placeholder="$t('register.verCode')" pattern="[a-zA-Z0-9]+"
+               type="text"
                v-model="code"/>
         <div v-if="codeshow" class="getcode" @click="checkCodeBox">
-          获取验证码
+          {{ $t('register.getCode') }}
         </div>
         <div v-if="!codeshow" class="getcode">{{ count }}s</div>
       </div>
@@ -27,7 +29,7 @@
         <img v-else src="../assets/ico/loginpwd.png"/>
         <input
           class="register-input"
-          placeholder="密码为6~12位数字、字母或符号"
+          :placeholder="$t('register.limit')"
           type="password"
           pattern="[a-zA-Z0-9]+"
           v-model="psd"
@@ -38,7 +40,7 @@
         <img v-else src="../assets/ico/loginpwd.png"/>
         <input
           class="register-input"
-          placeholder="请再次确认密码"
+          :placeholder="$t('register.confirm')"
           type="password"
           pattern="[a-zA-Z0-9]+"
           v-model="psd2"
@@ -49,7 +51,7 @@
         <img v-else src="../assets/ico/organization.png"/>
         <input
           class="register-input"
-          placeholder="邀请码"
+          :placeholder="$t('register.invCode')"
           type="text"
           pattern="[a-zA-Z0-9]+"
           v-model="invitecode"
@@ -64,10 +66,10 @@
               : 'glyphicon glyphicon-ok-circle'
           "
         ></i>
-        我已阅读并同意
-        <a @click="toagreeUrl" style="color: #fff">《注册协议》</a>
+        {{ $t('register.agree') }}
+        <a @click="toAgree" style="color: #fff">{{ $t('register.agree2') }}</a>
       </div>
-      <div class="register-form-item submit-model" @click="gook">立即注册</div>
+      <div class="register-form-item submit-model" @click="gook">{{ $t('register.now') }}</div>
       <div
         class="register-form-item"
         style="margin-top: 0.23rem; display: flex; justify-content: flex-end"
@@ -78,11 +80,10 @@
             color: $state.theme == 'red' ? '#000' : '#86CBD1'
           }"
         >
-          已有账号？<span
+          {{ $t('register.already1') }}<span
           :style="{ color: $state.theme == 'red' ? '#BB1815' : '#fff' }"
           @click="goLogin"
-        >返回登录</span
-        >
+        >{{ $t('register.already2') }}</span>
         </div>
       </div>
     </div>
@@ -98,8 +99,8 @@
       </div>
       <div class="">
         <div class="row check-box">
-          <div class="title">输入图片上的验证码</div>
-          <mt-field label="验证码" placeholder="请输入验证码" v-model="code2">
+          <div class="title">{{ $t('register.imgCode') }}</div>
+          <mt-field :label="$t('register.verCode')" :placeholder="$t('register.inputCode')" v-model="code2">
             <img
               @click="refreshImg"
               :src="adminUrl + '/code/getCode.do?time=' + imgCodeTime"
@@ -108,10 +109,10 @@
             />
           </mt-field>
           <p class="red" v-if="!checkCodeState">
-            您输入的验证码有误,请重新输入
+            {{ $t('register.msgCode') }}
           </p>
           <div class="text-center">
-            <mt-button type="primary" @click="checkImg">确定</mt-button>
+            <mt-button type="primary" @click="checkImg">{{ $t('register.confirm2') }}</mt-button>
           </div>
         </div>
       </div>
@@ -156,7 +157,6 @@ export default {
   },
   mounted: function () {
     if (this.$route.query.code) {
-      console.log('invitecode', this.$route.query.code)
       this.invitecode = this.$route.query.code
     }
     this.getInfoSite()
@@ -178,7 +178,7 @@ export default {
     },
     checkCodeBox () {
       if (isNull(this.phone) || this.phone.length < 7) {
-        Toast('请输入正确的手机号')
+        Toast(this.$t('register.msgAccount'))
       } else {
         this.checkPhone()
       }
@@ -189,17 +189,19 @@ export default {
     },
     async checkImg () {
       if (!this.code2) {
-        Toast('您输入的验证码有误,请重新输入')
+        // Toast('您输入的验证码有误,请重新输入')
+        Toast(this.$t('register.msgCode'))
         this.checkCodeState = false
         return
       }
       let data = await api.checkCode({code: this.code2})
       if (data === 'true' || data === true) {
-        this.getcode()
+        await this.getcode()
         this.dialogShow = false
         this.checkCodeState = true
       } else {
-        Toast('您输入的验证码有误,请重新输入')
+        // Toast('您输入的验证码有误,请重新输入')
+        Toast(this.$t('register.msgCode'))
         this.checkCodeState = false
         this.adminUrl = process.env.API_HOST + '1'
         this.adminUrl = process.env.API_HOST
@@ -216,7 +218,8 @@ export default {
       }
       this.clickFalg++
       if (isNull(this.phone) || this.phone.length < 7) {
-        Toast('请输入正确的手机号码')
+        // Toast('请输入正确的手机号码')
+        Toast(this.$t('register.msgAccount'))
       } else {
         let result = await api.getCode({phoneNum: this.phone})
         if (result.status === 0) {
@@ -247,15 +250,16 @@ export default {
       let data = await api.checkPhone({phoneNum: this.select + this.phone})
       if (data.status === 0) {
         // 如果用户已存在返回 0
-        Toast('用户已注册,请登录')
-        this.$router.push('/login')
+        // Toast('用户已注册,请登录')
+        Toast(this.$t('register.msgHave'))
+        await this.$router.push('/login')
       } else {
         this.dialogShow = false
         this.adminUrl = process.env.API_HOST
         if (this.adminUrl === undefined) {
           this.adminUrl = ''
         }
-        this.getcode()
+        await this.getcode()
       }
     },
     async gook () {
@@ -265,46 +269,69 @@ export default {
       this.flagNextRegister = true
       // 注册
       if (!this.agree) {
-        Toast('需同意注册协议才能注册!')
+        // Toast('需同意注册协议才能注册!')
+        Toast(this.$t('register.registration'))
         this.flagNextRegister = false
-      } else if (isNull(this.phone) || this.phone.length < 7) {
-        Toast('请输入正确的手机号码')
+        return
+      }
+      if (isNull(this.phone) || this.phone.length < 7) {
+        // Toast('请输入正确的手机号码')
+        Toast(this.$t('register.msgAccount'))
         this.flagNextRegister = false
-      } else if (isNull(this.psd)) {
-        Toast('请输入密码')
+        return
+      }
+      if (isNull(this.psd)) {
+        // Toast('请输入密码')
+        Toast(this.$t('register.limit'))
         this.flagNextRegister = false
-      } else if (isNull(this.psd2)) {
-        Toast('请确认密码')
+        return
+      }
+      if (isNull(this.psd2)) {
+        // Toast('请确认密码')
+        Toast(this.$t('register.confirm'))
         this.flagNextRegister = false
-      } else if (isNull(this.code)) {
-        Toast('请输入验证码')
+        return
+      }
+      if (isNull(this.code)) {
+        // Toast('请输入验证码')
+        Toast(this.$t('register.inputCode'))
         this.flagNextRegister = false
-      } else if (this.psd !== this.psd2) {
-        Toast('两次输入的密码不一致')
+        return
+      }
+      if (this.psd !== this.psd2) {
+        // Toast('两次输入的密码不一致')
+        Toast(this.$t('register.msgPwd'))
         this.password = 0
         this.password2 = 0
         this.flagNextRegister = false
-      } else if (!pwdReg2(this.psd)) {
-        Toast('密码为6~12位，数字、字母或符号')
+        return
+      }
+      if (!pwdReg2(this.psd)) {
+        // Toast('密码为6~12位，数字、字母或符号')
+        Toast(this.$t('register.limit'))
         this.flagNextRegister = false
-      } else if (isNull(this.invitecode)) {
-        Toast('请输入邀请码')
-        this.flagNextRegister = false
+        return
+      }
+      // if (isNull(this.invitecode)) {
+      //   Toast('请输入邀请码')
+      //   Toast(this.$t('register.msgAccount'))
+      //   this.flagNextRegister = false
+      // } else {
+      // }
+      let opts = {
+        phone: this.select + this.phone,
+        yzmCode: this.code,
+        userPwd: this.psd,
+        agentCode: this.invitecode,
+        countryId: this.countryId
+      }
+      let data = await api.register(opts)
+      if (data.status === 0) {
+        // Toast('注册成功，请登录')
+        Toast(this.$t('register.msgSuccess'))
+        await this.$router.push('/login')
       } else {
-        let opts = {
-          phone: this.select + this.phone,
-          yzmCode: this.code,
-          userPwd: this.psd,
-          agentCode: this.invitecode,
-          countryId: this.countryId
-        }
-        let data = await api.register(opts)
-        if (data.status === 0) {
-          Toast('注册成功，请登录')
-          this.$router.push('/login')
-        } else {
-          Toast(data.msg)
-        }
+        Toast(data.msg)
       }
       this.flagNextRegister = false
     },
@@ -329,7 +356,7 @@ export default {
       let j = true
       this.agree = this.agree ? i : j
     },
-    toagreeUrl () {
+    toAgree () {
       this.$router.push('/agree')
     }
   }

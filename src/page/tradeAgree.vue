@@ -8,9 +8,7 @@
     <div class="content" style="margin:20px;background:#fff;border-radius:5px;margin-top:60px;line-height:200%;">
       <p v-for="item in tradeAgreeText.split('。')" :key="item">{{item}}。</p>
     </div>
-    <!-- <iframe class="iframe" :src="agreeUrl" frameborder="0"></iframe> -->
     <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page"></canvas>
-
   </div>
 </template>
 <script>

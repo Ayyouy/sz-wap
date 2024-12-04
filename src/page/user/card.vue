@@ -3,7 +3,7 @@
     <div class="box page-part transaction">
       <div class="box-contain clearfix">
         <div v-if="cardInfo.length <= 0" class="empty text-center">
-          暂未绑定银行卡和泰达币钱包
+          {{$t('bank.no')}}
         </div>
         <div v-if="cardInfo.length > 0" class="back-info">
           <ul>
@@ -17,15 +17,15 @@
               </div>
             </li>
           </ul>
-          <p class="red">每人最多绑定一张银行卡，如需更换银行卡请联系客服</p>
+          <p class="red">{{$t('bank.limit')}}</p>
         </div>
       </div>
     </div>
     <div v-if="cardInfo.length <= 0" class="btnbox">
-      <span class="text-center btnok" @click="addCard">添加银行卡和泰达币钱包</span>
+      <span class="text-center btnok" @click="addCard">{{$t('bank.add')}}</span>
     </div>
     <div v-else class="btnbox">
-      <span class="text-center btnok" @click="addCard('edit')">修改银行卡和泰达币钱包</span>
+      <span class="text-center btnok" @click="addCard('edit')">{{$t('bank.modify')}}</span>
     </div>
   </div>
 </template>
@@ -47,13 +47,13 @@ export default {
   created () {
   },
   beforeDestroy () {
-    if (this.$state.theme == 'red') {
+    if (this.$state.theme === 'red') {
       document.body.classList.remove('red-bg')
       document.body.classList.add('black-bg')
     }
   },
   mounted () {
-    if (this.$state.theme == 'red') {
+    if (this.$state.theme === 'red') {
       document.body.classList.remove('black-bg')
       document.body.classList.add('red-bg')
     }

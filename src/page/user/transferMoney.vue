@@ -3,55 +3,56 @@
     <div class="box">
       <div class="box-contain clearfix">
         <div class="account text-center">
-          <p class="title">现金账户余额</p>
-<!--          <p class="red number" v-show="selected==1">${{ // accountMoney || 0 }}</p>-->
+          <p class="title">{{ $t('transfer.balance1') }}</p>
           <p class="red number">${{ $store.state.userInfo.enableAmt || 0 }}</p>
         </div>
       </div>
     </div>
     <mt-navbar v-model="selected">
-      <mt-tab-item id="1">与基金账户互转</mt-tab-item>
-      <mt-tab-item id="2">转账给他人</mt-tab-item>
+      <mt-tab-item id="1">{{ $t('transfer.inter') }}</mt-tab-item>
+      <mt-tab-item id="2">{{ $t('transfer.other') }}</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="1">
         <el-radio-group class="payType form-block" v-model="payType">
-          <el-radio-button label="0">转入基金账户</el-radio-button>
-          <el-radio-button label="1">转入现金账户</el-radio-button>
+          <el-radio-button label="0">{{ $t('transfer.fund') }}</el-radio-button>
+          <el-radio-button label="1">{{ $t('transfer.cash') }}</el-radio-button>
         </el-radio-group>
         <div class="form-block">
-          <mt-field v-show="payType === '1'" label="可转金额" placeholder="可转金额" type="text" disabled
+          <mt-field v-show="payType === '1'" :label="$t('transfer.available')"
+                    :placeholder="$t('transfer.available')" type="text" disabled
                     v-model="accountMoney"></mt-field>
         </div>
         <div class="form-block">
-          <mt-field label="转账金额" v-show="payType === '0'" name="amt" v-model="form.account1"
-                    placeholder="请输入转账金额" type="number">
-            <span @click="selectAll(1)">全部</span>
+          <mt-field :label="$t('transfer.amount1')" v-show="payType === '0'" name="amt" v-model="form.account1"
+                    :placeholder="$t('transfer.amount2')" type="number">
+            <span @click="selectAll(1)">{{ $t('transfer.all') }}</span>
           </mt-field>
-          <mt-field label="转账金额" v-show="payType === '1'" name="amt" v-model="form.account2"
-                    placeholder="请输入转账金额" type="number">
-            <span @click="selectAll(2)">全部</span>
+          <mt-field :label="$t('transfer.amount1')" v-show="payType === '1'" name="amt" v-model="form.account2"
+                    :placeholder="$t('transfer.amount2')" type="number">
+            <span @click="selectAll(2)">{{ $t('transfer.all') }}</span>
           </mt-field>
         </div>
         <div class="form-block">
           <mt-field
-            :label="`${payType === '0' ? '基金' : '现金'}账户余额`"
-            :placeholder="`${payType === '0' ? '基金' : '现金'}账户余额`"
+            :label="payType === '0' ? $t('to.balance1') : $t('to.balance')"
+            :placeholder="payType === '0' ? $t('to.balance1') : $t('to.balance')"
             type="text"
             disabled
+            style="font-size: 12px"
             v-model="accountMoney"
           ></mt-field>
         </div>
         <div class="btnbox">
           <span class="text-center btnok loginout" @click="toSubmit(1)">
-            确认转入{{ payType === '0' ? '基金' : '现金' }}账户</span>
+            {{ payType === '0' ? $t('transfer.confirmFund') : $t('transfer.confirmCash') }}</span>
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
         <div class="form-block">
           <mt-field
-            label="可转金额"
-            placeholder="可转金额"
+            :label="$t('transfer.available')"
+            :placeholder="$t('transfer.available')"
             type="text"
             disabled
             v-model="this.$store.state.userInfo.enableAmt"
@@ -59,33 +60,33 @@
         </div>
         <div class="form-block">
           <mt-field
-            label="转账金额"
+            :label="$t('transfer.amount1')"
             v-model="form.account"
-            placeholder="请输入转账金额"
+            :placeholder="$t('transfer.amount2')"
             type="number">
-            <span @click="selectAll(3)">全部</span>
+            <span @click="selectAll(3)">{{ $t('transfer.all') }}</span>
           </mt-field>
         </div>
         <div class="form-block">
           <mt-field
-            label="转账人手机"
-            placeholder="请输入转账人手机"
+            :label="$t('transfer.phone')"
+            :placeholder="$t('transfer.number')"
             type="text"
             v-model="phone"
           ></mt-field>
         </div>
         <div class="form-block">
           <mt-field
-            label="收款人姓名"
-            placeholder="收款人姓名"
+            :label="$t('transfer.payee')"
+            :placeholder="$t('transfer.name')"
             type="text"
             disabled
             v-model="name"
           ></mt-field>
-          <p class="red tip">请核对收款人手机号和姓名是否一致</p>
+          <p class="red tip">{{ $t('transfer.match') }} </p>
         </div>
         <div class="btnbox">
-          <span class="text-center btnok loginout" @click="showDialog">确定</span>
+          <span class="text-center btnok loginout" @click="showDialog">{{ $t('transfer.confirm') }}</span>
         </div>
       </mt-tab-container-item>
     </mt-tab-container>
@@ -93,16 +94,16 @@
       center
       top="30vh"
       width="80%"
-      title="验证码确认"
+      :title="$t('transfer.ver')"
       class="submitDialog"
       :modal-append-to-body="false"
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
     >
-      <p class="title">为了您的资金安全，需要输入您的手机验证码</p>
+      <p class="title">{{ $t('transfer.safe') }}</p>
       <div class="flexDiv">
-        <span>验证码：</span>
-        <el-input placeholder="请输入" v-model="code" class="input-with-select">
+        <span>{{ $t('transfer.code') }}：</span>
+        <el-input :placeholder="$t('bank.input')" v-model="code" class="input-with-select">
           <template slot="append">
             <el-button
               size="mini"
@@ -116,9 +117,9 @@
           </template>
         </el-input>
       </div>
-      <p class="timerTip" v-show="timer">验证码已发送到您的注册手机</p>
+      <p class="timerTip" v-show="timer">{{ $t('transfer.send') }}</p>
       <span slot="footer">
-        <el-button type="primary" @click="toSubmit(2)">确 定</el-button>
+        <el-button type="primary" @click="toSubmit(2)">{{ $t('transfer.confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -150,7 +151,7 @@ export default {
       name: '',
       dialogVisible: false,
       code: '',
-      buttonValue: '获取验证码',
+      buttonValue: this.$t('register.getCode'),
       timer: null,
       codeBtnLoading: false
     }
@@ -226,7 +227,8 @@ export default {
       }
       let data = await api.transferMoney(opt)
       if (data.status === 0) {
-        Toast('您的转账已完成')
+        // Toast('您的转账已完成')
+        Toast(this.$t('transfer.success'))
         setTimeout(() => {
           this.$router.push(`/moneyList?index=${+this.selected + 2}`)
         }, 1000)
@@ -245,15 +247,18 @@ export default {
     },
     showDialog () {
       if (!this.form.account || this.form.account === 0 || this.form.account > this.$store.state.userInfo.enableAmt) {
-        Toast('请输入正确的转账金额')
+        // Toast('请输入正确的转账金额')
+        Toast(this.$t('transfer.correct'))
       } else if (!this.phone) {
-        Toast('请输入收款人手机')
+        // Toast('请输入收款人手机')
+        Toast(this.$t('transfer.input'))
       } else if (!this.name) {
-        Toast('收款人账号不存在')
+        // Toast('收款人账号不存在')
+        Toast(this.$t('transfer.exist'))
       } else {
         this.dialogVisible = true
         this.code = ''
-        this.buttonValue = '获取验证码'
+        this.buttonValue = this.$t('register.getCode')
         this.codeBtnLoading = false
         if (this.timer) {
           clearInterval(this.timer)
@@ -281,7 +286,7 @@ export default {
           if (time === 0) {
             clearInterval(this.timer)
             this.timer = null
-            this.buttonValue = '获取验证码'
+            this.buttonValue = this.$t('register.getCode')
           }
         }, 1000)
       } else {

@@ -14,13 +14,15 @@
     </div>
     <div class="form-block">
       <div class="auth-msg" v-if="this.$store.state.userInfo.isActive == 3">
-        <p>认证失败，请重新认证</p>
+        <p>{{ $t('auth.failed') }}</p>
         <div>
-          失败原因：{{ this.$store.state.userInfo.authMsg }}
+          {{ $t('auth.failure') }}{{ this.$store.state.userInfo.authMsg }}
         </div>
       </div>
-      <mt-field label="真实姓名" placeholder="请输入您的真实姓名" type="text" v-model="form.name"></mt-field>
-      <mt-field label="身份证号" placeholder="请输入您的身份证号" type="text" v-model="form.idCard"></mt-field>
+      <mt-field :label="$t('auth.name')" :placeholder="$t('auth.inputName')"
+                type="text" v-model="form.name"></mt-field>
+      <mt-field :label="$t('auth.number')" :placeholder="$t('auth.inputNumber')"
+                type="text" v-model="form.idCard"></mt-field>
     </div>
     <div class="upload-box clearfix">
       <div class="upload-btn">
@@ -40,8 +42,8 @@
           class="avatar-uploader">
           <img v-if="form.img1key" :src="form.img1key" class="id-img avatar">
           <i v-else class="iconfont icon-zhaopian"></i>
-          <span v-if="!form.img1key && !imgStatus" class="btn-title">身份证正面</span>
-          <span v-if="imgStatus" class="btn-title">正在上传中...</span>
+          <span v-if="!form.img1key && !imgStatus" class="btn-title">{{ $t('auth.face') }}</span>
+          <span v-if="imgStatus" class="btn-title">{{ $t('recharge.upload') }}</span>
         </el-upload>
       </div>
       <div class="upload-btn">
@@ -61,21 +63,21 @@
           class="avatar-uploader">
           <img v-if="form.img2key" :src="form.img2key" class="id-img avatar">
           <i v-else class="iconfont icon-zhaopian"></i>
-          <span v-if="!form.img2key && !imgStatus2" class="btn-title">身份证背面</span>
-          <span v-if="imgStatus2" class="btn-title">正在上传中...</span>
+          <span v-if="!form.img2key && !imgStatus2" class="btn-title">{{ $t('auth.back') }}</span>
+          <span v-if="imgStatus2" class="btn-title">{{ $t('recharge.upload') }}</span>
         </el-upload>
       </div>
     </div>
     <div class="rule-box">
-      <div class="title">认证规则：</div>
+      <div class="title">{{ $t('auth.rules') }}</div>
       <ul>
-        <li>1、新用户注册后必须通过实名认证审核。</li>
-        <li>2、姓名和身份证号码一经认证不予修改，修改请联系客服。</li>
-        <li>3、真实姓名必须和出金银行卡户名一致。</li>
+        <li>{{ $t('auth.notice1') }}</li>
+        <li>{{ $t('auth.notice2') }}</li>
+        <li>{{ $t('auth.notice3') }}</li>
       </ul>
     </div>
     <div v-show="showBtn" class="btnbox">
-      <span class="text-center btnok" @click="toSure">确定</span>
+      <span class="text-center btnok" @click="toSure">{{ $t('auth.confirm') }}</span>
     </div>
   </div>
 </template>
@@ -135,12 +137,14 @@ export default {
   },
   methods: {
     limitCheck1 (file, fileList) {
-      Toast('每次最多上传一个文件')
+      // Toast('每次最多上传一个文件')
+      Toast(this.$t('recharge.imgSingle'))
       this.form.img1key = ''
       this.fileList1 = []
     },
     limitCheck2 (file, fileList) {
-      Toast('每次最多上传一个文件')
+      // Toast('每次最多上传一个文件')
+      Toast(this.$t('recharge.imgSingle'))
       this.form.img2key = ''
       this.fileList2 = []
     },
@@ -156,7 +160,8 @@ export default {
       this.fileList1 = fileList
       const isLt10M = (file.size / 1024 / 1024 < 10)
       if (!isLt10M) {
-        Toast('上传图片大小不能超过 10MB!')
+        // Toast('上传图片大小不能超过 10MB!')
+        Toast(this.$t('auth.imgLimit'))
         this.fileList1.pop()
       } else {
         this.imgStatus = true
@@ -168,7 +173,8 @@ export default {
       this.fileList2 = fileList
       const isLt10M = (file.size / 1024 / 1024 < 10)
       if (!isLt10M) {
-        Toast('上传图片大小不能超过 10MB!')
+        // Toast('上传图片大小不能超过 10MB!')
+        Toast(this.$t('auth.imgLimit'))
         this.fileList2.pop()
       } else {
         this.imgStatus2 = true
@@ -217,15 +223,18 @@ export default {
     toSure () {
       // 实名认证弹框
       if (isNull(this.form.name)) {
-        Toast('请输入您的真实姓名')
+        // Toast('请输入您的真实姓名')
+        Toast(this.$t('auth.inputName'))
         return
       }
       if (isNull(this.form.idCard)) {
-        Toast('请输入您的身份证号')
+        // Toast('请输入您的身份证号')
+        Toast(this.$t('auth.inputNumber'))
         return
       }
       if (isNull(this.form.img1key) && isNull(this.form.img2key)) {
-        Toast('请上传您的至少一张身份证照片')
+        // Toast('至少上传一张身份证照片')
+        Toast(this.$t('auth.limit'))
         return
       }
       // 显示确认弹窗
@@ -241,7 +250,8 @@ export default {
       }
       let data = await api.userAuth(opts)
       if (data.status === 0) {
-        Toast('提交成功!')
+        // Toast('提交成功!')
+        Toast(this.$t('auth.success'))
         this.goBack()
         this.$store.state.userInfo.isActive = 1
       } else {

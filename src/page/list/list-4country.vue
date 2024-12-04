@@ -4,10 +4,10 @@
       <li class="title">
         <div>
           <ul class="clearfix">
-            <li class="li-title">名称<img :src="sortIcon" alt=""/></li>
-            <li class="li-base">最新<img :src="sortIcon" alt=""/></li>
-            <li class="li-base">涨幅<img :src="sortIcon" alt=""/></li>
-            <li class="li-base">涨跌<img :src="sortIcon" alt=""/></li>
+            <li class="li-title">{{ $t('market.symbol')  }}<img :src="sortIcon" alt=""/></li>
+            <li class="li-base">{{  $t('market.price')  }}<img :src="sortIcon" alt=""/></li>
+            <li class="li-base">{{  $t('market.chg')  }}<img :src="sortIcon" alt=""/></li>
+            <li class="li-base">{{ $t('market.change') }}<img :src="sortIcon" alt=""/></li>
           </ul>
         </div>
       </li>
@@ -103,10 +103,10 @@
       </div>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
+        {{ $t('market.loading')}}
       </div>
       <div v-show="!loading && list.length > 0" class="load-all text-center">
-        已全部加载
+        {{ $t('market.loaded')}}
       </div>
     </div>
     <foot></foot>
@@ -156,7 +156,8 @@ export default {
     async addOptions (val) {
       let data = await api.addOption({code: val.code})
       if (data.status === 0) {
-        Toast('添加自选成功')
+        // Toast('添加自选成功')
+        Toast(this.$t('market.add'))
         await this.getStock()
       } else {
         Toast(data.msg)
@@ -165,7 +166,8 @@ export default {
     async toDeleteMy (val) {
       let data = await api.delOption({code: val.code})
       if (data.status === 0) {
-        Toast('删除自选股成功')
+        // Toast('删除自选股成功')
+        Toast(this.$t('market.remove'))
         await this.getStock()
       } else {
         Toast(data.msg)

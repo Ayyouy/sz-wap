@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper">
     <mt-navbar class="top-navbar" v-model="selected">
-      <mt-tab-item class="long" id="2">美国股市</mt-tab-item>
-      <mt-tab-item class="long" id="3">日本股市</mt-tab-item>
-      <mt-tab-item class="long" id="1">香港股市</mt-tab-item>
-      <mt-tab-item class="long" id="4">印度股市</mt-tab-item>
+      <mt-tab-item class="long" id="2">{{$t('market.us')}}</mt-tab-item>
+      <mt-tab-item class="long" id="3">{{$t('market.jp')}}</mt-tab-item>
+      <mt-tab-item class="long" id="1">{{$t('market.hk')}}</mt-tab-item>
+      <mt-tab-item class="long" id="4">{{$t('market.in')}}</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="1">

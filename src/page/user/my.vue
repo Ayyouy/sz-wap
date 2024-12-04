@@ -1,20 +1,14 @@
 <template>
   <div class="wrapper">
     <div class="form-block">
-      <!--      <mt-field label="真实姓名" placeholder="真实姓名" type="text" disabled-->
-      <!--                v-model="$store.state.userInfo.realName"></mt-field>-->
-      <mt-field label="手机号码" type="text" disabled v-model="phone"></mt-field>
+      <mt-field :label="$t('change.phone')" type="text" disabled v-model="phone"></mt-field>
     </div>
     <div class="form-block">
-      <mt-field label="登录密码" @click.native="changeLogin" autocomplete="new-password"
-                placeholder="点击可修改登录密码"
+      <mt-field :label="$t('change.pwd')" @click.native="changeLogin" autocomplete="new-password"
+                :placeholder="$t('change.modify')"
                 type="password" disabled>
-        <span @click="changeLogin"><i class="iconfont icon-xiugai"></i>修改密码</span>
+        <span @click="changeLogin"><i class="iconfont icon-xiugai"></i>{{ $t('change.update') }}</span>
       </mt-field>
-    </div>
-    <div class="btnbox">
-      <span v-if="isLogin" class="text-center btnok loginout" @click="toRegister">退出系统</span>
-      <span v-else class="text-center btnok" @click="toRegister">去登录</span>
     </div>
     <!-- 修改密码 -->
     <mt-popup v-model="changeLoginPsdBox" position="bottom" class="mint-popup-wrap">
@@ -22,16 +16,17 @@
         <a @click="changeLoginPsdBox = false" class="pull-right"><i class="iconfont icon-weitongguo"></i></a>
       </div>
       <div class="form-block">
-        <mt-field label="旧密码" type="password" placeholder="请输入旧密码" v-model="nextPsd"></mt-field>
-        <mt-field label="新密码" placeholder="密码为6~12位，数字、字母或符号" type="password" v-model="newPsd"></mt-field>
+        <mt-field :label="$t('change.old')" type="password" :placeholder="$t('change.input')"
+                  v-model="nextPsd"></mt-field>
+        <mt-field :label="$t('change.new')" :placeholder="$t('change.limit')" type="password"
+                  v-model="newPsd"></mt-field>
       </div>
       <div class="text-center">
-        <mt-button class="btn-sure" type="default" @click="changeLoginPsd">确定</mt-button>
+        <mt-button class="btn-sure" type="default" @click="changeLoginPsd">{{ $t('change.confirm') }}</mt-button>
       </div>
     </mt-popup>
   </div>
 </template>
-
 <script>
 import * as api from '@/axios/api'
 import {Toast} from 'mint-ui'
@@ -46,22 +41,19 @@ export default {
       changeLoginPsdBox: false,
       nextPsd: '',
       newPsd: '',
-      phone: this.$store.state.userInfo.phone,
-      isLogin: false
+      phone: this.$store.state.userInfo.phone
     }
   },
   mounted () {
-    if (this.phone === undefined || this.phone == null) {
+    if (this.phone === undefined || this.phone == null || this.phone.length === 0) {
       this.phone = localStorage.getItem('wap-phone')
     }
-    let token = localStorage.getItem('wap-token')
-    this.isLogin = (token === undefined || token == null)
   },
   methods: {
     async toRegister () {
       this.clearCookie()
       await api.logout()
-      this.$router.push('/login')
+      await this.$router.push('/login')
     },
     changeLogin () {
       this.changeLoginPsdBox = true

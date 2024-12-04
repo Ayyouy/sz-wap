@@ -1,12 +1,12 @@
 <template>
   <div class="page wrapper">
-    <p class="chooceTip">请选择入金方式</p>
+    <p class="chooceTip">{{$t('recharge.method1')}}</p>
     <div class="list">
       <div v-for="i in optionsPay" :key="i.key" class="item" @click="toDetail(i.id)">
         <img :src="i.iconUrl"/>
         <span class="name">{{ i.channelType }}</span>
-        <span class="min">最低: {{ i.channelMinLimit }}</span>
-        <span class="max">最高: {{ i.channelMaxLimit }}</span>
+        <span class="min">{{$t('recharge.min')}}: {{ i.channelMinLimit }}</span>
+        <span class="max">{{$t('recharge.max')}}: {{ i.channelMaxLimit }}</span>
       </div>
     </div>
     <el-dialog
@@ -21,7 +21,7 @@
         {{ dialogObj.content }}
       </p>
       <span slot="footer">
-        <el-button type="danger" size="mini" @click="dialogObj.cancel">取消</el-button>
+        <el-button type="danger" size="mini" @click="dialogObj.cancel">{{$t('recharge.cancel')}}</el-button>
         <el-button type="primary" size="mini" @click="dialogObj.success">{{ dialogObj.successTitle }}</el-button>
       </span>
     </el-dialog>
@@ -38,9 +38,9 @@ export default {
       optionsPay: [],
       dialogObj: {
         flag: false,
-        title: '实名认证',
-        content: '尚未实名认证',
-        successTitle: '去实名',
+        title: this.$t('my.auth1'),
+        content: this.$t('recharge.unable'),
+        successTitle: this.$t('auth.auth'),
         success: Function,
         cancel: Function
       }

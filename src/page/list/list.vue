@@ -1,13 +1,12 @@
 <template>
   <div :class="`wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
-    <!--    :fixed="selected != '2' ? true : false"-->
     <mt-navbar class="top-navbar" v-model="selected" :fixed="selected != '2' ? true : false">
-      <mt-tab-item class="long" v-if="stockDisplay" id="6">美国股市</mt-tab-item>
-      <mt-tab-item class="long" v-if="stockDisplay" id="8">日本股市</mt-tab-item>
-      <mt-tab-item class="long" v-if="stockDisplay" id="5">香港股市</mt-tab-item>
-      <mt-tab-item class="long" v-if="stockDisplay" id="7">印度股市</mt-tab-item>
-      <mt-tab-item v-if="futureDisplay" id="4">期货</mt-tab-item>
-      <mt-tab-item v-if="indexDisplay" id="1">指数</mt-tab-item>
+      <mt-tab-item class="long" v-if="stockDisplay" id="6">{{$t('market.us')}}</mt-tab-item>
+      <mt-tab-item class="long" v-if="stockDisplay" id="8">{{$t('market.jp')}}</mt-tab-item>
+      <mt-tab-item class="long" v-if="stockDisplay" id="5">{{$t('market.hk')}}</mt-tab-item>
+      <mt-tab-item class="long" v-if="stockDisplay" id="7">{{$t('market.in')}}</mt-tab-item>
+      <mt-tab-item v-if="futureDisplay" id="4">{{ $t('market.future') }}</mt-tab-item>
+      <mt-tab-item v-if="indexDisplay" id="1">{{ $t('market.index') }}</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item v-if="indexDisplay" id="1">

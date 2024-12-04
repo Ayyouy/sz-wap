@@ -18,7 +18,7 @@ const state = {
   hide: false,
   // select: '/home', // 菜单选择
   select: '/list', // 菜单选择
-  token: 'USER62CCF5221CD752269D47681374DD0916',
+  token: '',
   settingForm: { // 产品配置
     futuresDisplay: false,
     indexDisplay: false,

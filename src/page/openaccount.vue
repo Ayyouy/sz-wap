@@ -1,82 +1,90 @@
 <template>
   <div :class="`wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
-    <!-- <mt-header fixed title="开户">
-      <router-link to="/home" slot="left">
-        <mt-button icon="back"></mt-button>
-      </router-link>
-    </mt-header> -->
     <div class="top-wrapper">
-      <div class="title-wrapper">交易流程</div>
+      <div class="title-wrapper">{{ $t('open.process') }}</div>
       <div class="content-box">
         <el-steps :active="0" class="steps-box" align-center>
-          <el-step title="注册"></el-step>
-          <el-step title="认证"></el-step>
-          <el-step title="入金"></el-step>
-          <el-step title="交易"></el-step>
+          <el-step :title="$t('open.register')"></el-step>
+          <el-step :title="$t('open.verification')"></el-step>
+          <el-step :title="$t('open.deposit')"></el-step>
+          <el-step :title="$t('open.trading')"></el-step>
         </el-steps>
-        <ul class="list">
-          <li class="list-item animated fadeInLeft">
-            <div class="icon">
-              <img :src="openIcon1" alt="">
+        <ul class="ul-list">
+          <li class="li-item animated fadeInLeft">
+            <div class="div-icon">
+              <div class="icon">
+                <img :src="openIcon1" alt="">
+              </div>
             </div>
-            <div class="content">
-              <h3>行情分发,极速稳定</h3>
-              <p>专线直连交易所,毫秒级下单速度</p>
-            </div>
-          </li>
-          <li class="list-item animated fadeInRight">
-            <div class="icon">
-              <img :src="openIcon2" alt="">
-            </div>
-            <div class="content">
-              <h3>客户至上,优享服务</h3>
-              <p>灵活投资、实现收益最大化</p>
+            <div class="div-content">
+              <div class="content">
+                <h3>{{ $t('open.distribute') }}</h3>
+                <p>{{ $t('open.line') }}</p>
+              </div>
             </div>
           </li>
-          <li class="list-item animated fadeInLeft">
-            <div class="icon">
-              <img :src="openIcon3" alt="">
+          <li class="li-item animated fadeInRight">
+            <div class="div-icon">
+              <div class="icon">
+                <img :src="openIcon2" alt="">
+              </div>
             </div>
-            <div class="content">
-              <h3>极速开户,超高配额</h3>
-              <p>0资金门槛,无需线下见证</p>
+            <div class="div-content">
+              <div class="content">
+                <h3>{{ $t('open.service') }}</h3>
+                <p>{{ $t('open.flexible') }}</p>
+              </div>
+            </div>
+          </li>
+          <li class="li-item animated fadeInLeft">
+            <div class="div-icon">
+              <div class="icon">
+                <img :src="openIcon3" alt="">
+              </div>
+            </div>
+            <div class="div-content">
+              <div class="content">
+                <h3>{{ $t('open.instant') }}</h3>
+                <p>{{ $t('open.capital') }}</p>
+              </div>
             </div>
           </li>
         </ul>
       </div>
       <div class="btnbox animated fadeInUp text-center">
         <span class="login btnok" @click="toLogin">
-            登录
+           {{ $t('open.login') }}
         </span>
         <span class="register btnok" @click="toRegister">
-          注册
+         {{ $t('open.register') }}
         </span>
       </div>
     </div>
-
     <div class="bottom-prompt">
-      <h2 class="text-center">开户前请准备好</h2>
+      <h2 class="text-center">{{ $t('open.prepare') }} </h2>
       <ul class="list list2 clearfix">
         <li>
-          <div class="icon">
-            <img :src="dataIcon1" alt="">
+          <div class="circle">
+            <div class="icon">
+              <img :src="dataIcon1" alt="">
+            </div>
           </div>
-          <h3>身份证</h3>
-          <p>有效期内的二代身份证</p>
+          <h3>{{ $t('open.card') }} </h3>
+          <p>{{ $t('open.identification') }} </p>
         </li>
         <li>
           <div class="icon">
             <img :src="dataIcon2" alt="">
           </div>
-          <h3>银行卡</h3>
-          <p>户名与身份证一致的银行卡</p>
+          <h3>{{ $t('open.bank') }} </h3>
+          <p>{{ $t('open.bankName') }} </p>
         </li>
         <li>
           <div class="icon">
             <img :src="dataIcon3" alt="">
           </div>
-          <h3>WIFI网络</h3>
-          <p>3G/4G网络</p>
+          <h3>{{ $t('open.wifi') }}</h3>
+          <p>{{ $t('open.network') }}</p>
         </li>
       </ul>
     </div>
@@ -200,8 +208,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 1rem;
-        margin-right: 0.25rem;
+        border-radius: 50%;
 
         img {
           width: 0.32rem;
@@ -209,6 +216,8 @@ export default {
       }
 
       .content {
+        margin-left: 0.25rem;
+
         h3 {
           font-size: 0.26rem;
           font-family: Microsoft YaHei;
@@ -251,6 +260,66 @@ export default {
     }
   }
 }
+
+.ul-list {
+  width: 6rem;
+  margin: 0 auto;
+}
+
+.li-item {
+  width: 6rem;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0.38rem 0;
+
+  .div-icon {
+    width: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .div-content {
+    width: 5rem;
+  }
+
+  .icon {
+    width: 0.67rem;
+    height: 0.67rem;
+    background-color: #E6003E;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+    img {
+      width: 0.32rem;
+    }
+  }
+
+  .content {
+    margin-left: 0.25rem;
+
+    h3 {
+      font-size: 0.26rem;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
+      line-height: 0.42rem;
+      margin: 0;
+    }
+
+    p {
+      font-size: 0.24rem;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: #E6003E;
+      line-height: 0.42rem;
+    }
+  }
+}
+
 
 .list {
   width: 5rem;
@@ -326,16 +395,16 @@ export default {
       align-items: center;
 
       .icon {
-        width: 0.55rem;
-        height: 0.55rem;
+        width: 0.67rem;
+        height: 0.67rem;
         background-color: #E6003E;
-        border-radius: 1rem;
+        border-radius: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
 
         img {
-          width: 0.23rem;
+          width: 0.32rem;
         }
       }
 

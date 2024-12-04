@@ -4,71 +4,68 @@
       <div class="box">
         <div class="box-contain clearfix">
           <div class="account text-center">
-            <p class="title">可提现金额（元）</p>
+            <p class="title">{{ $t('withdraw.amount1') }}</p>
             <p class="red number">{{ Number($store.state.userInfo.enableAmt).toFixed(2) || 0 }}</p>
           </div>
         </div>
       </div>
       <div class="form-block page-part">
         <mt-field
-          label="提现金额($)"
-          placeholder="请输入提现金额"
+          :label="$t('withdraw.amount2')"
+          :placeholder="$t('withdraw.amount3')"
           type="number"
-          v-model="formData.amt"
-        >
-          <span @click="changeAllNumber">全部</span>
+          v-model="formData.amt">
+          <span @click="changeAllNumber">{{ $t('withdraw.all') }}</span>
         </mt-field>
       </div>
       <div class="dynamic-calc">
-        <span>实际出金：$</span>
-        <span>手续费：$</span>
+        <span>{{ $t('withdraw.actual') }}</span>
+        <span>{{ $t('withdraw.fee') }}</span>
       </div>
       <div class="attention">
-        <p>注意：默认提取现金账户的可用资金</p>
+        <p>{{ $t('withdraw.note') }}</p>
       </div>
       <el-radio-group class="payType" v-model="formData.payType" v-if="$store.state.bankInfo.countryId != 5">
-        <el-radio-button label="0">银行卡</el-radio-button>
+        <el-radio-button label="0">{{ $t('withdraw.bank1') }}</el-radio-button>
       </el-radio-group>
       <el-radio-group class="payType" v-model="formData.payType" v-else>
-        <el-radio-button label="0">泰达币</el-radio-button>
+        <el-radio-button label="0">{{ $t('withdraw.tether1') }}</el-radio-button>
       </el-radio-group>
       <div class="form-block page-part">
         <template v-if="$store.state.bankInfo.countryId != 5">
           <p class="rate">USD/{{ $store.state.bankInfo.code }}=1:{{ $store.state.bankInfo.rate }}</p>
           <mt-field readonly :label="outMoneyTitle+'出金'" v-model="formData.aa"/>
-          <mt-field readonly label="姓名" v-model="$store.state.bankInfo.realName"/>
-          <mt-field readonly label="出金银行" v-model="$store.state.bankInfo.bankName"/>
-          <mt-field readonly label="出金账号" v-model="$store.state.bankInfo.bankNo"/>
+          <mt-field readonly :label="$t('withdraw.name')" v-model="$store.state.bankInfo.realName"/>
+          <mt-field readonly :label="$t('withdraw.bank2')" v-model="$store.state.bankInfo.bankName"/>
+          <mt-field readonly :label="$t('withdraw.bank3')" v-model="$store.state.bankInfo.bankNo"/>
         </template>
         <template v-else>
           <p class="rate">USD/{{ $store.state.bankInfo.code }}=1:{{ $store.state.bankInfo.rate }}</p>
           <mt-field readonly :label="outMoneyTitle+'出金'" v-model="formData.aa"/>
-          <mt-field readonly label="钱包地址" v-model="$store.state.bankInfo.bankNo"/>
+          <mt-field readonly :label="$t('withdraw.tether3')" v-model="$store.state.bankInfo.bankNo"/>
         </template>
       </div>
       <div class="attention">
-        <p>1、当前有持仓订单不能出金 。</p>
-        <p>2、出金请先在官网通过实名认证和绑定银行卡 。</p>
+        <p>{{ $t('withdraw.notice1') }}</p>
+        <p>{{ $t('withdraw.notice2') }}</p>
         <p>
-          3、出金时间工作日 {{ settingInfo.withTimeBegin }} : 00 到
-          {{ settingInfo.withTimeEnd }} : 00 之间。
+          {{ $t('withdraw.notice3') }} {{ settingInfo.withTimeBegin }} {{ $t('withdraw.notice4') }}
+          {{ settingInfo.withTimeEnd }} {{ $t('withdraw.notice5') }}
         </p>
         <p>
-          4、每笔出金扣除 {{ settingInfo.withFeeSingle }} 元手续费<span
-          v-if="settingInfo.withFeePercent != 0"
-        >，加上出金金额 * {{ settingInfo.withFeePercent }}</span
-        >。
+          {{ $t('withdraw.notice6') }} {{ settingInfo.withFeeSingle }} {{ $t('withdraw.notice7') }}
+          <span v-if="settingInfo.withFeePercent != 0">
+            {{ $t('withdraw.notice8') }} {{ settingInfo.withFeePercent }}
+          </span>
         </p>
-        <p>5、每笔提现金额最小 {{ settingInfo.withMinAmt }} 元。</p>
+        <p>{{ $t('withdraw.notice9') }} {{ settingInfo.withMinAmt }} {{ $t('withdraw.notice10') }}</p>
         <p>
-          6、<span class="red"
-        >出金时段内出金一般2小时到账，出金时间受银行间清算时间影响，各家银行到账时间不同，最迟T+1次日24点前到账</span
-        >
+          <span class="red">{{ $t('withdraw.notice11') }}</span>
         </p>
       </div>
       <div class="btnbox">
         <span class="text-center btnok" :style="doubleSubmit?'color:#eee;background:#676b6f':''"
-              @click="toSure">确定</span>
+              @click="toSure">{{ $t('withdraw.confirm') }}</span>
       </div>
     </div>
     <el-dialog
@@ -83,7 +80,7 @@
         {{ dialogObj.content }}
       </p>
       <span slot="footer">
-        <el-button type="danger" size="mini" @click="dialogObj.cancel">取消</el-button>
+        <el-button type="danger" size="mini" @click="dialogObj.cancel">{{ $t('withdraw.cancel') }}</el-button>
         <el-button type="primary" size="mini" @click="dialogObj.success">{{ dialogObj.successTitle }}</el-button>
       </span>
     </el-dialog>
@@ -102,11 +99,11 @@ export default {
       card: '',
       phone: '',
       settingInfo: {
-        withMinAmt: 1000,
-        withTimeBegin: 13, // 提现开始时间
-        withTimeEnd: 15, // 提现结束时间
-        withFeeSingle: 3, // 提现单笔手续费
-        withFeePercent: 0.008 // 提现单笔手续费
+        withMinAmt: 0,
+        withTimeBegin: 0, // 提现开始时间
+        withTimeEnd: 0, // 提现结束时间
+        withFeeSingle: 0, // 提现单笔手续费
+        withFeePercent: 0 // 提现单笔手续费
       },
       formData: {
         amt: '',
@@ -122,7 +119,7 @@ export default {
         cancel: Function
       },
       doubleSubmit: false,
-      doubleTitle: '禁止重复提交', // 第一遍时提示此消息，第二遍时就提示返回重拾，这种是应对服务器异常，而导致doubleSubmit值没变过来的情况
+      doubleTitle: this.$t('recharge.double'), // 第一遍时提示此消息，第二遍时就提示返回重拾，这种是应对服务器异常，而导致doubleSubmit值没变过来的情况
       outMoneyTitle: (this.$store.state.bankInfo.currency == null || this.$store.state.bankInfo.currency === undefined) ? '' : this.$store.state.bankInfo.currency
     }
   },
@@ -133,18 +130,6 @@ export default {
     }
   },
   mounted () {
-    if (!this.$store.state.bankInfo.bankNo) {
-      this.doubleSubmit = false
-      this.dialogObj.flag = true
-      this.dialogObj.title = '银行卡提示'
-      this.dialogObj.content = '尚未添加银行卡'
-      this.dialogObj.successTitle = '去添加'
-      this.dialogObj.cancel = this.dialogCancel
-      this.dialogObj.success = () => {
-        this.dialogObj.flag = false
-        this.$router.push('/addCard')
-      }
-    }
     if (this.$state.theme === 'red') {
       document.body.classList.remove('black-bg')
       document.body.classList.add('red-bg')
@@ -179,58 +164,34 @@ export default {
     async toSure () {
       if (this.doubleSubmit) {
         Toast(this.doubleTitle)
-        this.doubleTitle = '返回重试，或联系管理员'
         return
       }
       this.doubleSubmit = true
-      // 确定提现
-      // 未实名认证和添加银行卡不能提现
-      if (!this.$store.state.userInfo.isActive) {
-        this.doubleSubmit = false
-        this.dialogObj.flag = true
-        this.dialogObj.title = '实名认证'
-        this.dialogObj.content = '尚未实名认证'
-        this.dialogObj.successTitle = '去实名'
-        this.dialogObj.cancel = this.dialogCancel
-        this.dialogObj.success = () => {
-          this.dialogObj.flag = false
-          this.$router.push('/authentication')
-        }
-        return
-      }
-      if (!this.$store.state.bankInfo.bankNo) {
-        this.doubleSubmit = false
-        this.dialogObj.flag = true
-        this.dialogObj.title = '银行卡提示'
-        this.dialogObj.content = '尚未添加银行卡'
-        this.dialogObj.successTitle = '去添加'
-        this.dialogObj.cancel = this.dialogCancel
-        this.dialogObj.success = () => {
-          this.dialogObj.flag = false
-          this.$router.push('/addCard')
-        }
-        return
-      }
       if (!this.formData.amt || this.formData.amt <= 0) {
         this.doubleSubmit = false
-        Toast('请输入正确的提现金额')
-      } else if (this.formData.amt - this.settingInfo.withMinAmt < 0) {
+        // Toast('请输入正确的提现金额')
+        Toast(this.$t('withdraw.msgAmount'))
+        return
+      }
+      if (this.formData.amt - this.settingInfo.withMinAmt < 0) {
         this.doubleSubmit = false
-        Toast('提现金额不得小于' + this.settingInfo.withMinAmt)
+        // Toast('提现金额不得小于' + this.settingInfo.withMinAmt)
+        Toast(this.$t('withdraw.msgLimit') + this.settingInfo.withMinAmt)
+        return
+      }
+      let opts = {
+        amt: this.formData.amt,
+        currency: this.$store.state.bankInfo.code,
+        countryId: this.$store.state.bankInfo.countryId
+      }
+      let data = await api.outMoney(opts)
+      if (data.status === 0) {
+        // 成功
+        // Toast('申请成功，请等待审核!')
+        Toast(this.$t('withdraw.success'))
+        await this.$router.push('/moneyList?index=2')
       } else {
-        let opts = {
-          amt: this.formData.amt,
-          currency: this.$store.state.bankInfo.code,
-          countryId: this.$store.state.bankInfo.countryId
-        }
-        let data = await api.outMoney(opts)
-        if (data.status === 0) {
-          // 成功
-          Toast('申请成功，请等待审核!')
-          this.$router.push('/moneyList?index=2')
-        } else {
-          Toast(data.msg ? data.msg : '提现失败,请重新提现或者联系管理员')
-        }
+        Toast(data.msg)
       }
       this.doubleSubmit = false
     }

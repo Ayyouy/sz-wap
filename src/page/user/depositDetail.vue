@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper">
-    <div class="pageTitle">入金渠道</div>
+    <div class="pageTitle">{{ $t('recharge.method2') }}</div>
     <div class="box">
       <div class="clearfix">
         <div class="account text-center">
-          <p class="title">当前可用余额（元）</p>
+          <p class="title">{{ $t('recharge.balance') }}</p>
           <p class="red number">{{ $store.state.userInfo.enableAmt }}</p>
         </div>
       </div>
@@ -12,21 +12,21 @@
     <div class="item">
       <img :src="detail.iconUrl"/>
       <span class="name">{{ detail.channelType }}</span>
-      <span class="min">最低: {{ detail.channelMinLimit }}</span>
-      <span class="max">最高: {{ detail.channelMaxLimit }}</span>
+      <span class="min">{{ $t('recharge.min') }} {{ detail.channelMinLimit }}</span>
+      <span class="max">{{ $t('recharge.max') }} {{ detail.channelMaxLimit }}</span>
     </div>
 
     <div class="form-block page-part">
       <mt-field
-        label="入金金额($)"
-        placeholder="请输入入金金额"
+        :label="$t('recharge.amount1')"
+        :placeholder="$t('recharge.amount2')"
         type="number"
         v-model="formData.amt"
       />
       <p class="num1">{{ detail.code }}：{{ Number(formData.amt * detail.rate).toFixed(2) }}</p>
       <p class="num2">USD/{{ detail.code }}=1:{{ detail.rate }}</p>
       <div class="upload-box clearfix">
-        <p class="left">截图凭证</p>
+        <p class="left">{{ $t('recharge.screen') }}</p>
         <div class="upload-btn">
           <el-upload
             name="upload_file"
@@ -43,8 +43,8 @@
             :on-change="handleChange">
             <img v-if="formData.rechargeImg" :src="formData.rechargeImg" class="id-img avatar"/>
             <i v-else class="iconfont icon-zhaopian"></i>
-            <span v-if="!formData.rechargeImg && !imgStatus" class="btn-title">截图凭证</span>
-            <span v-if="imgStatus" class="btn-title">正在上传中...</span>
+            <span v-if="!formData.rechargeImg && !imgStatus" class="btn-title">{{ $t('recharge.screen') }}</span>
+            <span v-if="imgStatus" class="btn-title">{{ $t('recharge.upload') }}</span>
           </el-upload>
         </div>
       </div>
@@ -52,8 +52,8 @@
     <div class="form-block page-part">
       <template v-if="detail.ctype !== 2">
         <mt-field
-          label="收款名称"
-          placeholder="收款名称"
+          :label="$t('recharge.payee')"
+          :placeholder="$t('recharge.payee')"
           disabled
           type="text"
           v-model="detail.channelName"
@@ -63,12 +63,12 @@
             v-clipboard:success="onCopy"
             v-clipboard:error="onError"
           >
-            <i class="iconfont icon-fuzhi"></i>复制
+            <i class="iconfont icon-fuzhi"></i>{{ $t('recharge.copy') }}
           </span>
         </mt-field>
         <mt-field
-          label="收款银行"
-          placeholder="收款银行"
+          :label="$t('recharge.bank')"
+          :placeholder="$t('recharge.bank')"
           disabled
           type="text"
           v-model="detail.channelDesc"
@@ -78,12 +78,12 @@
             v-clipboard:success="onCopy"
             v-clipboard:error="onError"
           >
-            <i class="iconfont icon-fuzhi"></i>复制
+            <i class="iconfont icon-fuzhi"></i>{{ $t('recharge.copy') }}
           </span>
         </mt-field>
         <mt-field
-          label="收款账号"
-          placeholder="收款账号"
+          :label="$t('recharge.account')"
+          :placeholder="$t('recharge.account')"
           disabled
           type="text"
           v-model="detail.channelAccount"
@@ -93,14 +93,14 @@
             v-clipboard:success="onCopy"
             v-clipboard:error="onError"
           >
-            <i class="iconfont icon-fuzhi"></i>复制
+            <i class="iconfont icon-fuzhi"></i>{{ $t('recharge.copy') }}
           </span>
         </mt-field>
       </template>
       <template v-else>
         <mt-field
-          label="钱包地址"
-          placeholder="钱包地址"
+          :label="$t('recharge.wallet')"
+          :placeholder="$t('recharge.wallet')"
           disabled
           type="text"
           v-model="detail.channelAccount"
@@ -110,37 +110,34 @@
             v-clipboard:success="onCopy"
             v-clipboard:error="onError"
           >
-            <i class="iconfont icon-fuzhi"></i>复制
+            <i class="iconfont icon-fuzhi"></i>{{ $t('recharge.copy') }}
           </span>
         </mt-field>
       </template>
     </div>
     <div class="attention" style="margin-bottom: 10px">
-      <p>注意事项</p>
+      <p>{{ $t('recharge.attention1') }}</p>
     </div>
     <div class="attention">
       <p>
-        由于支付收款上线限制，每次收款公户可能不一样，请每次充值前获取最新的二维码完成支付
+        {{ $t('recharge.attention2') }}
       </p>
       <p>
-        如果您的网络环境不稳定，或由于设备、环境、偏好、行为、关系、账户、身份等维度问题，可能导致支付宝风控系统提示风险，请您在安全的环境下发起支付
+        {{ $t('recharge.attention3') }}
       </p>
       <p class="tip-text">
-        <i class="iconfont icon-jingpaibuzhou2"></i>为确保入金及时到账，<span
-        class="red"
-      >请确认您输入的金额和提交的充值金额一致</span
-      >.
+        <i class="iconfont icon-jingpaibuzhou2"></i>{{ $t('recharge.attention4') }}
+        <span class="red">{{ $t('recharge.attention5') }}</span>
       </p>
       <p class="tip-text">
-        <i class="iconfont icon-jingpaibuzhou1"></i
-        >受支付宝到账通知时间影响,入金时间到账时间可能会延迟，请耐心等待.
+        <i class="iconfont icon-jingpaibuzhou1"></i>
+        {{ $t('recharge.attention6') }}
       </p>
     </div>
     <div class="btnbox">
       <span class="text-center btnok" :style="doubleSubmit?'color:#eee;background:#676b6f':''"
-            @click="toSure">提交</span>
+            @click="toSure">{{ $t('recharge.submit') }}</span>
     </div>
-
     <el-dialog
       center
       top="40vh"
@@ -150,11 +147,10 @@
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
     >
-      <p><i class="el-icon-success"/>您的入金申请已提交</p>
+      <p><i class="el-icon-success"/>{{ $t('recharge.submitted') }}</p>
       <span slot="footer">
         <el-button type="primary" @click="$router.push('moneyList')"
-        >确 定</el-button
-        >
+        >{{ $t('recharge.confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -194,7 +190,7 @@ export default {
       imgStatus: false,
       url: '',
       doubleSubmit: false,
-      doubleTitle: '禁止重复提交' // 第一遍时提示此消息，第二遍时就提示返回重拾，这种是应对服务器异常，而导致doubleSubmit值没变过来的情况
+      doubleTitle: this.$t('recharge.double') // 第一遍时提示此消息，第二遍时就提示返回重拾，这种是应对服务器异常，而导致doubleSubmit值没变过来的情况
     }
   },
   mounted () {
@@ -217,7 +213,8 @@ export default {
       this.fileList = fileList
       const isLt2M = (file.size / 1024 / 1024 < 2)
       if (!isLt2M) {
-        Toast('上传头像图片大小不能超过 2MB!')
+        // Toast('上传头像图片大小不能超过 2MB!')
+        Toast(this.$t('recharge.imgLimit'))
         this.fileList.pop()
       } else {
         this.imgStatus = true
@@ -226,7 +223,8 @@ export default {
       return isLt2M
     },
     limitCheck (file, fileList) {
-      Toast('每次最多上传一个文件')
+      // Toast('每次最多上传一个文件')
+      Toast(this.$t('recharge.imgSingle'))
       this.formData.rechargeImg = ''
       this.fileList = []
     },
@@ -260,7 +258,6 @@ export default {
     async toSure () {
       if (this.doubleSubmit) {
         Toast(this.doubleTitle)
-        this.doubleTitle = '返回重试，或联系管理员'
         return
       }
       this.doubleSubmit = true
@@ -268,24 +265,28 @@ export default {
       this.formData.currency = this.detail.code
       if (this.formData.amt <= 0) {
         this.doubleSubmit = false
-        Toast('请输入正确的金额')
+        // Toast('请输入正确的金额')
+        Toast(this.$t('recharge.msgAmount'))
         return
       }
       if (this.formData.amt < this.detail.channelMinLimit || this.formData.amt > this.detail.channelMaxLimit) {
         this.doubleSubmit = false
-        Toast('金额超出可充值范围')
+        // Toast('金额超出可充值范围')
+        Toast(this.$t('recharge.limit'))
         return
       }
       if (
         ![0, 1, 2].includes(this.formData.payType) ||
         !this.formData.currency
       ) {
-        Toast('参数异常')
+        // Toast('参数异常')
+        Toast(this.$t('recharge.msgParam'))
         this.doubleSubmit = false
         return
       }
       if (!this.formData.rechargeImg) {
-        Toast('请上传转账凭证')
+        // Toast('请上传转账凭证')
+        Toast(this.$t('recharge.proof'))
         this.doubleSubmit = false
         return
       }
@@ -297,10 +298,12 @@ export default {
       this.doubleSubmit = false
     },
     onCopy: function (e) {
-      Toast('复制成功！')
+      // Toast('复制成功！')
+      Toast(this.$t('recharge.success'))
     },
     onError: function (e) {
-      Toast('复制失败，请重试！')
+      // Toast('复制失败，请重试！')
+      Toast(this.$t('recharge.msgCopy'))
     }
   }
 }

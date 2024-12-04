@@ -17,12 +17,26 @@
 export default {
   name: 'App',
   created () {
-    this.title = this.$route.meta.title
+    const language = navigator.language.toLowerCase()
+    if (language.includes('cn')) {
+      this.title = this.$route.meta.titleCn
+    } else if (language.includes('tw')) {
+      this.title = this.$route.meta.titleTw
+    } else {
+      this.title = this.$route.meta.title
+    }
     this.iconLeft = this.$route.meta.iconLeft
   },
   watch: {
     $route (val) {
-      this.title = val.meta.title
+      const language = navigator.language.toLowerCase()
+      if (language.includes('cn')) {
+        this.title = val.meta.titleCn
+      } else if (language.includes('tw')) {
+        this.title = val.meta.titleTw
+      } else {
+        this.title = val.meta.title
+      }
       this.iconLeft = val.meta.iconLeft
     }
   },

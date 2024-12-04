@@ -1,30 +1,31 @@
 <template>
   <div class="wrapper">
     <div class="title">
-      输入您的手机号
+      {{ $t('pwd.account') }}
     </div>
     <div class="forget-form">
       <div class="form-item input-model">
         <select v-model="select">
-          <option v-for="item in options" :key="item" :label="item" :value="item">{{item}}</option>
+          <option v-for="item in options" :key="item" :label="item" :value="item">{{ item }}</option>
         </select>
-        <input placeholder="请输入手机号" type="tel" pattern="[0-9]*" v-model="phone"/>
+        <input :placeholder="$t('pwd.account')" type="tel" pattern="[0-9]*" v-model="phone"/>
       </div>
       <div class="form-item input-model">
-        <span>验证码</span>
-        <input placeholder="请输入验证码" style="width: 1.4rem;" type="text" pattern="[a-zA-Z0-9]+" v-model="code"/>
-        <span v-if="codeshow" @click="checkCodeBox">获取验证码</span>
-        <span v-if="!codeshow">{{ count }}s</span>
+        <span style="width: 40px">{{ $t('pwd.code') }}</span>
+        <input :placeholder="$t('pwd.inputCode')" style="width: 1.4rem;" type="text" pattern="[a-zA-Z0-9]+"
+               v-model="code"/>
+        <span v-if="codeShow" @click="checkCodeBox">{{ $t('pwd.getCode') }}</span>
+        <span v-if="!codeShow">{{ count }}s</span>
       </div>
       <div class="form-item input-model">
-        <span>新密码</span>
-        <input placeholder="请输入新密码" type="password" pattern="[a-zA-Z0-9]+" v-model="password"/>
+        <span style="width: 40px">{{ $t('pwd.pwd') }}</span>
+        <input :placeholder="$t('pwd.inputPwd')" type="password" pattern="[a-zA-Z0-9]+" v-model="password"/>
       </div>
       <div class="form-item input-model">
-        <span>新密码</span>
-        <input placeholder="请再次输入新密码" type="password" pattern="[a-zA-Z0-9]+" v-model="password2"/>
+        <span style="width: 40px">{{ $t('pwd.pwd') }}</span>
+        <input :placeholder="$t('pwd.inputRepeat')" type="password" pattern="[a-zA-Z0-9]+" v-model="password2"/>
       </div>
-      <div class="form-item submit-model" @click="gook">确定</div>
+      <div class="form-item submit-model" @click="gook">{{ $t('pwd.confirm') }}</div>
     </div>
     <mt-popup
       v-model="dialogShow"
@@ -39,9 +40,9 @@
       <div class="">
         <div class="check-box row">
           <div class="title">
-            输入图片上的验证码
+            {{ $t('register.imgCode') }}
           </div>
-          <mt-field label="验证码" placeholder="请输入验证码" v-model="code2">
+          <mt-field :label="$t('pwd.code')" :placeholder="$t('pwd.inputCode')" v-model="code2">
             <img
               @click="refreshImg"
               :src="adminUrl + '/code/getCode.do?time=' + imgCodeTime"
@@ -50,25 +51,22 @@
             />
           </mt-field>
           <p class="red" v-if="!checkCodeState">
-            您输入的验证码有误,请重新输入
+            {{ $t('register.msgCode') }}
           </p>
           <div class="text-center" style="width: 100%; padding: 0.2rem;">
-            <mt-button type="primary" @click="checkImg">确定</mt-button>
+            <mt-button type="primary" @click="checkImg">{{ $t('pwd.confirm') }}</mt-button>
           </div>
         </div>
       </div>
     </mt-popup>
   </div>
 </template>
-
 <script>
 import {Toast} from 'mint-ui'
 import {isNull, pwdReg2} from '@/utils/utils'
 import * as api from '@/axios/api'
 
 export default {
-  components: {},
-  props: {},
   data () {
     return {
       options: ['+1', '+852', '+91', '+81', '+86', '+88', '+00', '+99'],
@@ -77,13 +75,13 @@ export default {
       password2: '',
       code: '',
       code2: '',
-      codeshow: true,
+      codeShow: true,
       count: '', // 倒计时
-      clickFalg: 0, //  点击次数
+      clickFlag: 0, //  点击次数
       imgCode: '',
       adminUrl: '',
       dialogShow: false, // 显示弹窗
-      ischeckImg: false,
+      isCheckImg: false,
       checkCodeState: true, // 验证码的状态
       dialogImgShow: false, // 图片显示
       imgCodeTime: 0,
@@ -98,33 +96,35 @@ export default {
       }
     }
   },
-  computed: {},
   methods: {
     checkCodeBox () {
       if (isNull(this.phone) || this.phone.length < 7) {
-        Toast('请输入正确的手机号')
+        // Toast('请输入正确的手机号')
+        Toast(this.$t('pwd.msgAccount'))
       } else {
         this.checkPhone()
       }
     },
     async checkCode () {
       let data = await api.checkCode({code: this.code2})
-      this.ischeckImg = data
+      this.isCheckImg = data
     },
     async checkImg () {
       if (!this.code2) {
         this.checkCodeState = false
-        Toast('您输入的验证码有误,请重新输入')
+        // Toast('您输入的验证码有误,请重新输入')
+        Toast(this.$t('register.msgCode'))
         return
       }
       let data = await api.checkCode({code: this.code2})
       if (data === 'true' || data === true) {
-        this.getcode()
+        await this.getCode()
         this.dialogShow = false
         this.checkCodeState = true
       } else {
         this.checkCodeState = false
-        Toast('您输入的验证码有误,请重新输入')
+        // Toast('您输入的验证码有误,请重新输入')
+        Toast(this.$t('register.msgCode'))
         this.adminUrl = process.env.API_HOST + '1'
         this.adminUrl = process.env.API_HOST
         if (this.adminUrl === undefined) {
@@ -132,27 +132,28 @@ export default {
         }
       }
     },
-    async getcode () {
-      if (this.clickFalg !== 0) {
-        this.clickFalg = 0
+    async getCode () {
+      if (this.clickFlag !== 0) {
+        this.clickFlag = 0
         return
       }
-      this.clickFalg++
+      this.clickFlag++
       if (isNull(this.phone) || this.phone.length < 7) {
-        Toast('请输入正确的手机号码')
+        // Toast('请输入正确的手机号码')
+        Toast(this.$t('pwd.msgAccount'))
       } else {
         let result = await api.sendForgetSms({phoneNum: this.select + this.phone})
         if (result.status === 0) {
           const TIME_COUNT = 60
           if (!this.timer) {
             this.count = TIME_COUNT
-            this.codeshow = false
-            this.clickFalg = 0
+            this.codeShow = false
+            this.clickFlag = 0
             this.timer = setInterval(() => {
               if (this.count > 0 && this.count <= TIME_COUNT) {
                 this.count--
               } else {
-                this.codeshow = true
+                this.codeShow = true
                 clearInterval(this.timer)
                 this.timer = null
               }
@@ -175,8 +176,9 @@ export default {
         }
         // this.gook()
       } else {
-        Toast('用户还未注册,请注册')
-        this.$router.push('/register')
+        // Toast('用户还未注册,请注册')
+        Toast(this.$t('pwd.not') + this.$t('login.not1'))
+        await this.$router.push('/register')
       }
     },
     async gook () {
@@ -185,40 +187,57 @@ export default {
       }
       this.logging = true
       if (isNull(this.phone) || this.phone.length < 7) {
-        Toast('请输入正确的手机号码')
+        // Toast('请输入正确的手机号码')
+        Toast(this.$t('pwd.msgAccount'))
         this.logging = false
-      } else if (isNull(this.password)) {
-        Toast('请输入密码')
+        return
+      }
+      if (isNull(this.password)) {
+        // Toast('请输入密码')
+        Toast(this.$t('pwd.msgPwd'))
         this.logging = false
-      } else if (isNull(this.password2)) {
-        Toast('请确认确认密码')
+        return
+      }
+      if (isNull(this.password2)) {
+        // Toast('请确认确认密码')
+        Toast(this.$t('pwd.msgConfirm'))
         this.logging = false
-      } else if (isNull(this.code)) {
-        Toast('请输入验证码')
+        return
+      }
+      if (isNull(this.code)) {
+        // Toast('请输入验证码')
+        Toast(this.$t('pwd.inputCode'))
         this.logging = false
-      } else if (this.password !== this.password2) {
-        Toast('两次输入的密码不一致')
+        return
+      }
+      if (this.password !== this.password2) {
+        // Toast('两次输入的密码不一致')
+        Toast(this.$t('register.msgPwd'))
         this.logging = false
         this.password = 0
         this.password2 = 0
-      } else if (!pwdReg2(this.password)) {
-        Toast('密码为6~12位，数字、字母或符号')
-        this.logging = false
-      } else {
-        let opts = {
-          phoneNum: this.select + this.phone,
-          code: this.code,
-          newPwd: this.password
-        }
-        let data = await api.forgetPas(opts)
-        if (data.status === 0) {
-          Toast('修改成功,请登录!')
-          await this.$router.push('/login')
-        } else {
-          Toast(data.msg ? data.msg : '修改失败,请重新修改')
-        }
-        this.logging = false
+        return
       }
+      if (!pwdReg2(this.password)) {
+        // Toast('密码为6~12位，数字、字母或符号')
+        Toast(this.$t('login.limit'))
+        this.logging = false
+        return
+      }
+      let opts = {
+        phoneNum: this.select + this.phone,
+        code: this.code,
+        newPwd: this.password
+      }
+      let data = await api.forgetPas(opts)
+      if (data.status === 0) {
+        // Toast('修改成功,请登录!')
+        Toast(this.$t('pwd.success'))
+        await this.$router.push('/login')
+      } else {
+        Toast(data.msg)
+      }
+      this.logging = false
     },
     refreshImg () {
       this.adminUrl = ''
@@ -287,6 +306,7 @@ export default {
         margin-left: 0.1rem;
         background-color: #121319;
         border: none;
+
         option {
           font-size: 13px;
           padding-right: 5px;

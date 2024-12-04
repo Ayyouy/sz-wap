@@ -14,8 +14,8 @@
           v-else
           :src="require(`../../../static/img/foot/${$state.theme}/hangqing.png`)" alt="">
         <p v-if="$store.state.select == '/list'" :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">
-          行情</p>
-        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">行情</p>
+          {{$t('foot.quote')}}</p>
+        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">{{$t('foot.quote')}}</p>
       </mt-tab-item>
       <mt-tab-item id="orderlist" :class="$store.state.select == '/orderlist' ? 'on' : ''">
         <img
@@ -27,8 +27,8 @@
           v-else
           :src="require(`../../../static/img/foot/${$state.theme}/chicang.png`)" alt="">
         <p v-if="$store.state.select == '/orderlist'"
-           :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">持仓</p>
-        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">持仓</p>
+           :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">{{$t('foot.position')}}</p>
+        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">{{$t('foot.position')}}</p>
       </mt-tab-item>
       <mt-tab-item id="mylist" :class="$store.state.select == '/mylist' ? 'on' : ''">
         <img
@@ -40,8 +40,8 @@
           v-else
           :src="require(`../../../static/img/foot/${$state.theme}/zixuan.png`)" alt="">
         <p v-if="$store.state.select == '/mylist'" :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">
-          自选</p>
-        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">自选</p>
+          {{$t('foot.choice')}}</p>
+        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">{{$t('foot.choice')}}</p>
 
       </mt-tab-item>
       <mt-tab-item id="fundsnew" :class="$store.state.select == '/fundsnew' ? 'on' : ''">
@@ -54,8 +54,8 @@
           v-else
           :src="require(`../../../static/img/foot/${$state.theme}/fund.png`)" alt="">
         <p v-if="$store.state.select == '/fundsnew'" :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">
-          基金</p>
-        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">基金</p>
+          {{$t('foot.fund')}}</p>
+        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">{{$t('foot.fund')}}</p>
       </mt-tab-item>
       <mt-tab-item id="user" :class="$store.state.select == '/user' ? 'on' : ''">
         <img
@@ -67,8 +67,8 @@
           v-else
           :src="require(`../../../static/img/foot/${$state.theme}/user.png`)" alt="">
         <p v-if="$store.state.select == '/user'" :style="{color: $state.theme === 'black' ? '#138DB3' : '#C11815'}">
-          我的</p>
-        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">我的</p>
+          {{$t('foot.my')}}</p>
+        <p v-else :style="{color: $state.theme === 'black' ? '#FFFFFF' : '#656565'}">{{$t('foot.my')}}</p>
       </mt-tab-item>
     </mt-tabbar>
   </div>

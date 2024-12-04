@@ -67,7 +67,9 @@ export default new Router({
       path: '/home',
       name: 'home',
       meta: {
-        title: '首页',
+        title: 'Home',
+        titleCn: '首页',
+        titleTw: '首頁',
         iconLeft: false
       },
       component: Home
@@ -76,7 +78,9 @@ export default new Router({
       path: '/buy',
       name: 'buy',
       meta: {
-        title: '购买',
+        title: 'Buy',
+        titleCn: '购买',
+        titleTw: '購買',
         iconLeft: true
       },
       component: Buy
@@ -85,7 +89,9 @@ export default new Router({
       path: '/fourCountryBuy',
       name: 'fourCountryBuy',
       meta: {
-        title: '购买',
+        title: 'Buy',
+        titleCn: '购买',
+        titleTw: '購買',
         iconLeft: true
       },
       component: fourCountryBuy
@@ -94,7 +100,9 @@ export default new Router({
       path: '/register',
       name: 'register',
       meta: {
-        title: '注册',
+        title: 'Register',
+        titleCn: '注册',
+        titleTw: '註冊',
         iconLeft: true
       },
       component: Register
@@ -103,7 +111,9 @@ export default new Router({
       path: '/forget',
       name: 'forget',
       meta: {
-        title: '忘记密码',
+        title: 'Forgot Password',
+        titleCn: '忘记密码',
+        titleTw: '忘記密碼',
         iconLeft: true
       },
       component: Forget
@@ -112,7 +122,9 @@ export default new Router({
       path: '/login',
       name: 'login',
       meta: {
-        title: '登录',
+        title: 'Sign in',
+        titleCn: '登录',
+        titleTw: '登入',
         iconLeft: true
       },
       component: Login
@@ -121,7 +133,9 @@ export default new Router({
       path: '/openaccount',
       name: 'openaccount',
       meta: {
-        title: '开户',
+        title: 'Account',
+        titleCn: '开户',
+        titleTw: '開戶',
         iconLeft: false
       },
       component: OpenAccount
@@ -130,16 +144,20 @@ export default new Router({
       path: '/list',
       name: 'list',
       meta: {
-        title: '行情',
+        title: 'Quotation',
+        titleCn: '行情',
+        titleTw: '行情',
         iconLeft: false
       },
       component: List
     },
     {
       path: '/indexsearchlist',
-      name: '指数查询',
+      name: 'indexsearchlist',
       meta: {
-        title: '指数查询',
+        title: 'Query',
+        titleCn: '指数查询',
+        titleTw: '指數査詢',
         iconLeft: true
       },
       component: IndexSearchlist
@@ -148,16 +166,20 @@ export default new Router({
       path: '/indexlist',
       name: 'indexlist',
       meta: {
-        title: '指数列表',
+        title: 'List',
+        titleCn: '指数列表',
+        titleTw: '指數清單',
         iconLeft: true
       },
       component: IndexList
     },
     {
       path: '/searchlist',
-      name: '个股查询',
+      name: 'searchlist',
       meta: {
-        title: '个股查询',
+        title: 'Query',
+        titleCn: '个股查询',
+        titleTw: '個股查詢',
         iconLeft: true
       },
       component: Searchlist
@@ -166,7 +188,9 @@ export default new Router({
       path: '/searchmylist',
       name: 'searchmylist',
       meta: {
-        title: '自选查询',
+        title: 'Query',
+        titleCn: '自选查询',
+        titleTw: '自選査詢',
         iconLeft: true
       },
       component: SearchMylist
@@ -175,7 +199,9 @@ export default new Router({
       path: '/mylist',
       name: 'mylist',
       meta: {
-        title: '自选列表',
+        title: 'List',
+        titleCn: '自选列表',
+        titleTw: '自選清單',
         iconLeft: false
       },
       component: MyList
@@ -184,7 +210,9 @@ export default new Router({
       path: '/listdetail',
       name: 'listdetail',
       meta: {
-        title: '详情',
+        title: 'Detail',
+        titleCn: '详情',
+        titleTw: '詳情',
         iconLeft: true
       },
       component: ListDetail
@@ -193,7 +221,9 @@ export default new Router({
       path: '/listdetail2',
       name: 'listdetail2',
       meta: {
-        title: '详情',
+        title: 'Detail',
+        titleCn: '详情',
+        titleTw: '詳情',
         iconLeft: true
       },
       component: ListDetail2
@@ -202,7 +232,9 @@ export default new Router({
       path: '/list4countryDetail',
       name: 'list4countryDetail',
       meta: {
-        title: '详情',
+        title: 'Detail',
+        titleCn: '详情',
+        titleTw: '詳情',
         iconLeft: true
       },
       component: List4countryDetail
@@ -211,7 +243,9 @@ export default new Router({
       path: '/indexBuy',
       name: 'indexBuy',
       meta: {
-        title: '指数购买',
+        title: 'Buy',
+        titleCn: '指数购买',
+        titleTw: '指數購買',
         iconLeft: true
       },
       component: indexBuy
@@ -220,7 +254,9 @@ export default new Router({
       path: '/twoBuy',
       name: 'TwoBuy',
       meta: {
-        title: '两融交易',
+        title: 'Transaction',
+        titleCn: '两融交易',
+        titleTw: '兩融交易',
         iconLeft: true
       },
       component: TwoBuy
@@ -229,7 +265,9 @@ export default new Router({
       path: '/subWarehouseBuy',
       name: 'SubWarehouseBuy',
       meta: {
-        title: '分仓交易',
+        title: 'Transaction',
+        titleCn: '分仓交易',
+        titleTw: '分倉交易',
         iconLeft: true
       },
       component: SubWarehouseBuy
@@ -238,7 +276,9 @@ export default new Router({
       path: '/futuresBuy',
       name: 'futuresBuy',
       meta: {
-        title: '期货购买',
+        title: 'Buy',
+        titleCn: '期货购买',
+        titleTw: '期貨購買',
         iconLeft: true
       },
       component: futuresBuy
@@ -247,7 +287,9 @@ export default new Router({
       path: '/inquiry',
       name: 'inquiry',
       meta: {
-        title: '询价',
+        title: 'Inquiry',
+        titleCn: '询价',
+        titleTw: '詢價',
         iconLeft: true
       },
       component: Inquiry
@@ -256,7 +298,9 @@ export default new Router({
       path: '/user',
       name: 'user',
       meta: {
-        title: '我的',
+        title: 'My',
+        titleCn: '我的',
+        titleTw: '我的',
         iconLeft: false
       },
       component: User
@@ -265,7 +309,9 @@ export default new Router({
       path: '/transfer',
       name: 'transfer',
       meta: {
-        title: '资金互转',
+        title: 'Fund Transfer',
+        titleCn: '资金互转',
+        titleTw: '資金互轉',
         iconLeft: true
       },
       component: Transfer
@@ -274,7 +320,9 @@ export default new Router({
       path: '/orderlist',
       name: 'orderlist',
       meta: {
-        title: '持仓',
+        title: 'Position Holding',
+        titleCn: '持仓',
+        titleTw: '持倉',
         iconLeft: false
       },
       component: OrderList
@@ -283,7 +331,9 @@ export default new Router({
       path: '/holdorderlist',
       name: 'holdorderlist',
       meta: {
-        title: '查询持仓',
+        title: 'Query',
+        titleCn: '查询持仓',
+        titleTw: '査詢持倉',
         iconLeft: true
       },
       component: holdOrderList
@@ -292,7 +342,9 @@ export default new Router({
       path: '/holdorderlist2',
       name: 'holdorderlist2',
       meta: {
-        title: '查询持仓',
+        title: 'Query',
+        titleCn: '查询持仓',
+        titleTw: '査詢持倉',
         iconLeft: true
       },
       component: holdOrderList2
@@ -301,7 +353,9 @@ export default new Router({
       path: '/sellorderlist',
       name: 'sellorderlist',
       meta: {
-        title: '查询平仓',
+        title: 'Query',
+        titleCn: '查询平仓',
+        titleTw: '査詢平倉',
         iconLeft: true
       },
       component: sellOrderList
@@ -310,7 +364,9 @@ export default new Router({
       path: '/sellorderlist2',
       name: 'sellorderlist2',
       meta: {
-        title: '查询平仓',
+        title: 'Query',
+        titleCn: '查询平仓',
+        titleTw: '査詢平倉',
         iconLeft: true
       },
       component: sellOrderList2
@@ -319,7 +375,9 @@ export default new Router({
       path: '/detail',
       name: 'detail',
       meta: {
-        title: '资金明细',
+        title: 'Financial Details',
+        titleCn: '资金明细',
+        titleTw: '資金明細',
         iconLeft: true
       },
       component: Detail
@@ -328,7 +386,9 @@ export default new Router({
       path: '/card',
       name: 'card',
       meta: {
-        title: '银行卡',
+        title: 'Bank Card',
+        titleCn: '银行卡',
+        titleTw: '銀行卡',
         iconLeft: true
       },
       component: Card
@@ -337,7 +397,9 @@ export default new Router({
       path: '/authentication',
       name: 'authentication',
       meta: {
-        title: '认证',
+        title: 'Authentication',
+        titleCn: '认证',
+        titleTw: '認證',
         iconLeft: true
       },
       component: Authentication
@@ -346,7 +408,9 @@ export default new Router({
       path: '/aggre',
       name: 'aggre',
       meta: {
-        title: '合作协议',
+        title: 'Cooperation Agreement',
+        titleCn: '合作协议',
+        titleTw: '合作協定',
         iconLeft: true
       },
       component: Aggre
@@ -355,7 +419,9 @@ export default new Router({
       path: '/recharge',
       name: 'recharge',
       meta: {
-        title: '银证转入',
+        title: 'Transfer',
+        titleCn: '银证转入',
+        titleTw: '銀證轉入',
         iconLeft: true
       },
       component: Recharge
@@ -364,7 +430,9 @@ export default new Router({
       path: '/rechargeSure',
       name: 'rechargeSure',
       meta: {
-        title: '确认充值',
+        title: 'Confirm Recharge',
+        titleCn: '确认充值',
+        titleTw: '確認充值',
         iconLeft: true
       },
       component: RechargeSure
@@ -373,7 +441,9 @@ export default new Router({
       path: '/rechargelist',
       name: 'rechargelist',
       meta: {
-        title: '充值记录',
+        title: 'Recharge Record',
+        titleCn: '充值记录',
+        titleTw: '充值記錄',
         iconLeft: true
       },
       component: RechargeList
@@ -382,7 +452,9 @@ export default new Router({
       path: '/cash',
       name: 'cash',
       meta: {
-        title: '提现',
+        title: 'Withdrawal',
+        titleCn: '提现',
+        titleTw: '提現',
         iconLeft: true
       },
       component: Cash
@@ -391,7 +463,9 @@ export default new Router({
       path: '/addCard',
       name: 'addCard',
       meta: {
-        title: '添加银行卡',
+        title: 'Add Bank Card',
+        titleCn: '添加银行卡',
+        titleTw: '添加銀行卡',
         iconLeft: true
       },
       component: AddCard
@@ -400,7 +474,9 @@ export default new Router({
       path: '/cashlist',
       name: 'cashlist',
       meta: {
-        title: '转出记录',
+        title: 'Transfer Out Record',
+        titleCn: '转出记录',
+        titleTw: '轉出記錄',
         iconLeft: true
       },
       component: Cashlist
@@ -409,7 +485,9 @@ export default new Router({
       path: '/setting',
       name: 'setting',
       meta: {
-        title: '设置',
+        title: 'Set Up',
+        titleCn: '设置',
+        titleTw: '設定',
         iconLeft: true
       },
       component: Setting
@@ -418,7 +496,9 @@ export default new Router({
       path: '/agree',
       name: 'agree',
       meta: {
-        title: '注册协议',
+        title: 'Registration Agreement',
+        titleCn: '注册协议',
+        titleTw: '註冊協定',
         iconLeft: true
       },
       component: Agree
@@ -427,7 +507,9 @@ export default new Router({
       path: '/trade',
       name: 'trade',
       meta: {
-        title: '交易⻛险揭示书',
+        title: 'Statement',
+        titleCn: '交易⻛险揭示书',
+        titleTw: '交易⻛險揭示書',
         iconLeft: true
       },
       component: Trage
@@ -436,7 +518,9 @@ export default new Router({
       path: '/alertdetail',
       name: 'alertdetail',
       meta: {
-        title: '公告详情',
+        title: 'Announcement',
+        titleCn: '公告详情',
+        titleTw: '公告詳情',
         iconLeft: true
       },
       component: Alertdetail
@@ -445,7 +529,9 @@ export default new Router({
       path: '/funds',
       name: 'funds',
       meta: {
-        title: '配资主页',
+        title: 'Allocation',
+        titleCn: '配资主页',
+        titleTw: '配資主頁',
         iconLeft: true
       },
       component: () => import('../page/funds/index')
@@ -454,7 +540,9 @@ export default new Router({
       path: '/days',
       name: 'days',
       meta: {
-        title: '按天配资',
+        title: 'Allocate',
+        titleCn: '按天配资',
+        titleTw: '按天配資',
         iconLeft: true
       },
       component: () => import('../page/funds/days')
@@ -463,7 +551,9 @@ export default new Router({
       path: '/xingu',
       name: 'xingu',
       meta: {
-        title: '新股申购',
+        title: 'Subscription',
+        titleCn: '新股申购',
+        titleTw: '新股申購',
         iconLeft: true
       },
       component: () => import('../page/funds/xingu')
@@ -472,7 +562,9 @@ export default new Router({
       path: '/searchStock',
       name: 'searchStock',
       meta: {
-        title: '查询股票',
+        title: 'Search For Stocks',
+        titleCn: '查询股票',
+        titleTw: '査詢股票',
         iconLeft: true
       },
       component: () => import('../page/list/search')
@@ -481,7 +573,9 @@ export default new Router({
       path: '/notify',
       name: 'notify',
       meta: {
-        title: '消息记录',
+        title: 'Message Record',
+        titleCn: '消息记录',
+        titleTw: '消息記錄',
         iconLeft: true
       },
       component: () => import('../page/user/notify')
@@ -490,7 +584,9 @@ export default new Router({
       path: '/fundslist',
       name: 'fundslist',
       meta: {
-        title: '分仓配资',
+        title: 'Allocation',
+        titleCn: '分仓配资',
+        titleTw: '分倉配資',
         iconLeft: true
       },
       component: FundsList
@@ -499,7 +595,9 @@ export default new Router({
       path: '/deposit',
       name: 'deposit',
       meta: {
-        title: '入金',
+        title: 'Deposit',
+        titleCn: '入金',
+        titleTw: '入金',
         iconLeft: true
       },
       component: Deposit
@@ -508,7 +606,9 @@ export default new Router({
       path: '/depositDetail',
       name: 'depositDetail',
       meta: {
-        title: '入金',
+        title: 'Deposit',
+        titleCn: '入金',
+        titleTw: '入金',
         iconLeft: true
       },
       component: DepositDetail
@@ -517,7 +617,9 @@ export default new Router({
       path: '/withdraw',
       name: 'withdraw',
       meta: {
-        title: '出金',
+        title: 'Withdrawal',
+        titleCn: '出金',
+        titleTw: '出金',
         iconLeft: true
       },
       component: Withdraw
@@ -526,7 +628,9 @@ export default new Router({
       path: '/transferMoney',
       name: 'transferMoney',
       meta: {
-        title: '转账',
+        title: 'Transfer Accounts',
+        titleCn: '转账',
+        titleTw: '轉帳',
         iconLeft: true
       },
       component: TransferMoney
@@ -535,7 +639,9 @@ export default new Router({
       path: '/moneyList',
       name: 'moneyList',
       meta: {
-        title: '资金明细',
+        title: 'Financial Details',
+        titleCn: '资金明细',
+        titleTw: '資金明細',
         iconLeft: true
       },
       component: MoneyList
@@ -544,7 +650,9 @@ export default new Router({
       path: '/marketApply',
       name: 'marketApply',
       meta: {
-        title: '申请市场',
+        title: 'Apply for Market',
+        titleCn: '申请市场',
+        titleTw: '申請市場',
         iconLeft: true
       },
       component: MarketApply
@@ -553,7 +661,9 @@ export default new Router({
       path: '/fundsnew',
       name: 'fundsnew',
       meta: {
-        title: '基金',
+        title: 'Fund',
+        titleCn: '基金',
+        titleTw: '基金',
         iconLeft: false
       },
       component: FundsNewList
@@ -562,7 +672,9 @@ export default new Router({
       path: '/fundsdetail',
       name: 'fundsdetail',
       meta: {
-        title: '基金详情',
+        title: 'Fund Details',
+        titleCn: '基金详情',
+        titleTw: '基金詳情',
         iconLeft: true
       },
       component: FundsNewDetail
@@ -571,7 +683,9 @@ export default new Router({
       path: '/positions',
       name: 'positions',
       meta: {
-        title: '基金',
+        title: 'Fund',
+        titleCn: '基金',
+        titleTw: '基金',
         iconLeft: true
       },
       component: FundsNewDetail

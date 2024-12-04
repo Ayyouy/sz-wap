@@ -10,23 +10,23 @@
         <select v-model="form.select">
           <option v-for="item in options" :key="item" :label="item" :value="item">{{ item }}</option>
         </select>
-        <input placeholder="请输入账户" type="tel" pattern="[0-9]*" v-model="form.phone"/>
+        <input :placeholder="$t('register.inputAccount')" type="tel" pattern="[0-9]*" v-model="form.phone"/>
       </div>
       <div class="login-form-item input-model">
         <img v-if="theme" src="../assets/ico/loginpwd-pwd.png"/>
         <img v-else src="../assets/ico/loginpwd.png"/>
-        <input type="password" pattern="[a-zA-Z0-9]+" placeholder="请输入密码" v-model="form.psd"/>
+        <input type="password" pattern="[a-zA-Z0-9]+" :placeholder="$t('login.input')" v-model="form.psd"/>
       </div>
       <div class="login-form-item submit-model" @click="btnSubmit">
-        立即登录 <i v-show="logging" style="color: #fff" class="iconfont icon-jiazaizhong"></i>
+        {{ $t('login.now') }} <i v-show="logging" style="color: #fff" class="iconfont icon-jiazaizhong"></i>
       </div>
       <div class="login-form-item extra-model">
         <div>
-          <span class="extra-span" @click="btnJump(1)">忘记密码？</span>
+          <span class="extra-span" @click="btnJump(1)"> {{ $t('login.forgot') }}</span>
         </div>
         <div>
-          <span class="extra-span" :style="theme?'color:#BB1815':''">还没有账号？</span>
-          <span style="color:#86CBD1" @click="btnJump(2)">立即注册</span>
+          <span class="extra-span" :style="theme?'color:#BB1815':''"> {{ $t('login.not') }}</span>
+          <span style="color:#86CBD1" @click="btnJump(2)"> {{ $t('login.not1') }}</span>
         </div>
       </div>
     </div>
@@ -59,34 +59,15 @@ export default {
   methods: {
     getLocalPhone () {
       let selectPhone = String(this.$store.state.userInfo.phone)
-      if (selectPhone.includes('+1')) {
-        this.form.select = '+1'
-        this.form.phone = selectPhone.replace('+1', '')
-      } else if (selectPhone.includes('+852')) {
-        this.form.select = '+852'
-        this.form.phone = selectPhone.replace('+852', '')
-      } else if (selectPhone.includes('+91')) {
-        this.form.select = '+91'
-        this.form.phone = selectPhone.replace('+91', '')
-      } else if (selectPhone.includes('+81')) {
-        this.form.select = '+81'
-        this.form.phone = selectPhone.replace('+81', '')
-      } else if (selectPhone.includes('+86')) {
-        this.form.select = '+86'
-        this.form.phone = selectPhone.replace('+86', '')
-      } else if (selectPhone.includes('+88')) {
-        this.form.select = '+88'
-        this.form.phone = selectPhone.replace('+88', '')
-      } else if (selectPhone.includes('+00')) {
-        this.form.select = '+00'
-        this.form.phone = selectPhone.replace('+00', '')
-      } else if (selectPhone.includes('+99')) {
-        this.form.select = '+99'
-        this.form.phone = selectPhone.replace('+99', '')
-      } else {
-        this.form.select = '+1'
-        this.form.phone = selectPhone
-      }
+      this.form.select = this.options[0]
+      this.form.phone = selectPhone
+      this.options.forEach((item) => {
+        if (selectPhone.includes(item)) {
+          this.form.select = item
+          this.form.phone = selectPhone.replace(item, '')
+          console.log(item, this.form.select, this.form.phone, selectPhone)
+        }
+      })
     },
     btnJump (val) {
       switch (val) {
@@ -106,30 +87,34 @@ export default {
       }
       this.logging = true
       if (isNull(this.form.phone) || this.form.phone.length < 7) {
-        Toast('请输入正确的手机号码')
+        // Toast('请输入正确的手机号码')
+        Toast(this.$t('login.account'))
         this.logging = false
-      } else if (isNull(this.form.psd) || !pwdReg2(this.form.psd)) {
-        Toast('密码为6~12位，数字、字母或符号')
-        this.logging = false
-      } else {
-        let opts = {
-          phone: this.form.select + this.form.phone,
-          userPwd: this.form.psd
-        }
-        let data = await api.login(opts)
-        if (data.status === 0) {
-          this.$store.state.userInfo.phone = this.form.select + this.form.phone
-          this.$store.state.userInfo.id = data.data.id
-          this.clickFalg = 0
-          localStorage.setItem('wap-token', data.data.token)
-          localStorage.setItem('wap-phone', (this.form.select + this.form.phone))
-          localStorage.setItem('wap-id', data.data.id)
-          this.$router.push('/list')
-        } else {
-          Toast(data.msg)
-        }
-        this.logging = false
+        return
       }
+      if (isNull(this.form.psd) || !pwdReg2(this.form.psd)) {
+        // Toast('密码为6~12位，数字、字母或符号')
+        Toast(this.$t('login.limit'))
+        this.logging = false
+        return
+      }
+      let opts = {
+        phone: this.form.select + this.form.phone,
+        userPwd: this.form.psd
+      }
+      let data = await api.login(opts)
+      if (data.status === 0) {
+        this.$store.state.userInfo.phone = this.form.select + this.form.phone
+        this.$store.state.userInfo.id = data.data.id
+        this.clickFalg = 0
+        localStorage.setItem('wap-token', data.data.token)
+        localStorage.setItem('wap-phone', (this.form.select + this.form.phone))
+        localStorage.setItem('wap-id', data.data.id)
+        await this.$router.push('/list')
+      } else {
+        Toast(data.msg)
+      }
+      this.logging = false
     }
   }
 }
