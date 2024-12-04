@@ -212,15 +212,15 @@
         {{ $t('redeem.explain') }}
         <div style="margin-top: 10px;">
           {{ $t('redeem.p1') }}
-          <span style="color: #1ba6d0">{{ $t('myFund.periodStart') }}）{{
+          <span style="color: #1ba6d0">{{ $t('myFund.periodStart') }}{{
               choiceNext.per
-            }}{{ $t('myFund.periodEnd') }}）</span>
+            }}{{ $t('myFund.periodEnd') }}</span>
           {{ $t('redeem.p2') }}
           <span style="color: #1ba6d0">{{ choiceNext.perIncome }}</span>
           {{ $t('redeem.p3') }}
-          <span style="color: #1ba6d0">{{ $t('myFund.periodStart') }}）{{
+          <span style="color: #1ba6d0">{{ $t('myFund.periodStart') }}{{
               choiceNext.perLast
-            }}{{ $t('myFund.periodEnd') }}）</span>
+            }}{{ $t('myFund.periodEnd') }}</span>
           {{ $t('redeem.p4') }}
           <span style="color: #1ba6d0">{{ choiceNext.lastPerIncome }}</span>，
           {{ $t('redeem.p5') }}

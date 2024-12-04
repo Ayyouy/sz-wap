@@ -3,11 +3,11 @@
     <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="1">
         <div v-if="list.length<=0 && !getStatus" class="empty text-center">
-          暂无基金信息!
+          {{ $t('note5') }}
         </div>
         <div v-if="list.length<=0 && getStatus" class="empty text-center">
           <mt-spinner type="fading-circle"></mt-spinner>
-          加载中...
+          {{ $t('market.loading') }}
         </div>
         <div v-if="list.length>0">
           <ul class="order-info-box-wrap"
@@ -23,18 +23,21 @@
                         item.annualizedReturn
                       }}%</span>
                   </el-col>
-                  <el-col :span="16" class="text-center" style="font-size: 20px;line-height: 30px;height: 30px;">
+                  <el-col :span="16" class="text-center fund-name-custom">
                     {{ item.name }}
                   </el-col>
                 </el-row>
                 <el-row class="self-el-row">
                   <el-col :span="8" class="text-center">
-                    年化收益
+                    {{ $t('fundList.aar') }}
                   </el-col>
                   <el-col :span="16" class="text-center">
-                    每份净值：${{ item.perValue }}<span style="margin-left: 30px">每期天数：{{
-                      item.blackoutPeriod
-                    }}天</span>
+                    {{ $t('fundList.nav') }}${{ item.perValue }}
+                    <span style="margin-left: 30px">
+                      {{ $t('fundList.ndp') }}
+                      {{ item.blackoutPeriod }}
+                      {{ $t('capital.day') }}
+                    </span>
                   </el-col>
                 </el-row>
               </div>
@@ -42,10 +45,10 @@
           </ul>
           <div v-show="loading" class="load-all text-center">
             <mt-spinner type="fading-circle"></mt-spinner>
-            加载中...
+            {{ $t('market.loading') }}
           </div>
           <div v-show="!loading" class="load-all text-center">
-            已全部加载
+            {{ $t('loaded.loaded') }}
           </div>
         </div>
       </mt-tab-container-item>
@@ -126,6 +129,12 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.fund-name-custom {
+  font-size: 16px;
+  line-height: 30px;
+  height: 30px;
+}
+
 .is-selected .mint-tab-item-label:hover {
   text-decoration: none;
 }

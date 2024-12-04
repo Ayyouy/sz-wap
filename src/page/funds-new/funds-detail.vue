@@ -17,7 +17,7 @@
       </div>
       <div class="box-center">
         <div class="box-center-clean">
-          <span>{{ $t('fundDetail.arr') }}</span>
+          <span>{{ $t('fundDetail.aar') }}</span>
         </div>
         <div class="box-center-clean">
           <span>{{ $t('fundDetail.nav2') }}</span>
@@ -46,7 +46,7 @@
       </div>
       <div class="box-center">
         <div class="box-left">
-          <span>{{ $t('fundDetail.arr2') }}</span>
+          <span>{{ $t('fundDetail.aar2') }}</span>
         </div>
         <div class="box-right">
           <span>{{ detail.annualizedReturn }}%</span>
@@ -127,15 +127,16 @@
             <div class="el-form-item__error">{{ checkMessage }}</div>
           </el-form-item>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
-            <el-col :span="24" class="text-right">{{ $t('buy.pay') }}${{
-                Number(form.buyNum * detail.newPerValue).toFixed(2)
-              }}
+            <el-col :span="24" class="text-right">
+              {{ $t('buy.pay') }}
+              ${{Number(form.buyNum * detail.newPerValue).toFixed(2)}}
             </el-col>
           </el-row>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
-            <el-col :span="21" class="text-right">{{ $t('fundDetail.purchase') }}${{
-                Number(detail.newPerValue * detail.maxBuyNum).toFixed(2)
-              }}（{{ detail.maxBuyNum }}{{ $t('buy.units') }}）
+            <el-col :span="21" class="text-left">
+              {{ $t('fundDetail.purchase') }}
+              ${{Number(detail.newPerValue * detail.maxBuyNum).toFixed(2)}}
+              （{{ detail.maxBuyNum }}{{ $t('buy.units') }}）
             </el-col>
             <el-col :span="3" class="text-right">
               <span style="color: #1ba6d0" @click="buyAllNumber">{{ $t('buy.fill') }}</span>
@@ -281,7 +282,10 @@ export default {
 }
 
 .fund-name {
-  font-size: 25px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .fund-content {

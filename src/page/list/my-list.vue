@@ -4,11 +4,11 @@
       <li class="title">
         <div>
           <ul class='clearfix'>
-            <li class="li-title">股票</li>
-            <li class="li-base">最新</li>
-            <li class="li-base">涨跌幅</li>
+            <li class="li-title">{{ $t('choice.symbol') }}</li>
+            <li class="li-base">{{ $t('choice.price') }}</li>
+            <li class="li-base">{{ $t('choice.chg') }}</li>
             <li class="li-base text-center">
-              删自选
+              {{ $t('choice.delete') }}
             </li>
           </ul>
         </div>
@@ -52,13 +52,13 @@
     </ul>
     <div v-if="getStatus" class="text-center empty" style="margin-top: 1rem;">
       <mt-spinner type="fading-circle"></mt-spinner>
-      <span style="margin-top: 0.1rem;">加载中...</span>
+      <span style="margin-top: 0.1rem;">{{ $t('market.loading') }}</span>
     </div>
     <div v-show="!getStatus && list.length>0" class="text-center empty" style="margin-top: 1rem;">
-      <span style="margin-top: 0.1rem;">已全部加载</span>
+      <span style="margin-top: 0.1rem;">{{ $t('market.loaded') }}</span>
     </div>
     <div v-show="!getStatus && list.length<=0" class="text-center empty" style="margin-top: 1rem;">
-      <span style="margin-top: 0.1rem;">暂无自选信息</span>
+      <span style="margin-top: 0.1rem;">{{ $t('note6') }}</span>
     </div>
     <foot></foot>
   </div>
@@ -83,13 +83,11 @@ export default {
       timer: '',
       currentNum: 15,
       market: [],
-      changeTextClass: {},
+      changeTextClass: {}
       // pageNum:1,
       // pageSize:15
     }
   },
-  watch: {},
-  computed: {},
   created () {
     this.timer = setInterval(this.refreshList, 5000)
   },
@@ -151,8 +149,9 @@ export default {
     async toDeleteMy (val) {
       let data = await api.delOption({code: val.stockCode})
       if (data.status === 0) {
-        Toast('删除自选股成功')
-        this.getStock()
+        // Toast('删除自选股成功')
+        Toast(this.$t('line.removeSuccess'))
+        await this.getStock()
       } else {
         Toast(data.msg)
       }
@@ -176,24 +175,11 @@ export default {
       }
     },
     toDetail (val) {
-      // if(true){
-      //     Toast('系统正在升级，暂关闭交易！')
-      //     return
-      // }
       let code = val.stockCode
-      if (val.stockGid !== undefined && val.stockGid.indexOf('hf_') != -1) {
+      if (val.stockGid !== undefined && val.stockGid.indexOf('hf_') !== -1) {
         this.getQhDetail(val.stockCode, val.stockGid)
-      } else if (val.stockCode !== undefined && val.stockCode.substring(0, 3) == '000') {
+      } else if (val.stockCode !== undefined && val.stockCode.substring(0, 3) === '000') {
         code = val.stockGid
-        // this.$router.push({
-        //   path: '/listdetail',
-        //   query: {
-        //     code: code,
-        //     stock_type:val.stock_type,
-        //     zsinfo: val
-        //   }
-        // })
-
         this.$router.push({
           path: '/listdetail2',
           query: {
@@ -202,17 +188,7 @@ export default {
             zsinfo: val
           }
         })
-        return
       } else {
-        // 详情
-        // this.$router.push({
-        //   path: '/listdetail',
-        //   query: {
-        //     code: code,
-        //     name: val.stockName
-        //   }
-        // })
-
         this.$router.push({
           path: '/listdetail2',
           query: {
@@ -222,7 +198,6 @@ export default {
           }
         })
       }
-
     },
     toSearch () {
       this.$router.push('/searchmylist')

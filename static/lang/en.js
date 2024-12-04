@@ -322,9 +322,9 @@ export default {
     confirm: 'Confirm',
     exceed: 'Exceeds the maximum redemption amount',
     redemption: 'Confirm redemption?',
-    p7: 'You will lose $',
+    p7: 'You will lose ',
     p8: ' in investment returns on this redemption. Do you confirm the redemption?',
-    p9: 'You will lose $',
+    p9: 'You will lose ',
     p0: ' in investment returns per day on this redemption. Do you confirm the redemption?',
     success: 'Redemption successful'
   },
@@ -671,5 +671,17 @@ export default {
   note1: 'Full Redemption Time',
   note2: 'All redeemed',
   note3: 'This value requires a positive integer',
-  note4: 'Insufficient balance, please reduce purchase share'
+  note4: 'Insufficient balance, please reduce purchase share',
+  note5: 'There is currently no fund information available!',
+  note6: 'No self selected information at the moment!!',
+  buy2: 'Buy①',
+  buy3: 'Buy②',
+  buy4: 'Buy③',
+  buy5: 'Buy④',
+  buy6: 'Buy⑤',
+  sell5: 'Sell①',
+  sell6: 'Sell②',
+  sell7: 'Sell③',
+  sell8: 'Sell④',
+  sell9: 'Sell⑤'
 }

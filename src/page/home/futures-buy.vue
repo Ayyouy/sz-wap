@@ -1,12 +1,5 @@
 <template>
   <div class="wrapper">
-    <!-- <div class="header">
-      <mt-header title="期货交易">
-        <router-link to="/list" slot="left">
-          <mt-button icon="back">行情</mt-button>
-        </router-link>
-      </mt-header>
-    </div> -->
     <div class="detail-part">
       <div class="index-name">
         <p>{{detail.futuresName}} <span>{{detail.futuresCode}}</span></p>
@@ -25,58 +18,32 @@
         <div class="pull-right col-xs-8">
           <ul class="price-detail text-center">
             <li>
-              <!-- <p class="title"></p> -->
               <p :class="(statusDetail.nowPrice - statusDetail.lastClose)<0?'number green':'number red'">
                 <span class="title">今开</span>
                 {{Number(statusDetail.todayOpen).toFixed(2)}}
               </p>
             </li>
             <li>
-              <!-- <p class="title"></p> -->
               <p :class="(statusDetail.nowPrice - statusDetail.lastClose)<0?'number green':'number red'">
                 <span class="title">昨收</span>
                 {{Number(statusDetail.lastClose).toFixed(2)}}
               </p>
             </li>
             <li>
-              <!-- <p class="title"></p> -->
               <p :class="(statusDetail.nowPrice - statusDetail.lastClose)<0?'number green':'number red'">
                 <span class="title">最高</span>
                 {{Number(statusDetail.maxPrice).toFixed(2)}}
               </p>
             </li>
             <li>
-              <!-- <p class="title"></p> -->
               <p :class="(statusDetail.nowPrice - statusDetail.lastClose)<0?'number green':'number red'">
                 <span class="title">最低</span>
                 {{Number(statusDetail.minPrice).toFixed(2)}}
               </p>
             </li>
-            <!-- <li>
-                <p class="number red">
-                    <span class="title red">涨停限制</span>
-                    {{(Number(detail.currentPoint) * settingInfo.riseLimit + Number(detail.currentPoint)).toFixed(2)}}
-                </p>
-            </li>
-            <li>
-                <p :class="detail.floatRate<0?'number green':'number red'">
-                    <span class="title">昨收</span>
-                    {{Number(detail.floatRate).toFixed(2)}}%
-                </p>
-            </li> -->
-            <!-- <li>
-                <p class="green">
-                    <span class="title green">跌停限制</span>
-                    {{(detail.currentPoint - Number(detail.currentPoint) * settingInfo.downLimit ).toFixed(2)}}
-                </p>
-            </li> -->
           </ul>
         </div>
       </div>
-      <!-- <div class="clearfix">
-          <div class="col-xs-4 red">涨停限制 </div>
-          <div class="col-xs-4 green">跌停限制 </div>
-      </div> -->
     </div>
     <div v-if="false" class="box-tab">
       <div class="tab-title">
@@ -95,24 +62,11 @@
         <ul class="first clearfix">
           <li class="pull-left">
             {{detail.indexCode}}
-            <!-- <span>(Scrb1905)</span> -->
           </li>
           <li :class="detail.floatRate < 0?'pull-left green':detail.floatRate == 0?'pull-left':'pull-left red'">
-            <!-- 当前价： -->
             <span>{{detail.floatRate}}%</span>
           </li>
         </ul>
-        <!-- <div class='buy-price clearfix'>
-            <div class="col-xs-4">
-                <p>市价买入</p>
-            </div>
-            <div class="col-xs-4">
-                <p class="red">{{detail.nowPrice}}</p>
-            </div>
-            <div class="col-xs-4">
-                <p>说明</p>
-            </div>
-        </div> -->
       </div>
     </div>
     <div class="box-tab">
@@ -134,10 +88,6 @@
           <span class="pull-left">最小购买手数{{Number(detail.minNum)}}手</span>
           <span class="protem pull-right">最大可购买数量{{Number(detail.maxNum)}}手</span>
         </p>
-        <!-- <p class="clearfix">
-          <span class="pull-left">1手 = {{detail.futuresStandard}}{{detail.futuresUnit}}</span>
-          <span class="pull-right">1标准手为{{detail.depositAmt}}{{detail.futuresCode}}/{{detail.futuresUnit}}</span>
-        </p> -->
       </div>
     </div>
     <div class="box-tab">
@@ -175,21 +125,12 @@
           <span class="pull-right">最大购买金额:{{(settingInfo.buyMaxPercent * $store.state.userInfo.enableFuturesAmt).toFixed(2)}}</span>
         </p>
         <p class="clearfix">
-          <!-- <span class="pull-right">最小购买金额{{settingInfo.buyMinAmt}}元</span> -->
           <span class="pull-left protem">需支付:{{total?total:0}} {{detail.coinCode}} ≈ {{cnyTotal?cnyTotal:0}} CNY</span>
         </p>
 
       </div>
     </div>
     <div class="agree text-center">
-      <!-- <p style="line-height: 0.4rem;padding: 0 0.2rem;">
-          当该期货涨幅达到<span class="red">涨停限制</span>时,不能买涨；达到<span class="green">跌停限制</span>时，不能买跌.
-      </p> -->
-      <!-- <p>
-          <i @click="isAgree" :class="agree?'glyphicon glyphicon glyphicon-ok-sign red':'glyphicon glyphicon-ok-circle'"></i>
-          我已阅读并同意
-          <a @click="totrageUrl" >《期货交易交易⻛险揭示书》</a>
-      </p> -->
     </div>
     <div class="footer-btn">
       <div class="total">
@@ -201,7 +142,6 @@
     <foot></foot>
   </div>
 </template>
-
 <script>
 import foot from '../../components/foot/foot'
 import { Toast } from 'mint-ui'

@@ -16,7 +16,6 @@
         <div class="pull-right hangqin-right col-xs-8">
           <ul class="price-detail text-center">
             <li>
-              <!-- <p class="title"></p> -->
               <p :class="detail.floatPoint<0?'number green': 'number red'">
                 <span class="title">涨跌</span>
                 {{Number(detail.floatPoint).toFixed(2)}}
@@ -35,7 +34,6 @@
               </p>
             </li>
             <li>
-              <!-- <p class="title">最低</p> -->
               <p class="green">
                 <span class="title green">跌停限制</span>
                 {{(detail.currentPoint - Number(detail.currentPoint) * settingInfo.downLimit ).toFixed(2)}}
@@ -44,10 +42,6 @@
           </ul>
         </div>
       </div>
-      <!-- <div class="clearfix">
-          <div class="col-xs-4 red">涨停限制 </div>
-          <div class="col-xs-4 green">跌停限制 </div>
-      </div> -->
     </div>
     <div v-if="false" class="box-tab">
       <div class="tab-title">
@@ -66,24 +60,11 @@
         <ul class="first clearfix">
           <li class="pull-left">
             {{detail.indexCode}}
-            <!-- <span>(Scrb1905)</span> -->
           </li>
           <li :class="detail.floatRate < 0?'pull-left green':detail.floatRate == 0?'pull-left':'pull-left red'">
-            <!-- 当前价： -->
             <span>{{detail.floatRate}}%</span>
           </li>
         </ul>
-        <!-- <div class='buy-price clearfix'>
-            <div class="col-xs-4">
-                <p>市价买入</p>
-            </div>
-            <div class="col-xs-4">
-                <p class="red">{{detail.nowPrice}}</p>
-            </div>
-            <div class="col-xs-4">
-                <p>说明</p>
-            </div>
-        </div> -->
       </div>
     </div>
     <div class="box-tab">
@@ -138,35 +119,16 @@
         </ul>
       </div>
     </div>
-    <!-- <div class="box-tab">
-      <div class="tab-con">
-        <!-- <p class="text-left page-part">
-            <span class="">{{selectNumber?selectNumber*100:autoNumber*100}}股</span>
-            <span class="pull-right">买入金额:{{price?price:0}}元</span>
-        </p> -->
-        <!-- <p class="clearfix">
-          <!-- <span class="pull-right">最小购买金额{{settingInfo.buyMinAmt}}元</span> -->
-          <!-- <span class="pull-right">最大购买金额:{{settingInfo.buyMaxPercent * $store.state.userInfo.enableIndexAmt}}</span>
-        </p>
-
-      </div>
-    </div> -->
     <div class="agree">
       <p style="line-height: 0.4rem;padding: 0 0.2rem;">
         当该指数涨幅达到<span class="red">涨停限制</span>时,不能买涨；达到<span class="green">跌停限制</span>时，不能买跌.
       </p>
-      <!-- <p>
-          <i @click="isAgree" :class="agree?'glyphicon glyphicon glyphicon-ok-sign red':'glyphicon glyphicon-ok-circle'"></i>
-          我已阅读并同意
-          <a @click="totrageUrl" >《指数交易交易⻛险揭示书》</a>
-      </p> -->
     </div>
     <div class="footer-btn">
       <div class="total">
         <p class="pay">支付保证金<span class="protem">{{total?total:0}}</span></p>
         <p class="account">(账户余额:{{$store.state.userInfo.enableIndexAmt}}元)</p>
       </div>
-      <!-- <mt-button :disabled="buying" class="btn-red" size="small" type="danger" @click="toInquiry">下单</mt-button> -->
       <div class="right-btn">
         <div class="btn-buy" @click="toInquiry">
           <img src="../../assets/ico/hangqing-btn.png" alt="" srcset="">
@@ -174,8 +136,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <foot></foot> -->
   </div>
 </template>
 
