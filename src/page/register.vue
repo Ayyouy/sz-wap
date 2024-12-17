@@ -29,7 +29,7 @@
         <img v-else src="../assets/ico/loginpwd.png"/>
         <input
           class="register-input"
-          :placeholder="$t('register.limit')"
+          :placeholder="$t('change.limit')"
           type="password"
           pattern="[a-zA-Z0-9]+"
           v-model="psd"

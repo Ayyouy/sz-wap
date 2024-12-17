@@ -4,8 +4,8 @@
       <mt-field :label="$t('change.phone')" type="text" disabled v-model="phone"></mt-field>
     </div>
     <div class="form-block">
+      <!--      :placeholder="$t('change.modify')"-->
       <mt-field :label="$t('change.pwd')" @click.native="changeLogin" autocomplete="new-password"
-                :placeholder="$t('change.modify')"
                 type="password" disabled>
         <span @click="changeLogin"><i class="iconfont icon-xiugai"></i>{{ $t('change.update') }}</span>
       </mt-field>
@@ -50,37 +50,37 @@ export default {
     }
   },
   methods: {
-    async toRegister () {
-      this.clearCookie()
-      await api.logout()
-      await this.$router.push('/login')
-    },
     changeLogin () {
       this.changeLoginPsdBox = true
     },
     async changeLoginPsd () {
-      if (isNull(this.nextPsd) || isNull(this.newPsd)) {
-        Toast('请输入新旧密码')
-      } else if (!pwdReg2(this.newPsd)) {
-        Toast('密码为6~12位，数字、字母或符号组成')
-      } else {
-        // 修改密码
-        let opts = {
-          oldPwd: this.nextPsd,
-          newPwd: this.newPsd
-        }
-        let data = await api.changePassword(opts)
-        if (data.status === 0) {
-          Toast('密码修改成功')
-          localStorage.clear()
-          this.clearCookie()
-          await api.logout()
-          this.$router.push('/login')
-        } else if (data.msg.includes('密码错误')) {
-          Toast('旧密码错误')
-        }
-        this.changeLoginPsdBox = false
+      if (isNull(this.nextPsd)) {
+        Toast(this.$t('change.input'))
+        return
       }
+      if (isNull(this.newPsd)) {
+        Toast(this.$t('pwd.inputPwd'))
+        return
+      }
+      if (!pwdReg2(this.newPsd)) {
+        Toast(this.$t('register.limit'))
+        return
+      }
+      // 修改密码
+      let opts = {
+        oldPwd: this.nextPsd,
+        newPwd: this.newPsd
+      }
+      let data = await api.changePassword(opts)
+      if (data.status === 0) {
+        Toast(this.$t('change.success'))
+        localStorage.clear()
+        await api.logout()
+        await this.$router.push('/login')
+      } else {
+        Toast(data.msg)
+      }
+      this.changeLoginPsdBox = false
     }
   }
 }

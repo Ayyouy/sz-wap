@@ -374,17 +374,17 @@ export default {
     goOrderList () {
       this.$router.push('/orderlist?index=1')
     },
-    goCard: function () {
+    goCard () {
       if (this.$store.state.userInfo.isActive !== 2) {
         this.showDialog(this.$t('my.card'), this.$t('bank.unable'))
       } else {
         this.$router.push('/card')
       }
     },
-    goChangePwd: function () {
+    goChangePwd () {
       this.$router.push('/setting')
     },
-    toAuthentication: function () {
+    toAuthentication () {
       if (this.$store.state.userInfo.isActive === 2) {
         this.showDialog(this.$t('my.auth1'), this.$t('auth.auth4'))
         this.dialogObj.success = this.dialogCancel

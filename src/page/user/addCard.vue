@@ -4,7 +4,7 @@
       <div class="box-contain clearfix">
         <div class="empty text-center" style="margin-top: 0.3rem">
           <i style="color: red; font-size: 1.2rem; margin-top: 0.2rem"
-            class="iconfont icon-chongzhi2"></i>
+             class="iconfont icon-chongzhi2"></i>
         </div>
       </div>
     </div>
@@ -18,19 +18,19 @@
         v-model="countryId">
         <select v-model="countryId">
           <option value="1" :class="{ selectActive: countryId == '1' }">
-            {{$t('bank.hk')}}
+            {{ $t('bank.hk') }}
           </option>
           <option value="2" :class="{ selectActive: countryId == '2' }">
-            {{$t('bank.us')}}
+            {{ $t('bank.us') }}
           </option>
           <option value="3" :class="{ selectActive: countryId == '3' }">
-            {{$t('bank.jp')}}
+            {{ $t('bank.jp') }}
           </option>
           <option value="4" :class="{ selectActive: countryId == '4' }">
-            {{$t('bank.ir')}}
+            {{ $t('bank.ir') }}
           </option>
           <option value="5" :class="{ selectActive: countryId == '5' }">
-            {{$t('bank.tether')}}
+            {{ $t('bank.tether') }}
           </option>
         </select>
       </mt-field>
@@ -53,21 +53,21 @@
       </template>
     </div>
     <div class="rule-box">
-      <div class="title">{{$t('bank.prompt2')}}</div>
+      <div class="title">{{ $t('bank.prompt2') }}</div>
       <ul>
         <li>
-          {{$t('bank.notice1')}}
+          {{ $t('bank.notice1') }}
         </li>
         <li>
-          {{$t('bank.notice2')}}
+          {{ $t('bank.notice2') }}
         </li>
         <li>
-          {{$t('bank.notice3')}}
+          {{ $t('bank.notice3') }}
         </li>
       </ul>
     </div>
     <div class="btnbox">
-      <span class="text-center btnok" @click="showDialog">{{$t('bank.confirm')}}</span>
+      <span class="text-center btnok" @click="showDialog">{{ $t('bank.confirm') }}</span>
     </div>
     <el-dialog
       center
@@ -78,10 +78,10 @@
       :visible.sync="dialogVisible"
       :close-on-click-modal="false">
       <p class="title">
-        {{$t('bank.security')}}
+        {{ $t('bank.security') }}
       </p>
       <div class="flexDiv">
-        <span>{{$t('bank.code')}}</span>
+        <span>{{ $t('bank.code') }}</span>
         <el-input :placeholder="$t('bank.input')" v-model="code" class="input-with-select">
           <template slot="append">
             <el-button
@@ -95,9 +95,9 @@
           </template>
         </el-input>
       </div>
-      <p class="timerTip" v-show="timer">{{$t('transfer.send')}}</p>
+      <p class="timerTip" v-show="timer">{{ $t('transfer.send') }}</p>
       <span slot="footer">
-        <el-button type="primary" @click="toSure">{{$t('bank.confirm')}}</el-button>
+        <el-button type="primary" @click="toSure">{{ $t('bank.confirm') }}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -106,6 +106,7 @@
 <script>
 import * as api from '@/axios/api'
 import {Toast} from 'mint-ui'
+import {bankNoReg, isName, isNull} from '../../utils/utils'
 
 export default {
   data () {
@@ -136,13 +137,24 @@ export default {
   },
   methods: {
     showDialog () {
-      // if (isNull(this.bankNo) || !bankNoReg(this.bankNo)) {
-      //   Toast("请输入银行卡号");
-      // } else if (isNull(this.bankName) || !isName(this.bankName)) {
-      //   Toast("请输入银行名称");
-      // } else if (isNull(this.bankAddress) || !isName(this.bankAddress)) {
-      //   Toast("请输入开户支行");
-      // } else {
+      if (!this.countryId) {
+        Toast(this.$t('bank.select'))
+        return
+      } else if (this.countryId === 5) {
+        if (isNull(this.bankNo)) {
+          Toast(this.$t('bank.inputWallet'))
+          return
+        }
+      } else {
+        if (isNull(this.bankName) || !isName(this.bankName)) {
+          Toast(this.$t('bank.inputName'))
+          return
+        }
+        if (isNull(this.bankNo) || !bankNoReg(this.bankNo)) {
+          Toast(this.$t('bank.inputNumber'))
+          return
+        }
+      }
       this.dialogVisible = true
       this.code = ''
       this.buttonValue = this.$t('pwd.getCode')
@@ -151,7 +163,6 @@ export default {
         clearInterval(this.timer)
         this.timer = null
       }
-      // }
     },
     getCode () {
       if (this.timer) {
@@ -179,7 +190,8 @@ export default {
       } else {
         Toast(res.msg)
       }
-    },
+    }
+    ,
     async toSure () {
       // 添加银行卡
       if (!this.code) {

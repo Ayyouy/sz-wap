@@ -921,6 +921,7 @@ export default {
       '銀行卡號',
     inputNumber:
       '請輸入銀行卡號',
+    inputName:'請輸入銀行名稱',
     wallet:
       '錢包地址',
     inputWallet:

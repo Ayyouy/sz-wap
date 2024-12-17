@@ -579,6 +579,7 @@ export default {
     example: 'Example: Citibank, N.A.',
     number: 'Card number',
     inputNumber: 'Please enter your bank card number',
+    inputName: 'Please enter the bank name',
     wallet: 'Wallet address',
     inputWallet: 'Please enter the Tether wallet address',
     notice1: '1、New users must add a bank card or Tether address after registration',
@@ -608,7 +609,7 @@ export default {
     old: 'Old password',
     input: 'Please enter the old password',
     new: 'New password',
-    limit: '6-12 characters, a combination of numbers, letters, or symbols.',
+    limit: '6-12 characters',
     confirm: 'Confirm',
     msg: 'Old password is incorrect.',
     success: 'Password changed successfully.'

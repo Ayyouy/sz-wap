@@ -65,7 +65,6 @@ export default {
         if (selectPhone.includes(item)) {
           this.form.select = item
           this.form.phone = selectPhone.replace(item, '')
-          console.log(item, this.form.select, this.form.phone, selectPhone)
         }
       })
     },

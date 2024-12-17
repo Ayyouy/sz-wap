@@ -79,7 +79,8 @@
                     }}
                   </option>
                 </select>
-                <input class="input-phone" :placeholder="$t('transfer.number')" type="tel" pattern="[0-9]*" v-model="phone"
+                <input class="input-phone" :placeholder="$t('transfer.number')" type="tel" pattern="[0-9]*"
+                       v-model="phone"
                        @change="getNameByPhone()"/>
                 <div class="mint-field-clear" style="display: none;">
                   <i class="mintui mintui-field-error"></i>
@@ -200,7 +201,7 @@ export default {
         return
       }
       let opt = {
-        phoneNum: this.phone
+        phoneNum: this.select + this.phone
       }
       let data = await api.getNameByPhone(opt)
       if (data.status === 0) {
