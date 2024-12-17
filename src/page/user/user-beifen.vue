@@ -12,10 +12,10 @@
           {{ $t('my.nick') }}{{ $store.state.userInfo.nickName }}
         </div>
       </div>
-      <div class="account-info_ctl" @click="$store.state.hide = !$store.state.hide">
+      <div class="account-info_ctl" @click="hideNumber">
         {{ $t('my.asset') }}
-        <i v-if="$store.state.hide" class="iconfont icon-yanjing"></i>
-        <i v-else class="iconfont icon-yanjing1"></i>
+        <i v-show="$store.state.hide" class="iconfont icon-yanjing"></i>
+        <i v-show="!$store.state.hide" class="iconfont icon-yanjing1"></i>
       </div>
     </div>
     <div class="account-container">
@@ -121,41 +121,114 @@
         ></mt-progress>
       </div>
       <div class="account-center">
-        <span>{{ $t('my.cash') }}</span>
+        <span>{{ $t('my.cash') }}（${{ Number($store.state.userInfo.userAmt).toFixed(2) }}）</span>
       </div>
-      <div class="account-box">
-        <div class="content">
-          <ul class="clearfix">
-            <li>
-              <i class="iconfont icon-zijin1"></i>
-              <div class="name">{{ $t('my.market') }}</div>
-              <p class="number red">
-                {{
-                  $store.state.hide ? '****' : '$' + Number(account.amt).toFixed(2)
-                }}
-              </p>
-            </li>
-            <li>
-              <i class="iconfont icon-keyongzijin"></i>
-              <div class="name">{{ $t('my.available') }}</div>
-              <p class="number yellow">
-                {{
-                  $store.state.hide ? '****' : '$' + Number(account.enable).toFixed(2)
-                }}
-              </p>
-            </li>
-            <li>
-              <i class="iconfont icon-yingkuixuanzhong"></i>
-              <div class="name">{{ $t('my.pl1') }}</div>
-              <p class="number green">
-                {{
-                  $store.state.hide
-                    ? '****'
-                    : '$' + Number(account.profit).toFixed(2)
-                }}
-              </p>
-            </li>
-          </ul>
+      <div v-for="item in account" :key="item.key">
+        <div class="account-box" v-if="item.isDisplay">
+          <div v-show="item.isShow" class="content">
+            <ul class="clearfix">
+              <li>
+                <i class="iconfont icon-zijin1"></i>
+                <div class="name">{{ $t('my.market') }}</div>
+                <p v-if="item.name == '指数'" class="number yellow">
+                  {{
+                    $store.state.hide
+                      ? '****'
+                      : Number($store.state.userInfo.userIndexAmt).toFixed(2)
+                  }}
+                </p>
+                <p v-if="item.name == '沪深'" class="number yellow">
+                  {{
+                    $store.state.hide ? '****' : Number($store.state.userInfo.userAmt).toFixed(2)
+                  }}
+                </p>
+                <p v-if="item.name == '期货'" class="number yellow">
+                  {{
+                    $store.state.hide
+                      ? '****'
+                      : Number($store.state.userInfo.userFuturesAmt).toFixed(2)
+                  }}
+                </p>
+              </li>
+              <li>
+                <i class="iconfont icon-keyongzijin"></i>
+                <div class="name">{{ $t('my.available') }}</div>
+                <p v-if="item.name == '指数'" class="number yellow">
+                  {{
+                    $store.state.hide
+                      ? '****'
+                      : Number($store.state.userInfo.enableIndexAmt).toFixed(2)
+                  }}
+                </p>
+                <p v-if="item.name == '沪深'" class="number yellow">
+                  {{
+                    $store.state.hide ? '****' : Number($store.state.userInfo.enableAmt).toFixed(2)
+                  }}
+                </p>
+                <p v-if="item.name == '期货'" class="number yellow">
+                  {{
+                    $store.state.hide
+                      ? '****'
+                      : Number($store.state.userInfo.enableFuturesAmt).toFixed(2)
+                  }}
+                </p>
+              </li>
+              <li>
+                <i class="iconfont icon-yingkuixuanzhong"></i>
+                <div class="name">{{ $t('my.pl1') }}</div>
+                <p
+                  v-if="item.name == '指数'"
+                  :class="
+                    $store.state.userInfo.allIndexProfitAndLose > 0
+                      ? 'number red'
+                      : $store.state.userInfo.allIndexProfitAndLose < 0
+                      ? 'number green'
+                      : 'number'
+                  "
+                >
+                  {{
+                    $store.state.hide
+                      ? '****'
+                      : Number($store.state.userInfo.allIndexProfitAndLose).toFixed(2)
+                  }}
+                </p>
+                <p
+                  v-if="item.name == '沪深'"
+                  :class="
+                    $store.state.userInfo.allProfitAndLose > 0
+                      ? 'number red'
+                      : $store.state.userInfo.allProfitAndLose < 0
+                      ? 'number green'
+                      : 'number'
+                  "
+                >
+                  {{
+                    $store.state.hide
+                      ? '****'
+                      : Number($store.state.userInfo.allProfitAndLose).toFixed(2)
+                  }}
+                </p>
+                <p
+                  v-if="item.name == '期货'"
+                  :class="
+                    $store.state.userInfo.allFuturesProfitAndLose > 0
+                      ? 'number red'
+                      : $store.state.userInfo.allFuturesProfitAndLose < 0
+                      ? 'number green'
+                      : 'number'
+                  "
+                >
+                  {{
+                    $store.state.hide
+                      ? '****'
+                      : Number(
+                        $store.state.userInfo.allFuturesProfitAndLose
+                      ).toFixed(2)
+                  }}
+                </p>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -169,29 +242,17 @@
             <li>
               <i class="iconfont icon-zijin1"></i>
               <div class="name">{{ $t('my.used') }}</div>
-              <p class="number red"> {{
-                  $store.state.hide
-                    ? '****'
-                    : '$' + Number(funds.buyMoney).toFixed(2)
-                }}</p>
+              <p class="number red"> ${{ Number(fundInfo.buyMoney).toFixed(2) }}</p>
             </li>
             <li>
               <i class="iconfont icon-keyongzijin"></i>
               <div class="name">{{ $t('my.available') }}</div>
-              <p class="number yellow">{{
-                  $store.state.hide
-                    ? '****'
-                    : '$' + Number(funds.balance).toFixed(2)
-                }}</p>
+              <p class="number yellow">${{ Number(fundInfo.balance).toFixed(2) }}</p>
             </li>
             <li>
               <i class="iconfont icon-yingkuixuanzhong"></i>
               <div class="name">{{ $t('my.pl2') }}</div>
-              <p class="number green">{{
-                  $store.state.hide
-                    ? '****'
-                    : '$' + Number(funds.amount).toFixed(2)
-                }}</p>
+              <p class="number green">${{ Number(fundInfo.amount).toFixed(2) }}</p>
             </li>
           </ul>
         </div>
@@ -265,6 +326,72 @@
           </span>
         </li>
       </ul>
+      <mt-popup
+        v-model="focePromptPopup"
+        popup-transition="popup-fade"
+        class="mint-popup-white"
+      >
+        <div class="clearfix">
+          <a @click="focePromptPopup = false" class="pull-right"
+          ><i class="iconfont icon-weitongguo"></i
+          ></a>
+        </div>
+        <p class="font-title">什么是强制平仓线？</p>
+        <!--  账户可用资金 +  -->
+        <p v-if="$store.state.settingForm.stockDisplay" class="font-bold">
+          (沪深)强制平仓线 = (账户可用资金+冻结保证金) *
+          {{ settingInfo.forceStopPercent ? settingInfo.forceStopPercent : 0 }}
+        </p>
+        <p v-if="$store.state.settingForm.indexDisplay" class="font-bold">
+          (指数)强制平仓线 = (账户可用资金+冻结保证金) *
+          {{
+            indexSettingInfo.forceSellPercent
+              ? indexSettingInfo.forceSellPercent
+              : 0
+          }}
+        </p>
+        <p v-if="$store.state.settingForm.futuresDisplay" class="font-bold">
+          (期货)强制平仓线 = (账户可用资金+冻结保证金) *
+          {{
+            futuresSettingInfo.forceSellPercent
+              ? futuresSettingInfo.forceSellPercent
+              : 0
+          }}
+        </p>
+        <p v-if="$store.state.settingForm.stockDisplay">
+          当您的沪深账户持仓总盈亏为<span class="green number"
+        >-{{
+            Number(
+              ($store.state.userInfo.enableAmt +
+                $store.state.userInfo.allFreezAmt) *
+              settingInfo.forceStopPercent
+            ).toFixed(2)
+          }}</span
+        >时系统会强制平仓
+        </p>
+        <p v-if="$store.state.settingForm.indexDisplay">
+          当您的指数账户持仓总盈亏为<span class="green number"
+        >-{{
+            Number(
+              ($store.state.userInfo.allIndexFreezAmt +
+                $store.state.userInfo.enableIndexAmt) *
+              indexSettingInfo.forceSellPercent
+            ).toFixed(2)
+          }}</span
+        >时系统会强制平仓
+        </p>
+        <p v-if="$store.state.settingForm.futuresDisplay">
+          当您的期货账户持仓总盈亏为<span class="green number"
+        >-{{
+            Number(
+              ($store.state.userInfo.allFuturesFreezAmt +
+                $store.state.userInfo.enableFuturesAmt) *
+              futuresSettingInfo.forceSellPercent
+            ).toFixed(2)
+          }}</span
+        >时系统会强制平仓
+        </p>
+      </mt-popup>
       <div class="btnbox">
         <span class="text-center btnok loginout" @click="toRegister">{{ $t('my.logout') }}</span>
       </div>
@@ -299,20 +426,29 @@ export default {
   },
   data () {
     return {
-      account: {
-        amt: 0,
-        enable: 0,
-        profit: 0
-      },
-      funds: {
+      fundInfo: {
         amount: 0,
         balance: 0,
         buyMoney: 0
       },
-      card: {
-        flag: 0,
-        msg: ''
+      user: {
+        img: ''
       },
+      defaultUser: {
+        img: require('../../assets/img/default-head.png')
+      },
+      changeHideStatus: false,
+      userAmt: '',
+      settingInfo: {}, // 设置信息
+      indexSettingInfo: {}, // 设置信息 指数
+      futuresSettingInfo: {}, // 设置信息 期货
+      focePromptPopup: false, // 强制平仓提示框
+      buttonBottom: 0,
+      account: [
+        {name: '沪深', link: 'stock', isShow: true, isDisplay: false}
+      ],
+      showChangeBtn: false, // 是否显示资金互转按钮
+      styleName: 'black',
       dialogObj: {
         flag: false,
         title: '',
@@ -322,61 +458,60 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     this.getUserInfo()
+    this.styleName = window.localStorage.getItem('styleName') ? window.localStorage.getItem('styleName') : 'red'
+  },
+  mounted () {
     this.getBalance()
+    this.getSettingInfo()
+    this.getIndexSettingInfo()
+    this.getFuturesSetting()
     this.getCardDetail()
+    this.changeHideStatus = this.$store.state.hide
+    if (this.$store.state.settingForm.indexDisplay || this.$store.state.settingForm.futuresDisplay) {
+      this.showChangeBtn = true
+    }
   },
   methods: {
-    // 获取用户信息
-    async getUserInfo () {
-      let data = await api.getUserInfo()
-      if (data.status === 0) {
-        this.$store.state.userInfo = data.data
-        this.account.amt = data.data.userAmt
-        this.account.enable = data.data.enableAmt
-        this.account.profit = data.data.allProfitAndLose
-        await this.getProductSetting()
-      } else {
-        Toast(data.msg)
-      }
-    },
-    // 获取银行卡信息
-    async getCardDetail () {
-      let data = await api.getBankCard()
-      if (data.status === 0) {
-        this.card.flag = 1
-        this.card.msg = ''
-        this.$store.state.bankInfo = data.data
-      } else {
-        this.card.flag = 2
-        this.card.msg = data.msg
-      }
-    },
-    // 获取基金信息
     async getBalance () {
       let data = await api.getBalanceFunds({})
       if (data.status === 0) {
-        this.funds = data.data
+        this.fundInfo = data.data
       } else {
         Toast(data.msg)
       }
     },
-    // 获取产品设置信息
     async getProductSetting () {
       let data = await api.getProductSetting()
       if (data.status === 0) {
         this.$store.state.settingForm = data.data
+        this.account[0].isDisplay = data.data.stockDisplay
+        this.account[1].isDisplay = data.data.indexDisplay
+        this.account[2].isDisplay = data.data.futuresDisplay
       } else {
         this.$message.error(data.msg)
       }
     },
-    goOrderList () {
+    hideNumber () {
+      this.changeHideStatus = this.$store.state.hide
+      let i = false
+      let j = true
+      this.$store.state.hide = this.$store.state.hide ? i : j
+    },
+    goOrderList: function (val) {
       this.$router.push('/orderlist?index=1')
     },
     goCard: function () {
       if (this.$store.state.userInfo.isActive !== 2) {
-        this.showDialog(this.$t('my.card'), this.$t('bank.unable'))
+        this.dialogObj.flag = true
+        this.dialogObj.title = this.$t('my.card')
+        this.dialogObj.content = this.$t('bank.unable')
+        this.dialogObj.cancel = this.dialogCancel
+        this.dialogObj.success = () => {
+          this.dialogObj.flag = false
+          this.$router.push('/authentication')
+        }
       } else {
         this.$router.push('/card')
       }
@@ -386,48 +521,18 @@ export default {
     },
     toAuthentication: function () {
       if (this.$store.state.userInfo.isActive === 2) {
-        this.showDialog(this.$t('my.auth1'), this.$t('auth.auth4'))
+        this.dialogObj.flag = true
+        this.dialogObj.title = this.$t('my.auth1')
+        this.dialogObj.content = this.$t('auth.auth4')
+        this.dialogObj.cancel = this.dialogCancel
         this.dialogObj.success = this.dialogCancel
       } else {
         this.$router.push('/authentication')
       }
     },
-    toDeposit () { // 充值
-      if (this.$store.state.userInfo.isActive !== 2) {
-        this.showDialog(this.$t('recharge.prompt'), this.$t('recharge.unable'))
-      } else {
-        this.$router.push('/deposit')
-      }
-    },
-    toWithdraw () { // 提现
-      if (this.$store.state.userInfo.isActive !== 2) {
-        this.showDialog(this.$t('withdraw.prompt'), this.$t('withdraw.unable'))
-        return
-      }
-      if (this.card.flag === 0) {
-        this.getCardDetail()
-      } else if (this.card.flag === 1) {
-        this.$router.push('/withdraw')
-      } else if (this.card.flag === 2) {
-        this.showDialog(this.$t('withdraw.prompt'), this.$t('withdraw.added'))
-        this.dialogObj.success = () => {
-          this.dialogObj.flag = false
-          this.$router.push('/card')
-        }
-      }
-    },
-    toTransferMoney () { // 转账
-      if (this.$store.state.userInfo.isActive !== 2) {
-        this.showDialog(this.$t('transfer.prompt2'), this.$t('transfer.unable2'))
-      } else {
-        this.$router.push('/transferMoney')
-      }
-    },
-    goMoneyList () {
-      this.$router.push('/moneyList')
-    },
     async toRegister () {
       // 注销登陆
+      // this.clearCookie()
       let data = await api.logout()
       if (data.status === 0) {
         await this.$router.push('/login')
@@ -435,14 +540,18 @@ export default {
         Toast(data.msg)
       }
     },
-    showDialog (title, content) {
-      this.dialogObj.flag = true
-      this.dialogObj.title = title
-      this.dialogObj.content = content
-      this.dialogObj.cancel = this.dialogCancel
-      this.dialogObj.success = () => {
-        this.dialogObj.flag = false
-        this.$router.push('/authentication')
+    toDeposit () { // 充值
+      if (this.$store.state.userInfo.isActive !== 2) {
+        this.dialogObj.flag = true
+        this.dialogObj.title = this.$t('recharge.prompt')
+        this.dialogObj.content = this.$t('recharge.unable')
+        this.dialogObj.cancel = this.dialogCancel
+        this.dialogObj.success = () => {
+          this.dialogObj.flag = false
+          this.$router.push('/authentication')
+        }
+      } else {
+        this.$router.push('/deposit')
       }
     },
     dialogCancel () {
@@ -451,12 +560,94 @@ export default {
       this.dialogObj.content = ''
       this.dialogObj.success = () => {
       }
+    },
+    toWithdraw () { // 提现
+      if (this.$store.state.userInfo.isActive !== 2) {
+        this.dialogObj.flag = true
+        this.dialogObj.title = this.$t('withdraw.prompt')
+        this.dialogObj.content = this.$t('withdraw.unable')
+        this.dialogObj.cancel = this.dialogCancel
+        this.dialogObj.success = () => {
+          this.dialogObj.flag = false
+          this.$router.push('/authentication')
+        }
+      } else {
+        this.$router.push('/withdraw')
+      }
+    },
+    toTransferMoney () { // 转账
+      if (this.$store.state.userInfo.isActive !== 2) {
+        this.dialogObj.flag = true
+        this.dialogObj.title = this.$t('transfer.prompt2')
+        this.dialogObj.content = this.$t('transfer.unable2')
+        this.dialogObj.cancel = this.dialogCancel
+        this.dialogObj.success = () => {
+          this.dialogObj.flag = false
+          this.$router.push('/authentication')
+        }
+      } else {
+        this.$router.push('/transferMoney')
+      }
+    },
+    goMoneyList () {
+      this.$router.push('/moneyList')
+    },
+    async getCardDetail () {
+      // 获取银行卡信息
+      let data = await api.getBankCard()
+      if (data.status === 0) {
+        this.$store.state.bankInfo = data.data
+      } else {
+      }
+    },
+    async getSettingInfo () {
+      let data = await api.getSetting()
+      if (data.status === 0) {
+        // 成功
+        this.settingInfo = data.data
+      } else {
+        Toast(data.msg)
+      }
+    },
+    async getIndexSettingInfo () {
+      // 网站设置信息 指数
+      let data = await api.getIndexSetting()
+      if (data.status === 0) {
+        // 成功
+        this.indexSettingInfo = data.data
+      } else {
+        Toast(data.msg)
+      }
+    },
+    async getFuturesSetting () {
+      // 网站设置信息 期货
+      let data = await api.getFuturesSetting()
+      if (data.status === 0) {
+        // 成功
+        this.futuresSettingInfo = data.data
+      } else {
+        Toast(data.msg)
+      }
+    },
+    async getUserInfo () {
+      // 获取用户信息
+      let data = await api.getUserInfo()
+      console.log('get user info data:', data)
+      if (data.status === 0) {
+        this.$store.state.userInfo = data.data
+        console.log('get user info:', this.$store.state.userInfo)
+        await this.getProductSetting()
+      } else {
+        Toast(data.msg)
+      }
+      this.$store.state.user = this.user
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
+// @bgColor: #fff;
 @bgColor: #16171d;
 @fontColor: #fff;
 @borderColor: #676b6f;
@@ -995,7 +1186,9 @@ body {
 }
 
 .account-container {
-  margin: 0.12rem 0.28rem;
+  // margin: .28rem;
+  width: 6.9rem;
+  margin: 0.28rem auto;
   border-radius: 5px;
   overflow: hidden;
   background-color: #1f2636;

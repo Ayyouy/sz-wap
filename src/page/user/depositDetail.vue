@@ -15,14 +15,12 @@
       <span class="min">{{ $t('recharge.min') }} {{ detail.channelMinLimit }}</span>
       <span class="max">{{ $t('recharge.max') }} {{ detail.channelMaxLimit }}</span>
     </div>
-
     <div class="form-block page-part">
       <mt-field
         :label="$t('recharge.amount1')"
         :placeholder="$t('recharge.amount2')"
         type="number"
-        v-model="formData.amt"
-      />
+        v-model="formData.amt"/>
       <p class="num1">{{ detail.code }}：{{ Number(formData.amt * detail.rate).toFixed(2) }}</p>
       <p class="num2">USD/{{ detail.code }}=1:{{ detail.rate }}</p>
       <div class="upload-box clearfix">
@@ -166,17 +164,6 @@ export default {
   data () {
     return {
       detail: {},
-      number: '',
-      card: '',
-      phone: '',
-      settingInfo: {
-        withMinAmt: 1000,
-        withTimeBegin: 13, // 提现开始时间
-        withTimeEnd: 15, // 提现结束时间
-        withFeeSingle: 3, // 提现单笔手续费
-        withFeePercent: 0.008 // 提现单笔手续费
-      },
-      payInfo: {},
       payId: '',
       fileList: [],
       formData: {
@@ -186,7 +173,6 @@ export default {
         rechargeImg: '' // 转账凭证截图
       },
       dialogVisible: false,
-      imgSrc: '',
       imgStatus: false,
       url: '',
       doubleSubmit: false,
@@ -204,7 +190,6 @@ export default {
       let data = await api.getPayInfoDetail({payId: this.payId})
       if (data.status === 0) {
         this.detail = data.data
-        this.imgSrc = data.data.formUrl
       } else {
         Toast(data.msg)
       }
@@ -439,7 +424,7 @@ body {
   .attention {
     // height: 0.417rem;
     line-height: 0.417rem;
-    padding: 0.347rem;
+    padding: 0.347rem 0.347rem 0rem;
   }
 
   .submitDialog {

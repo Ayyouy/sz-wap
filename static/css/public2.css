@@ -17064,8 +17064,8 @@ li {
 }
 
 .mint-field .mint-cell-title {
-  text-align: center;
-  width: 30%
+  text-align: left;
+  width: 35%
 }
 
 .mint-field .mint-cell-value {

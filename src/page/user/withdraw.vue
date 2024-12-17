@@ -15,7 +15,7 @@
           :placeholder="$t('withdraw.amount3')"
           type="number"
           v-model="formData.amt">
-          <span @click="changeAllNumber">{{ $t('withdraw.all') }}</span>
+          <span style="color: #1ba6d0" @click="changeAllNumber">{{ $t('withdraw.all') }}</span>
         </mt-field>
       </div>
       <div class="dynamic-calc">
@@ -34,14 +34,14 @@
       <div class="form-block page-part">
         <template v-if="$store.state.bankInfo.countryId != 5">
           <p class="rate">USD/{{ $store.state.bankInfo.code }}=1:{{ $store.state.bankInfo.rate }}</p>
-          <mt-field readonly :label="outMoneyTitle+'出金'" v-model="formData.aa"/>
+          <mt-field readonly :label="outMoneyTitle+$t('withdraw.out')" v-model="formData.aa"/>
           <mt-field readonly :label="$t('withdraw.name')" v-model="$store.state.bankInfo.realName"/>
           <mt-field readonly :label="$t('withdraw.bank2')" v-model="$store.state.bankInfo.bankName"/>
           <mt-field readonly :label="$t('withdraw.bank3')" v-model="$store.state.bankInfo.bankNo"/>
         </template>
         <template v-else>
           <p class="rate">USD/{{ $store.state.bankInfo.code }}=1:{{ $store.state.bankInfo.rate }}</p>
-          <mt-field readonly :label="outMoneyTitle+'出金'" v-model="formData.aa"/>
+          <mt-field readonly :label="outMoneyTitle+$t('withdraw.out')" v-model="formData.aa"/>
           <mt-field readonly :label="$t('withdraw.tether3')" v-model="$store.state.bankInfo.bankNo"/>
         </template>
       </div>
@@ -130,6 +130,7 @@ export default {
     }
   },
   mounted () {
+    this.getCardDetail()
     if (this.$state.theme === 'red') {
       document.body.classList.remove('black-bg')
       document.body.classList.add('red-bg')
@@ -138,10 +139,18 @@ export default {
   },
   watch: {
     'formData.amt' (val) {
+      console.log('form amt:', this.$store.state.bankInfo.rate)
       this.formData.aa = Number(val * this.$store.state.bankInfo.rate).toFixed(2)
     }
   },
   methods: {
+    // 获取银行卡信息
+    async getCardDetail () {
+      let data = await api.getBankCard()
+      if (data.status === 0) {
+        this.$store.state.bankInfo = data.data
+      }
+    },
     dialogCancel () {
       this.dialogObj.flag = false
       this.dialogObj.title = ''
@@ -249,9 +258,9 @@ export default {
   }
 }
 
-/deep/ .mint-field .mint-cell-title {
-  text-align: right;
-}
+///deep/ .mint-field .mint-cell-title {
+//  text-align: right;
+//}
 
 .rate {
   text-align: right;

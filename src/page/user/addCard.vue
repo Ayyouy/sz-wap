@@ -57,16 +57,12 @@
       <ul>
         <li>
           {{$t('bank.notice1')}}
-          {{countryId == '5' ? this.$t('bank.tether') : this.$t('bank.card')}}。
         </li>
         <li>
           {{$t('bank.notice2')}}
-          {{countryId == '5' ? this.$t('bank.tether') : this.$t('bank.card')}}。
         </li>
         <li>
           {{$t('bank.notice3')}}
-          {{countryId == '5' ? this.$t('bank.tether') : this.$t('bank.card')}}
-          {{$t('bank.notice4')}}
         </li>
       </ul>
     </div>
@@ -112,8 +108,6 @@ import * as api from '@/axios/api'
 import {Toast} from 'mint-ui'
 
 export default {
-  components: {},
-  props: {},
   data () {
     return {
       bankName: '',
@@ -129,7 +123,6 @@ export default {
     }
   },
   mounted () {
-    // todo 注意添加或修改之前判断是否实名认证额了，等待接口修改好后再完成这个
     this.type = this.$route.query.type ? this.$t('bank.edit') : this.$t('bank.add1')
     if (this.$store.state.bankInfo) {
       this.bankName = this.$store.state.bankInfo.bankName
@@ -220,9 +213,6 @@ export default {
           }
         }
       }
-    },
-    goBack () {
-      this.$router.back()
     }
   }
 }

@@ -1,30 +1,14 @@
 <template>
   <div class="page wrapper">
-    <p class="chooceTip">{{$t('recharge.method1')}}</p>
+    <p class="chooceTip">{{ $t('recharge.method1') }}</p>
     <div class="list">
-      <div v-for="i in optionsPay" :key="i.key" class="item" @click="toDetail(i.id)">
-        <img :src="i.iconUrl"/>
-        <span class="name">{{ i.channelType }}</span>
-        <span class="min">{{$t('recharge.min')}}: {{ i.channelMinLimit }}</span>
-        <span class="max">{{$t('recharge.max')}}: {{ i.channelMaxLimit }}</span>
+      <div v-for="item in payee" :key="item.key" class="item" @click="toDetail(item.id)">
+        <img :src="item.iconUrl"/>
+        <span class="name">{{ item.channelType }}</span>
+        <span class="min">{{ $t('recharge.min') }}{{ item.channelMinLimit }}</span>
+        <span class="max">{{ $t('recharge.max') }}{{ item.channelMaxLimit }}</span>
       </div>
     </div>
-    <el-dialog
-      top="30vh"
-      width="80%"
-      :title="dialogObj.title"
-      class="submitDialog"
-      :visible.sync="dialogObj.flag"
-      :close-on-click-modal="false"
-    >
-      <p>
-        {{ dialogObj.content }}
-      </p>
-      <span slot="footer">
-        <el-button type="danger" size="mini" @click="dialogObj.cancel">{{$t('recharge.cancel')}}</el-button>
-        <el-button type="primary" size="mini" @click="dialogObj.success">{{ dialogObj.successTitle }}</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -35,37 +19,18 @@ import {Toast} from 'mint-ui'
 export default {
   data () {
     return {
-      optionsPay: [],
-      dialogObj: {
-        flag: false,
-        title: this.$t('my.auth1'),
-        content: this.$t('recharge.unable'),
-        successTitle: this.$t('auth.auth'),
-        success: Function,
-        cancel: Function
-      }
+      payee: []
     }
   },
   mounted () {
-    if (!this.$store.state.userInfo.isActive) {
-      this.dialogObj.flag = true
-      this.dialogObj.cancel = this.dialogCancel
-      this.dialogObj.success = () => {
-        this.dialogObj.flag = false
-        this.$router.push('/authentication')
-      }
-    } else {
-      this.getPayInfo()
-    }
+    this.getPayee()
   },
   methods: {
-    async getPayInfo () {
-      // 获取支付渠道
+    // 获取支付渠道
+    async getPayee () {
       let data = await api.getPayInfo()
       if (data.status === 0) {
-        this.optionsPay = data.data
-        this.id = data.data[0].id
-        this.type = data.data[0].ctype
+        this.payee = data.data
       } else {
         Toast(data.msg)
       }

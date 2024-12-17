@@ -52,7 +52,6 @@ axios.interceptors.response.use(
     if (data instanceof Object) {
       if (data.status === 401) {
         const language = navigator.language.toLowerCase()
-        console.log('response:', language)
         if (language.includes('cn')) {
           data.msg = '您还未登录,请先登录'
         } else if (language.includes('tw')) {
@@ -67,7 +66,7 @@ axios.interceptors.response.use(
     return response
   },
   (error) => {
-    // Toast('服务异常，请联系管理员')
+    console.log('服务异常，请联系管理员')
     localStorage.clear()
     return Promise.reject(error)
   }

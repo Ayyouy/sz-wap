@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="box page-part transaction">
       <div class="box-contain clearfix">
-        <div v-if="cardInfo.length <= 0" class="empty text-center">
+        <div v-if="cardInfo.length <= 0" class="empty text-center" style="font-size: 0.35rem">
           {{$t('bank.no')}}
         </div>
         <div v-if="cardInfo.length > 0" class="back-info">
@@ -35,16 +35,10 @@ import * as api from '@/axios/api'
 import {Toast} from 'mint-ui'
 
 export default {
-  components: {},
-  props: {},
   data () {
     return {
-      cardInfo: [],
+      cardInfo: []
     }
-  },
-  watch: {},
-  computed: {},
-  created () {
   },
   beforeDestroy () {
     if (this.$state.theme === 'red') {
