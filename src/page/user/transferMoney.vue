@@ -26,11 +26,11 @@
         <div class="form-block">
           <mt-field :label="$t('transfer.amount1')" v-show="payType === '0'" name="amt" v-model="form.account1"
                     :placeholder="$t('transfer.amount2')" type="number">
-            <span @click="selectAll(1)">{{ $t('transfer.all') }}</span>
+            <span style="color: #1ba6d0" @click="selectAll(1)">{{ $t('transfer.all') }}</span>
           </mt-field>
           <mt-field :label="$t('transfer.amount1')" v-show="payType === '1'" name="amt" v-model="form.account2"
                     :placeholder="$t('transfer.amount2')" type="number">
-            <span @click="selectAll(2)">{{ $t('transfer.all') }}</span>
+            <span style="color: #1ba6d0" @click="selectAll(2)">{{ $t('transfer.all') }}</span>
           </mt-field>
         </div>
         <div class="form-block">
@@ -55,7 +55,7 @@
             :placeholder="$t('transfer.available')"
             type="text"
             disabled
-            v-model="this.$store.state.userInfo.enableAmt"
+            v-model="$store.state.userInfo.enableAmt"
           ></mt-field>
         </div>
         <div class="form-block">
@@ -64,16 +64,34 @@
             v-model="form.account"
             :placeholder="$t('transfer.amount2')"
             type="number">
-            <span @click="selectAll(3)">{{ $t('transfer.all') }}</span>
+            <span style="color: #1ba6d0" @click="selectAll(3)">{{ $t('transfer.all') }}</span>
           </mt-field>
         </div>
         <div class="form-block">
-          <mt-field
-            :label="$t('transfer.phone')"
-            :placeholder="$t('transfer.number')"
-            type="text"
-            v-model="phone"
-          ></mt-field>
+          <a data-v-5edda588="" class="mint-cell mint-field">
+            <div class="mint-cell-left"></div>
+            <div class="mint-cell-wrapper">
+              <div class="mint-cell-title"><span class="mint-cell-text">{{ $t('transfer.phone') }}</span></div>
+              <div class="mint-cell-value">
+                <select class="select-phone" v-model="select">
+                  <option class="option-phone" v-for="item in options" :key="item" :label="item" :value="item">{{
+                      item
+                    }}
+                  </option>
+                </select>
+                <input class="input-phone" :placeholder="$t('transfer.number')" type="tel" pattern="[0-9]*" v-model="phone"
+                       @change="getNameByPhone()"/>
+                <div class="mint-field-clear" style="display: none;">
+                  <i class="mintui mintui-field-error"></i>
+                </div>
+                <span class="mint-field-state is-default">
+                  <i class="mintui mintui-field-default"></i>
+                </span>
+              </div>
+            </div>
+            <div class="mint-cell-right"></div>
+          </a>
+
         </div>
         <div class="form-block">
           <mt-field
@@ -94,7 +112,7 @@
       center
       top="30vh"
       width="80%"
-      :title="$t('transfer.ver')"
+      :title="$t('bank.ver')"
       class="submitDialog"
       :modal-append-to-body="false"
       :visible.sync="dialogVisible"
@@ -112,8 +130,7 @@
               :loading="codeBtnLoading"
               @click="getCode"
             >{{ buttonValue }}
-            </el-button
-            >
+            </el-button>
           </template>
         </el-input>
       </div>
@@ -148,19 +165,14 @@ export default {
       },
       payType: '0',
       phone: '',
+      select: '+1',
+      options: ['+1', '+852', '+91', '+81', '+86', '+88', '+00', '+99'],
       name: '',
       dialogVisible: false,
       code: '',
       buttonValue: this.$t('register.getCode'),
       timer: null,
       codeBtnLoading: false
-    }
-  },
-  watch: {
-    phone (val) {
-      if (val.length >= 7) {
-        this.getNameByPhone(val)
-      }
     }
   },
   mounted () {
@@ -182,17 +194,20 @@ export default {
         Toast(data.msg)
       }
     },
-    async getNameByPhone (value) {
-      if (value) {
-        let opt = {
-          phoneNum: value
-        }
-        let data = await api.getNameByPhone(opt)
-        if (data.status === 0) {
-          this.name = data.data.realName
-        } else {
-          this.name = ''
-        }
+    async getNameByPhone () {
+      if (this.phone.length < 7) {
+        Toast(this.$t('pwd.msgAccount'))
+        return
+      }
+      let opt = {
+        phoneNum: this.phone
+      }
+      let data = await api.getNameByPhone(opt)
+      if (data.status === 0) {
+        this.name = data.data.realName
+      } else {
+        Toast(data.msg)
+        this.name = ''
       }
     },
     selectAll (val) {
@@ -216,8 +231,13 @@ export default {
         } else if (this.payType === '1') {
           account = -this.form.account2
         }
-      } else if (val === 2) {
+      }
+      if (val === 2) {
         account = this.form.account
+      }
+      if (account <= 0 || account > this.$store.state.userInfo.enableAmt) {
+        Toast(this.$t('transfer.msg') + this.$store.state.userInfo.enableAmt)
+        return
       }
       let opt = {
         phoneNum: this.phone,
@@ -246,24 +266,28 @@ export default {
       }
     },
     showDialog () {
-      if (!this.form.account || this.form.account === 0 || this.form.account > this.$store.state.userInfo.enableAmt) {
-        // Toast('请输入正确的转账金额')
-        Toast(this.$t('transfer.correct'))
-      } else if (!this.phone) {
+      // if (!this.form.account || this.form.account === 0 || this.form.account > this.$store.state.userInfo.enableAmt) {
+      //   // Toast('请输入正确的转账金额')
+      //   Toast(this.$t('transfer.correct'))
+      //   return
+      // }
+      if (!this.phone || this.phone.length < 7) {
         // Toast('请输入收款人手机')
         Toast(this.$t('transfer.input'))
-      } else if (!this.name) {
+        return
+      }
+      if (!this.name) {
         // Toast('收款人账号不存在')
         Toast(this.$t('transfer.exist'))
-      } else {
-        this.dialogVisible = true
-        this.code = ''
-        this.buttonValue = this.$t('register.getCode')
-        this.codeBtnLoading = false
-        if (this.timer) {
-          clearInterval(this.timer)
-          this.timer = null
-        }
+        return
+      }
+      this.dialogVisible = true
+      this.code = ''
+      this.buttonValue = this.$t('register.getCode')
+      this.codeBtnLoading = false
+      if (this.timer) {
+        clearInterval(this.timer)
+        this.timer = null
       }
     },
     getCode () {
@@ -394,5 +418,43 @@ export default {
 
 /deep/ .v-modal {
   z-index: 99 !important;
+}
+
+.select-phone {
+  width: 0.8rem !important;
+  background-color: #16171d;
+  text-align: center;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 13px;
+  padding-top: 1px;
+}
+
+.option-phone {
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+  font-size: 13px;
+}
+
+.input-phone {
+  margin-left: 0.1rem;
+  font-size: 13px;
+
+  &::-webkit-input-placeholder {
+    color: #363636;
+  }
+
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+
+  &:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px #121319 inset !important;
+  }
+
+  &:-webkit-autofill:focus {
+    box-shadow: 0 0 0px 1000px #121319 inset !important;
+  }
 }
 </style>
