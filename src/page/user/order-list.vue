@@ -32,9 +32,8 @@
 
 <script>
 import Foot from '@/components/foot/foot'
-import List4Country from './order-list-4country'
 import * as api from '@/axios/api'
-import {Toast} from 'mint-ui'
+import List4Country from './order-list-4country'
 import HoldPosition from './compontents/hold-position-4country.vue'
 import HistoryList from './compontents/history-list-4country.vue'
 
@@ -47,18 +46,13 @@ export default {
   },
   data () {
     return {
-      select: '', // 选中,
+      select: '2', // 选中,
       selectNext: '1'
     }
   },
   watch: {
     select (val) {
       this.selectNext = '1'
-    }
-  },
-  created () {
-    if (!this.$store.state.userInfo.phone) {
-      this.getUserInfo()
     }
   },
   beforeDestroy () {
@@ -74,24 +68,14 @@ export default {
     if (this.$route.query.index) {
       this.select = this.$route.query.index
     }
-    this.getProductSetting()
+    this.getUserInfo()
   },
   methods: {
+    // 获取用户信息
     async getUserInfo () {
-      // 获取用户信息
       let data = await api.getUserInfo()
       if (data.status === 0) {
         this.$store.state.userInfo = data.data
-      } else {
-        Toast(data.msg)
-      }
-    },
-    async getProductSetting () {
-      let data = await api.getProductSetting()
-      if (data.status === 0) {
-        this.$store.state.settingForm = data.data
-      } else {
-        this.$message.error(data.msg)
       }
     },
     // 按照持仓名称查持仓订单
@@ -293,20 +277,20 @@ export default {
     font-size: 0.24rem;
     color: #ccc;
   }
-
-  .order-foot {
-    padding: 0;
-
-    .foot-btn {
-      border-color: #b12525;
-      background-color: #b12525;
-      color: #fff;
-      padding: 0 0.1rem;
-      height: 0.34rem;
-      line-height: 0.34rem;
-      font-size: 0.2rem;
-    }
-  }
+  //
+  //.order-foot {
+  //  padding: 0;
+  //
+  //  .foot-btn {
+  //    border-color: #b12525;
+  //    background-color: #b12525;
+  //    color: #fff;
+  //    padding: 0 0.1rem;
+  //    height: 0.34rem;
+  //    line-height: 0.34rem;
+  //    font-size: 0.2rem;
+  //  }
+  //}
 }
 
 #app.red-theme {

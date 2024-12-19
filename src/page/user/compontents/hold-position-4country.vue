@@ -138,7 +138,7 @@
               </div>
             </div>
             <div class="order-foot clearfix">
-              <div @click="sell(item.positionSn)" class="foot-btn">
+              <div @click="showDialog(item.positionSn)" class="foot-btn">
                 <i class="font-icon"></i>
                 {{ $t('own.closes') }}
               </div>
@@ -156,11 +156,23 @@
     <div v-show="loaded && list.length==0" class="load-all text-center">
       {{ $t('market.empty') }}
     </div>
+    <el-dialog center top="40vh" :title="$t('bank.prompt2')" width="80%" :visible.sync="dialogVisible">
+      <div>
+        <span>{{ $store.state.userInfo.idCard ? $t('title') : $t('market.order') }}</span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+         <el-button @click="dialogVisible = false">{{ $t('redeem.cancel') }}</el-button>
+         <el-button v-if="$store.state.userInfo.idCard" type="primary" @click="sell">{{
+             $t('redeem.confirm')
+           }}</el-button>
+         <el-button v-else type="primary" @click="auth">{{ $t('redeem.confirm') }}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {Toast, MessageBox} from 'mint-ui'
+import {Toast} from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
@@ -176,7 +188,9 @@ export default {
       list: [],
       pageNum: 1,
       pageSize: 10,
-      total: 0
+      total: 0,
+      dialogVisible: false,
+      position: ''
     }
   },
   watch: {
@@ -186,21 +200,9 @@ export default {
       this.pageNum = 1
       this.loaded = false
       this.getListDetail()
-      if (!this.$store.state.userInfo.idCard) {
-        this.getUserInfo()
-      }
     }
   },
   methods: {
-    async getUserInfo () {
-      // 获取用户信息
-      let data = await api.getUserInfo()
-      if (data.status === 0) {
-        this.$store.state.userInfo = data.data
-      } else {
-        Toast(data.msg)
-      }
-    },
     async loadMore () {
       if (this.loaded) {
         return
@@ -230,23 +232,32 @@ export default {
       }
       this.loading = false
     },
-    sell (val) {
-      MessageBox.confirm(this.$t('title')).then(async action => {
-        let opt = {
-          positionSn: val
-        }
-        let data = await api.sell(opt)
-        if (data.status === 0) {
-          Toast(data.msg)
-          this.list = []
-          this.total = 0
-          this.pageNum = 1
-          this.loaded = false
-          await this.getListDetail()
-        } else {
-          Toast(data.msg)
-        }
-      })
+    showDialog (val) {
+      this.dialogVisible = true
+      this.position = val
+    },
+    auth () {
+      this.dialogVisible = false
+      this.position = ''
+      this.$router.push('/authentication')
+    },
+    async sell () {
+      this.dialogVisible = false
+      let opt = {
+        positionSn: this.position
+      }
+      let data = await api.sell(opt)
+      this.position = ''
+      if (data.status === 0) {
+        Toast(data.msg)
+        this.list = []
+        this.total = 0
+        this.pageNum = 1
+        this.loaded = false
+        await this.getListDetail()
+      } else {
+        Toast(data.msg)
+      }
     },
     toDetail (code) {
       this.$router.push({

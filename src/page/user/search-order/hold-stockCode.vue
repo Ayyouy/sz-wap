@@ -4,7 +4,8 @@
       <div class="search-input">
         <input type="text" :placeholder="$t('own.symbol')" v-model="stockCode" @keyup.enter="queryList">
       </div>
-      <mt-button size="small" @click="queryList" icon="search" style="background-color:#000">{{$t('market.search')}}</mt-button>
+      <mt-button size="small" @click="queryList" icon="search" style="background-color:#000">{{ $t('market.search') }}
+      </mt-button>
     </div>
     <div>
       <ul
@@ -141,9 +142,9 @@
               </div>
             </div>
             <div class="order-foot clearfix">
-              <div @click="sell(item.positionSn)" class="foot-btn">
+              <div @click="showDialog(item.positionSn)" class="foot-btn">
                 <i class='font-icon'></i>
-                {{ $t('sell') }}
+                {{ $t('own.closes') }}
               </div>
             </div>
           </div>
@@ -152,19 +153,31 @@
     </div>
     <div v-show="loading" class="load-all text-center">
       <mt-spinner type="fading-circle"></mt-spinner>
-      {{$t('market.loading')}}
+      {{ $t('market.loading') }}
     </div>
     <div v-show="loaded && list.length>0" class="load-all text-center">
-      {{$t('market.loaded')}}
+      {{ $t('market.loaded') }}
     </div>
     <div v-show="loaded && list.length==0" class="load-all text-center">
-      {{ $t('market.empty')}}
+      {{ $t('market.empty') }}
     </div>
+    <el-dialog center top="40vh" :title="$t('bank.prompt2')" width="80%" :visible.sync="dialogVisible">
+      <div>
+        <span>{{ $store.state.userInfo.idCard ? $t('title') : $t('market.order') }}</span>
+      </div>
+      <span slot="footer" class="dialog-footer">
+         <el-button @click="dialogVisible = false">{{ $t('redeem.cancel') }}</el-button>
+         <el-button v-if="$store.state.userInfo.idCard" type="primary" @click="sell">{{
+             $t('redeem.confirm')
+           }}</el-button>
+         <el-button v-else type="primary" @click="auth">{{ $t('redeem.confirm') }}</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {Toast, MessageBox} from 'mint-ui'
+import {Toast} from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
@@ -176,7 +189,9 @@ export default {
       pageNum: 1,
       pageSize: 10,
       stockCode: '',
-      total: 0
+      total: 0,
+      dialogVisible: false,
+      position: ''
     }
   },
   watch: {
@@ -188,6 +203,7 @@ export default {
     }
   },
   methods: {
+
     async queryList () {
       let opt = {
         state: 0,
@@ -216,30 +232,32 @@ export default {
       this.pageNum++
       await this.queryList()
     },
-    sell (val) {
-      if (!this.$store.state.userInfo.idCard) {
-        Toast('您还未实名认证,请先实名认证了再下单')
-        this.$router.push('/authentication')
-        return
+    showDialog (val) {
+      this.dialogVisible = true
+      this.position = val
+    },
+    auth () {
+      this.dialogVisible = false
+      this.position = ''
+      this.$router.push('/authentication')
+    },
+    async sell () {
+      this.dialogVisible = false
+      let opt = {
+        positionSn: this.position
       }
-      MessageBox.confirm('您确定要平仓吗?').then(async action => {
-        let opt = {
-          positionSn: val
-        }
-        let data = await api.sell(opt)
-        if (data.status === 0) {
-          Toast(data.msg)
-          this.hasChangeSell = true
-          this.list = []
-          this.total = 0
-          this.pageNum = 1
-          this.loaded = false
-          this.handleOptions(this.hasChangeSell)
-          this.getListDetail()
-        } else {
-          Toast(data.msg)
-        }
-      })
+      let data = await api.sell(opt)
+      this.position = ''
+      if (data.status === 0) {
+        Toast(data.msg)
+        this.list = []
+        this.total = 0
+        this.pageNum = 1
+        this.loaded = false
+        await this.getListDetail()
+      } else {
+        Toast(data.msg)
+      }
     },
     toDetail (code) {
       this.$router.push({
