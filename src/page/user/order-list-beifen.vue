@@ -1,59 +1,43 @@
 <template>
   <div class="wrapper">
-    <mt-navbar class="top-navbar" v-model="select">
+    <mt-navbar class="top-navbar" v-model="selected">
       <mt-tab-item class="long" id="2">{{ $t('market.us') }}</mt-tab-item>
       <mt-tab-item class="long" id="3">{{ $t('market.jp') }}</mt-tab-item>
       <mt-tab-item class="long" id="1">{{ $t('market.hk') }}</mt-tab-item>
       <mt-tab-item class="long" id="4">{{ $t('market.in') }}</mt-tab-item>
     </mt-navbar>
-    <mt-navbar class="sub-navbar" v-model="selectNext">
-      <mt-tab-item id="1">{{ $t('title5') }}</mt-tab-item>
-      <mt-tab-item id="2">{{ $t('title6') }}</mt-tab-item>
-    </mt-navbar>
-    <mt-tab-container class="order-list" v-model="selectNext">
+    <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="1">
-        <div class="text-center">
-          <mt-button @click="holdSearchByName" type="default">{{ $t('own.name') }}</mt-button>
-          <mt-button @click="holdSearchBySymbol" type="default">{{ $t('own.symbol') }}</mt-button>
-        </div>
-        <HoldPosition :selected='select'/>
+        <List4Country :selectedNumber="selected"/>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
-        <div class="text-center">
-          <mt-button @click="sellSearchByName" type="default">{{ $t('own.name') }}</mt-button>
-          <mt-button @click="sellSearchBySymbol" type="default">{{ $t('own.symbol') }}</mt-button>
-        </div>
-        <HistoryList :selected="selectNext" :country="select"/>
+        <List4Country :selectedNumber="selected"/>
+      </mt-tab-container-item>
+      <mt-tab-container-item id="3">
+        <List4Country :selectedNumber="selected"/>
+      </mt-tab-container-item>
+      <mt-tab-container-item id="4">
+        <List4Country :selectedNumber="selected"/>
       </mt-tab-container-item>
     </mt-tab-container>
-    <Foot></Foot>
+    <foot></foot>
   </div>
 </template>
 
 <script>
-import Foot from '@/components/foot/foot'
+import foot from '@/components/foot/foot'
 import List4Country from './order-list-4country'
 import * as api from '@/axios/api'
 import {Toast} from 'mint-ui'
-import HoldPosition from './compontents/hold-position-4country.vue'
-import HistoryList from './compontents/history-list-4country.vue'
 
 export default {
   components: {
-    Foot,
-    HistoryList,
-    HoldPosition,
+    foot,
     List4Country
   },
   data () {
     return {
-      select: '', // 选中,
-      selectNext: '1'
-    }
-  },
-  watch: {
-    select (val) {
-      this.selectNext = '1'
+      selected: '' // 选中
     }
   },
   created () {
@@ -62,17 +46,17 @@ export default {
     }
   },
   beforeDestroy () {
-    sessionStorage.setItem('hold-select', this.select)
+    sessionStorage.setItem('hold-select', this.selected)
   },
   mounted () {
     let item = sessionStorage.getItem('hold-select')
     if (item === undefined || item == null) {
-      this.select = '2'
+      this.selected = '2'
     } else {
-      this.select = item
+      this.selected = item
     }
     if (this.$route.query.index) {
-      this.select = this.$route.query.index
+      this.selected = this.$route.query.index
     }
     this.getProductSetting()
   },
@@ -93,42 +77,6 @@ export default {
       } else {
         this.$message.error(data.msg)
       }
-    },
-    // 按照持仓名称查持仓订单
-    holdSearchByName () {
-      this.$router.push({
-        path: '/holdorderlist2',
-        query: {
-          type: 1 // 查询类型 1--> name 2--> code
-        }
-      })
-    },
-    holdSearchBySymbol () {
-      // 按照持仓代码查持仓订单
-      this.$router.push({
-        path: '/holdorderlist',
-        query: {
-          type: 2 // 查询类型 1--> name 2--> code
-        }
-      })
-    },
-    sellSearchByName () {
-      // 按照持仓名称查持仓订单
-      this.$router.push({
-        path: '/sellorderlist2',
-        query: {
-          type: 1 // 查询类型 1--> name 2--> code
-        }
-      })
-    },
-    sellSearchBySymbol () {
-      // 按照持仓代码查持仓订单
-      this.$router.push({
-        path: '/sellorderlist',
-        query: {
-          type: 2 // 查询类型 1--> name 2--> code
-        }
-      })
     }
   }
 }
@@ -197,7 +145,7 @@ export default {
 }
 
 .mint-tab-container-item {
-  padding-top: 0.2rem;
+  padding-top: 0.8rem;
 
   .mint-button--default {
     padding: 0 0.2rem;
@@ -341,57 +289,5 @@ export default {
 
 /deep/ .red-theme .order-info-box {
   background-color: #fff;
-}
-
-.sub-navbar {
-  background-color: #16171D !important;
-  height: .7rem;
-  margin-top: .7rem !important;
-  justify-content: center;
-  box-shadow: none;
-
-  /deep/ .mint-tab-item-label {
-    font-size: .24rem;
-  }
-
-  .mint-tab-item {
-    position: relative;
-    flex-grow: 0;
-    flex-shrink: 1;
-    flex-basis: auto;
-    width: 2.5rem;
-    height: .4rem;
-    background-color: #3D4456;
-    padding: 0;
-    line-height: .4rem;
-    margin: 0.3rem .2rem 0;
-
-    /deep/ .mint-tab-item-label {
-      line-height: .4rem;
-      height: .4rem;
-    }
-
-    &.is-selected {
-      color: #fff;
-      background-color: #138EB4;
-    }
-  }
-}
-
-#app.red-theme {
-  .sub-navbar {
-    margin-top: .7rem !important;
-    background-color: #E9E9E9 !important;
-
-    .mint-tab-item {
-      background-color: #CCCCCC;
-      color: #000;
-
-      &.is-selected {
-        color: #fff;
-        background-color: #BB1815;
-      }
-    }
-  }
 }
 </style>

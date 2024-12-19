@@ -23,7 +23,7 @@
         <h2 class="title" style="font-size: 20px;">
           {{ $t('my.total') }}
         </h2>
-        <div>
+        <div :style="screenWidth?'width: 1.6rem;':''">
           <p
             v-if="
               this.$store.state.settingForm.indexDisplay &&
@@ -31,7 +31,7 @@
             "
             class="account"
           >
-            ¥{{
+            ${{
               $store.state.hide
                 ? '****'
                 : Number(
@@ -47,7 +47,7 @@
             "
             class="account"
           >
-            ¥{{
+            ${{
               $store.state.hide
                 ? '****'
                 : Number(
@@ -63,7 +63,7 @@
             "
             class="account"
           >
-            ¥{{
+            ${{
               $store.state.hide
                 ? '****'
                 : Number($store.state.userInfo.userAmt).toFixed(2)
@@ -76,7 +76,7 @@
             "
             class="account"
           >
-            ¥{{
+            ${{
               $store.state.hide
                 ? '****'
                 : Number(
@@ -319,15 +319,25 @@ export default {
         content: '',
         success: Function,
         cancel: Function
-      }
+      },
+      screenWidth: true
     }
   },
   mounted () {
+    this.updateScreenWidth()
+    window.addEventListener('resize', this.updateScreenWidth)
     this.getUserInfo()
     this.getBalance()
     this.getCardDetail()
   },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.updateScreenWidth)
+  },
   methods: {
+    // 获取屏幕宽度
+    updateScreenWidth () {
+      this.screenWidth = window.innerWidth < 480
+    },
     // 获取用户信息
     async getUserInfo () {
       let data = await api.getUserInfo()
@@ -772,7 +782,7 @@ body {
     position: absolute;
     right: 0.2rem;
     // top: 50%;
-    top: 1.1rem;
+    top: 1.23rem;
     font-size: 0.8rem;
     color: #ff5722;
     margin-top: -0.4rem;
@@ -803,6 +813,8 @@ body {
     font-size: 0.4rem;
     font-weight: 600;
     font-family: lightnumber;
+    word-wrap: break-word;
+    word-break: break-all;
   }
 }
 

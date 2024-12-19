@@ -104,6 +104,7 @@ export default {
     future: '期货',
     index: '指数',
     loading: '加载中...',
+    empty: '列表为空',
     search: '搜索',
     input: '可输入指数代码或简拼',
     input2: '可输入您想要查询的指数代码或者简拼进行查询',
@@ -683,5 +684,5 @@ export default {
   sell6: '卖②',
   sell7: '卖③',
   sell8: '卖④',
-  sell9: '卖⑤',
+  sell9: '卖⑤'
 }

@@ -1,14 +1,11 @@
 <template>
   <div class="wrapper">
-    <div v-if="list.length <= 0" class="empty text-center">
-      {{ $t('title2') }}
-    </div>
-    <div v-if="list.length > 0">
+    <div>
       <ul
         class="order-info-box-wrap"
         v-infinite-scroll="loadMore"
-        infinite-scroll-disabled="loading"
-        infinite-scroll-distance="10">
+        :infinite-scroll-disabled="loading"
+        infinite-scroll-distance="0">
         <li v-for="item in list" :key="item.key">
           <div class="order-info-box">
             <div class="order-title">
@@ -23,30 +20,40 @@
                   : item.rateProfitAndLose == 0
                   ? 'space'
                   : 'space red'">
-                  ${{ item.rateProfitAndLose }}
+                  ${{ Number(item.rateProfitAndLose).toFixed(2) }}
                 </b>
               </span>
             </div>
             <div class="order-info">
               <p class="clearfix">
-                <span class="col-xs-6">{{ $t('own.price') }}<b class="space">{{ item.stopTargetPrice }}</b></span>
-                <span class="col-xs-6">{{ $t('own.mkt') }}<b class="space">{{ item.orderTotalPrice }}</b></span>
+                <span class="col-xs-6">{{ $t('own.price') }}
+                  <b class="space">{{ Number(item.stopTargetPrice).toFixed(2) }}</b></span>
+                <span class="col-xs-6">{{ $t('own.mkt') }}
+                  <b class="space">{{ item.orderTotalPrice }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">{{ $t('own.actual') }}<b class="space">{{ item.buyOrderPrice }}</b></span>
-                <span class="col-xs-6">{{ $t('sell4') }}<b class="space">{{ item.sellOrderPrice }}</b></span>
+                <span class="col-xs-6">{{ $t('own.actual') }}
+                  <b class="space">{{ Number(item.buyOrderPrice).toFixed(2) }}</b></span>
+                <span class="col-xs-6">{{ $t('sell4') }}
+                  <b class="space">{{ Number(item.sellOrderPrice).toFixed(2) }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">{{ $t('own.vol') }}<b class="space">{{ item.orderNum }}</b></span>
-                <span class="col-xs-6">{{ $t('own.fee') }}<b class="space">{{ item.orderFee }}</b></span>
+                <span class="col-xs-6">{{ $t('own.vol') }}
+                  <b class="space">{{ item.orderNum }}</b></span>
+                <span class="col-xs-6">{{ $t('own.fee') }}
+                  <b class="space">{{ Number(item.orderFee).toFixed(2) }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">{{ $t('own.lock') }}<b class="space">{{ item.lockTime / (60 * 24) }}天</b></span>
-                <span class="col-xs-6">{{ $t('own.fx') }}<b class="space">{{ item.rate }}</b></span>
+                <span class="col-xs-6">{{ $t('own.lock') }}<b class="space">
+                  {{ item.lockTime / (60 * 24) }}{{ $t('capital.day') }}</b></span>
+                <span class="col-xs-6">{{ $t('own.fx') }}
+                  <b class="space">{{ Number(item.rate).toFixed(2) }}</b></span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">{{ $t('own.notice1') }}<b class="space">{{ item.orderSpread }}</b></span>
-                <span class="col-xs-6">{{ $t('own.notice2') }}<b class="space">{{ item.orderStayFee }}</b></span>
+                <span class="col-xs-6">{{ $t('own.notice1') }}
+                  <b class="space">{{ Number(item.orderSpread).toFixed(2) }}</b></span>
+                <span class="col-xs-6">{{ $t('own.notice2') }}
+                  <b class="space">{{ Number(item.orderStayFee).toFixed(2) }}</b></span>
               </p>
               <p class="clearfix">
                 <span class="col-xs-6">{{ $t('day') }}<b class="space">{{ item.orderStayDays }}</b></span>
@@ -56,7 +63,7 @@
                     ?'space green'
                     :item.profitAndLose==0
                     ?'space':'space red'">
-                    {{ item.profitAndLose }}
+                    {{ Number(item.profitAndLose).toFixed(2) }}
                   </b>
                 </span>
               </p>
@@ -69,33 +76,53 @@
                     : item.allProfitAndLose >= 0
                     ? 'space'
                     : 'space green'">
-                    {{ item.symnol }} {{ item.allProfitAndLose }}
+                    {{ item.symnol }} {{ Number(item.allProfitAndLose).toFixed(2) }}
                   </b>
                 </span>
               </p>
-              <p class="clearfix">
-                <span class="secondary col-xs-6" style=" font-size: 12px;">
-                  {{ $t('own.buy') }}
-                  <b v-if="item.buyOrderTime">{{ new Date(item.buyOrderTime) | timeFormat }}</b>
-                  <b v-else></b>
+            </div>
+            <div class="order-foot">
+              <div
+                style="text-align: left;color: #666;padding: 0;font-size: 12px;"
+                class="col-xs-6">
+                <div v-if="item.buyOrderTime">{{ $t('own.buy') }}
+                </div>
+              </div>
+              <div
+                style="text-align: left;color: #666;padding: 0;font-size: 12px;"
+                class="col-xs-6">
+                <div v-if="item.sellOrderTime">{{ $t('sell2') }}</div>
+              </div>
+            </div>
+            <div class="order-foot">
+              <div
+                style="text-align: left;color: #666;padding: 0;font-size: 12px;"
+                class="col-xs-6">
+                <span v-if="item.buyOrderTime">
+                  {{ new Date(item.buyOrderTime) | timeFormat }}
                 </span>
-                <span class="secondary col-xs-6" style=" font-size: 12px;">
-                 {{ $t('sell2') }}
-                  <b v-if="item.sellOrderTime">{{ new Date(item.sellOrderTime) | timeFormat }}</b>
-                  <b v-else></b>
+              </div>
+              <div
+                style="text-align: left;color: #666;padding: 0;font-size: 12px;"
+                class="col-xs-6">
+                <span v-if="item.sellOrderTime">{{
+                    new Date(item.sellOrderTime) | timeFormat
+                  }}
                 </span>
-              </p>
+              </div>
             </div>
           </div>
         </li>
       </ul>
-      <div v-show="loading" class="load-all text-center">
-        <mt-spinner type="fading-circle"></mt-spinner>
-        {{ $t('market.loading') }}
-      </div>
-      <div v-show="!loading" class="load-all text-center">
-        {{ $t('own.all') }}
-      </div>
+    </div>
+    <div v-show="loading" class="load-all text-center">
+      <mt-spinner type="fading-circle"></mt-spinner>
+    </div>
+    <div v-show="loaded && list.length>0" class="load-all text-center">
+      {{ $t('market.loaded') }}
+    </div>
+    <div v-show="loaded && list.length==0" class="load-all text-center">
+      {{ $t('market.empty') }}
     </div>
   </div>
 </template>
@@ -106,55 +133,41 @@ import * as api from '@/axios/api'
 
 export default {
   props: {
-    selectedNumber: {
+    selected: {
       type: String
     },
-    hasChangeSell: {
-      type: Boolean,
-      default: function () {
-        return false
-      }
+    country: {
+      type: String
     }
   },
   data () {
     return {
       loading: false,
+      loaded: false,
+      list: [],
       pageNum: 1,
       pageSize: 10,
-      currentNum: 0,
-      list: [],
-      total: 0 // 记录总值
+      total: 0
     }
   },
   watch: {
-    hasChangeSell (newval) {
-      if (newval) {
+    selected (val) {
+      if (val === '2') {
         this.list = []
-        this.getListDetail()
-      }
-    },
-    selectedNumber (newval) {
-      if (newval) {
-        this.list = []
+        this.total = 0
+        this.pageNum = 1
+        this.loaded = false
         this.getListDetail()
       }
     }
   },
   methods: {
     async loadMore () {
-      if (
-        this.list.length < this.pageSize ||
-        this.loading ||
-        this.total <= this.currentNum
-      ) {
+      if (this.loaded) {
         return
       }
-      this.loading = true
-      // 加载下一页
       this.pageNum++
       await this.getListDetail()
-      this.currentNum = this.pageNum * this.pageSize
-      this.loading = false
     },
     async getListDetail () {
       let opt = {
@@ -163,17 +176,20 @@ export default {
         stockSpell: '', // 简拼
         pageNum: this.pageNum,
         pageSize: this.pageSize,
-        countryId: this.selectedNumber
+        countryId: this.country
       }
+      this.loading = true
       let data = await api.getOrderList(opt)
       if (data.status === 0) {
-        data.data.list.forEach(element => {
-          this.list.push(element)
+        data.data.list.forEach(item => {
+          this.list.push(item)
         })
         this.total = data.data.total
+        this.loaded = this.pageNum * this.pageSize >= this.total
       } else {
         Toast(data.msg)
       }
+      this.loading = false
     }
   }
 }
@@ -181,6 +197,10 @@ export default {
 <style lang="less" scoped>
 .wrapper {
   padding-bottom: 0;
+}
+
+.col-xs-3 .iconfont {
+  font-size: 0.22rem;
 }
 
 .order-title {
@@ -220,8 +240,14 @@ export default {
   }
 
   .load-all {
+    margin-top: .8rem;
     background-color: #bb1815;
     color: #fff;
   }
+}
+
+.load-all {
+  margin-top: .8rem;
+  background-color: #21252a;
 }
 </style>

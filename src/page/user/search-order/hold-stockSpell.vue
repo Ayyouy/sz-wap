@@ -2,11 +2,12 @@
   <div class="wrapper">
     <div class="search">
       <div class="search-input">
-        <input type="text" placeholder="可输入股票简拼查询持仓" v-model="stockCode" @keyup.enter="getOrderList">
+        <input type="text" :placeholder="$t('own.name')" v-model="stockCode" @keyup.enter="queryList">
       </div>
-      <mt-button size="small" @click="getOrderList" icon="search" style="background-color:#000">搜索</mt-button>
+      <mt-button size="small" @click="queryList" icon="search" style="background-color:#000">{{ $t('market.search') }}
+      </mt-button>
     </div>
-    <div class="">
+    <div>
       <ul
         class="order-info-box-wrap"
         v-infinite-scroll="loadMore"
@@ -17,7 +18,8 @@
             <div class="order-title">
               <span @click="toDetail(item.stockCode)" class="main">{{ item.stockCode }}</span>
               <span class="secondary">({{ item.stockName }})</span>
-              <span v-if="item.stockPlate=='科创'" :class="item.stockPlate=='科创'?'type':''">科创</span>
+              <span v-if="item.stockPlate=='科创'"
+                    :class="item.stockPlate=='科创'?'type':''">{{ $t('title1') }}</span>
               <span class="direction pull-right big-font">
                 <b v-if="item.now_price == 0">-</b>
                 <b v-else :class="
@@ -25,33 +27,73 @@
                    ?'space green'
                    :(item.now_price-item.buyOrderPrice)==0
                    ?'space'
-                   :'space red'">{{ item.now_price }}
+                   :'space red'">{{ Number(item.now_price).toFixed(2) }}
                 </b>
               </span>
             </div>
             <div class="order-info">
               <p class="clearfix">
-                <span class="col-xs-6">买入价格:<b class="space">{{ item.stopTargetPrice }}</b></span>
-                <span class="col-xs-6">折扣率:<b class="space">{{ (item.discount * 100).toFixed(2) }}%</b></span>
+                <span class="col-xs-6">{{ $t('own.price') }}
+                  <b class="space">
+                    {{ Number(item.stopTargetPrice).toFixed(2) }}
+                  </b>
+                </span>
+                <span class="col-xs-6">{{ $t('own.rate') }}
+                  <b class="space">
+                    {{ Number(item.discount * 100).toFixed(2) }}%
+                  </b>
+                </span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">实际购买价格:<b class="space">{{ item.buyOrderPrice }}</b></span>
-                <span class="col-xs-6">数量:<b class="space">{{ item.orderNum }}</b></span>
+                <span class="col-xs-6">{{ $t('own.actual') }}
+                  <b class="space">
+                    {{ Number(item.buyOrderPrice).toFixed(2) }}
+                  </b>
+                </span>
+                <span class="col-xs-6">{{ $t('own.vol') }}
+                  <b class="space">
+                    {{ item.orderNum }}
+                  </b>
+                </span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">手续费:<b class="space">{{ item.orderFee }}</b></span>
-                <span class="col-xs-6">市值:<b class="space">{{ item.orderTotalPrice }}</b></span>
+                <span class="col-xs-6">{{ $t('own.fee') }}
+                  <b class="space">
+                    {{ Number(item.orderFee).toFixed(2) }}
+                  </b>
+                </span>
+                <span class="col-xs-6">{{ $t('own.mkt') }}
+                  <b class="space">
+                    {{ Number(item.orderTotalPrice).toFixed(2) }}
+                  </b>
+                </span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">封锁期:<b class="space">{{ item.lockTime / (60 * 24) }}天</b></span>
-                <span class="col-xs-6">汇率:<b class="space">{{ item.rate }}</b></span>
+                <span class="col-xs-6">{{ $t('own.lock') }}
+                  <b class="space">
+                    {{ item.lockTime / (60 * 24) }}{{ $t('capital.day') }}
+                  </b>
+                </span>
+                <span class="col-xs-6">{{ $t('own.fx') }}
+                  <b class="space">
+                    {{ Number(item.rate).toFixed(2) }}
+                  </b>
+                </span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">印花税:<b class="space">{{ item.orderSpread }}</b></span>
-                <span class="col-xs-6">留仓费:<b class="space">{{ item.orderStayFee }}</b></span>
+                <span class="col-xs-6">{{ $t('own.notice1') }}
+                  <b class="space">
+                    {{ Number(item.orderSpread).toFixed(2) }}
+                  </b>
+                </span>
+                <span class="col-xs-6">{{ $t('own.notice2') }}
+                  <b class="space">
+                    {{ Number(item.orderStayFee).toFixed(2) }}
+                  </b>
+                </span>
               </p>
               <p class="clearfix">
-                <span class="col-xs-6">浮动盈亏:
+                <span class="col-xs-6">{{ $t('own.notice3') }}
                     <b v-if="item.now_price == 0">-</b>
                     <b v-else :class="
                        item.rateProfitAndLose<0
@@ -59,10 +101,10 @@
                        :item.rateProfitAndLose>=0
                        ?'space'
                        :'space green'">
-                      {{ item.symnol }} {{ item.rateProfitAndLose }}
+                      {{ item.symnol }} {{ Number(item.rateProfitAndLose).toFixed(2) }}
                     </b>
                 </span>
-                <span class="col-xs-6">总盈亏:
+                <span class="col-xs-6">{{ $t('own.notice4') }}
                     <b v-if="item.now_price == 0">-</b>
                     <b v-else :class="
                     item.allProfitAndLose < 0
@@ -70,73 +112,83 @@
                         : item.allProfitAndLose >= 0
                         ? 'space'
                         : 'space green'">
-                    ${{ item.allProfitAndLose }}
+                    ${{ Number(item.allProfitAndLose).toFixed(2) }}
                     </b>
                 </span>
               </p>
             </div>
-            <div class="order-foot clearfix">
-              <div style="text-align: left;color: #666;padding: 0;" class="col-xs-6">
-                <b v-if="item.buyOrderTime">{{ new Date(item.buyOrderTime) | timeFormat }}</b>
-                <b v-else></b>
+            <div class="order-foot">
+              <div
+                style="text-align: left;color: #666;padding: 0;font-size: 12px;"
+                class="col-xs-6">
+                {{ $t('own.buy') }}
               </div>
+              <div
+                style="text-align: left;color: #666;padding: 0;font-size: 12px;"
+                class="col-xs-6">
+                {{ $t('own.unlock') }}
+              </div>
+            </div>
+            <div class="order-foot">
+              <div
+                style="text-align: left;color: #666;padding: 0;font-size: 12px;"
+                class="col-xs-6">
+                <span v-if="item.buyOrderTime"> {{ new Date(item.buyOrderTime) | timeFormat }}</span>
+              </div>
+              <div
+                style="text-align: left;color: #666;padding: 0;font-size: 12px;"
+                class="col-xs-6">
+                <span v-if="item.unlockTime"> {{ new Date(item.unlockTime) | timeFormat }}</span>
+              </div>
+            </div>
+            <div class="order-foot clearfix">
               <div @click="sell(item.positionSn)" class="foot-btn">
                 <i class='font-icon'></i>
-                我要卖出
+                {{ $t('sell') }}
               </div>
             </div>
           </div>
         </li>
       </ul>
-
     </div>
     <div v-show="loading" class="load-all text-center">
       <mt-spinner type="fading-circle"></mt-spinner>
-      加载中...
+      {{ $t('market.loading') }}
     </div>
-    <div v-show="!loading && hasSearch" class="load-all text-center">
-      已全部加载
+    <div v-show="loaded && list.length>0" class="load-all text-center">
+      {{ $t('market.loaded') }}
     </div>
-    <div class="text-center" v-if="!hasSearch">
-      请查询订单
+    <div v-show="loaded && list.length==0" class="load-all text-center">
+      {{ $t('market.empty') }}
     </div>
-    <foot></foot>
   </div>
 </template>
-
 <script>
-import foot from '@/components/foot/foot'
 import {Toast, MessageBox} from 'mint-ui'
 import * as api from '@/axios/api'
 
 export default {
-  components: {
-    foot
-  },
-  props: {},
   data () {
     return {
       loading: false,
+      loaded: false,
       list: [],
-      timer: '',
       pageNum: 1,
       pageSize: 10,
-      currentNum: 10,
-      hasSearch: false, // 是否查询
       stockCode: '',
       total: 0
     }
   },
   watch: {
     stockCode (newVal) {
-      if (!newVal) {
-        // 取消事件
-        this.list = []
-      }
+      this.list = []
+      this.total = 0
+      this.pageNum = 1
+      this.loaded = false
     }
   },
   methods: {
-    async getOrderList () {
+    async queryList () {
       // 查询持仓
       let opt = {
         state: 0,
@@ -144,67 +196,26 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize
       }
-      if (this.pageNum === 1) {
-        this.list = []
-        this.total = 0
-      }
       this.loading = true
-      this.hasSearch = true
       let data = await api.getOrderList(opt)
       if (data.status === 0) {
         data.data.list.forEach(item => {
           this.list.push(item)
         })
         this.total = data.data.total
+        this.loaded = this.pageNum * this.pageSize >= this.total
       } else {
         Toast(data.msg)
       }
       this.loading = false
       document.activeElement.blur()
     },
-    async refreshList () {
-      // 判断是不是已经查询 或者是否正在加载下一页 是则退出，不进行刷新
-      if (!this.hasSearch || this.loading) {
-        return
-      }
-      this.pageNum = 1
-      await this.getOrderList()
-    },
     async loadMore () {
-      if (this.list.length < this.pageSize || this.total <= this.currentNum) {
+      if (this.loaded) {
         return
       }
-      this.loading = true
-      // 加载下一页
       this.pageNum++
-      await this.getOrderList()
-      this.currentNum = this.pageNum * this.pageSize
-      this.loading = false
-    },
-    goBack () {
-      this.$router.back()
-    },
-    canBuyStatus () {
-      let dataTime = new Date()
-      let day = dataTime.getDay() // 星期几
-      let hour = dataTime.getHours() // 小时
-      let minute = dataTime.getMinutes() // 分钟
-      if (day === 6 || day === 7) {
-        return false
-      }
-      if (hour < 9 || (hour >= 12 && hour < 13) || hour >= 15) {
-        return false
-      }
-      if (hour === 9 && minute < 32) {
-        return false
-      }
-      if (hour === 11 && minute >= 30) {
-        return false
-      }
-      if (hour === 14 && minute > 57) {
-        return false
-      }
-      return true
+      await this.queryList()
     },
     sell (val) {
       if (!this.$store.state.userInfo.idCard) {
@@ -242,10 +253,6 @@ export default {
 .table-list-body {
   padding-top: 0.62rem;
 }
-
-// .order-info-box-wrap {
-//   margin-top: 0.9rem;
-// }
 
 .wrapper /deep/ .mint-searchbar {
   background: #16171d;
