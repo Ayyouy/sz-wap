@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
-    <div class="mint-navbar top-navbar is-fixed" style="top: 1.84rem !important;background-color: #16171d">
-      <div class="header-bg">
-        <span class="header-title">{{$t('fundList.report')}}</span>
-        <el-image class="header-btn" src="../../static/img/search.png" @click="showDialog"></el-image>
-      </div>
-    </div>
-    <mt-tab-container class="order-list" v-model="selected" style="margin-top: 1rem !important;">
+    <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="3">
+        <div class="header-bg">
+          <span class="header-title">{{ $t('fundList.report') }}</span>
+          <div class="header-btn-bg" @click="showDialog">
+            <el-image class="header-btn" src="../../static/img/search.png"></el-image>
+          </div>
+        </div>
         <div v-if="list.length<=0 && !getStatus" class="empty text-center">
           {{ $t('msg2') }}
         </div>
@@ -223,8 +223,8 @@
         </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
-              <el-button @click="cancelAndClearForm">{{ $t('capital.cancel') }}</el-button>
-              <el-button type="primary" @click="submit()">{{ $t('capital.confirm') }}</el-button>
+         <el-button @click="cancelAndClearForm">{{ $t('capital.cancel') }}</el-button>
+         <el-button type="primary" @click="submit()">{{ $t('capital.confirm') }}</el-button>
       </span>
     </el-dialog>
     <Foot></Foot>
@@ -519,9 +519,17 @@ export default {
   color: #fff2f4;
 }
 
-.header-bg .header-btn {
+.header-bg .header-btn-bg {
   position: absolute;
   right: 0.3rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-btn-bg .header-btn {
   width: 16px;
   height: 16px;
 }

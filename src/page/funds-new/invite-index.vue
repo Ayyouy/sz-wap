@@ -1,29 +1,27 @@
 <template>
   <div class="wrapper">
-    <div class="mint-navbar top-navbar is-fixed" style="top: 1.84rem !important;background-color: #16171d">
-      <div class="header-bg" v-clipboard:copy="url + '#/register?code=' + code"
-           v-clipboard:success="onCopySuccess"
-           v-clipboard:error="onCopyError">
-        <el-row class="self-el-row">
-          <el-col :span="4" class="text-left">
-            <span>{{ $t('invitation.link') }}</span>
-          </el-col>
-          <el-col :span="20" class="text-right">
-            <span style="color: #1b8e5d">{{ url }}</span>
-          </el-col>
-        </el-row>
-        <el-row class="self-el-row">
-          <el-col :span="4" class="text-left">
-            <span>{{ $t('invitation.code') }}</span>
-          </el-col>
-          <el-col :span="20" class="text-right">
-            <span style="color: #1b8e5d">{{ code }}</span>
-          </el-col>
-        </el-row>
-      </div>
-    </div>
-    <mt-tab-container class="order-list" v-model="selected" style="margin-top: 1.9rem !important;">
+    <mt-tab-container class="order-list" v-model="selected">
       <mt-tab-container-item id="4">
+        <div class="header-bg" v-clipboard:copy="url + '#/register?code=' + code"
+             v-clipboard:success="onCopySuccess"
+             v-clipboard:error="onCopyError">
+          <el-row class="self-el-row">
+            <el-col :span="4" class="text-left">
+              <span>{{ $t('invitation.link') }}</span>
+            </el-col>
+            <el-col :span="20" class="text-right">
+              <span style="color: #1b8e5d">{{ url }}</span>
+            </el-col>
+          </el-row>
+          <el-row class="self-el-row">
+            <el-col :span="4" class="text-left">
+              <span>{{ $t('invitation.code') }}</span>
+            </el-col>
+            <el-col :span="20" class="text-right">
+              <span style="color: #1b8e5d">{{ code }}</span>
+            </el-col>
+          </el-row>
+        </div>
         <div v-if="list.length<=0 && !loading" class="empty text-center">
           {{ $t('msg1') }}
         </div>

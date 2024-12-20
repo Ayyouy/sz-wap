@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <mt-navbar class="top-navbar" v-model="selected" fixed>
+    <mt-navbar class="top-navbar" v-model="selected">
       <mt-tab-item class="top-nav-item" id="1">{{$t('fundList.list')}}</mt-tab-item>
       <mt-tab-item class="top-nav-item" id="2">{{$t('fundList.position')}}</mt-tab-item>
       <mt-tab-item class="top-nav-item" id="3">{{$t('fundList.report')}}</mt-tab-item>
@@ -85,8 +85,6 @@ export default {
 }
 
 .mint-tab-container-item {
-  padding-top: 0.8rem;
-
   .mint-button--default {
     padding: 0 0.2rem;
     font-size: 0.24rem;

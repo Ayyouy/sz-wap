@@ -129,13 +129,13 @@
           <el-row style="margin-top: 10px;margin-bottom:10px;">
             <el-col :span="24" class="text-right">
               {{ $t('buy.pay') }}
-              ${{Number(form.buyNum * detail.newPerValue).toFixed(2)}}
+              ${{ Number(form.buyNum * detail.newPerValue).toFixed(2) }}
             </el-col>
           </el-row>
           <el-row style="margin-top: 10px;margin-bottom:10px;">
             <el-col :span="21" class="text-left">
               {{ $t('fundDetail.purchase') }}
-              ${{Number(detail.newPerValue * detail.maxBuyNum).toFixed(2)}}
+              ${{ Number(detail.newPerValue * detail.maxBuyNum).toFixed(2) }}
               （{{ detail.maxBuyNum }}{{ $t('buy.units') }}）
             </el-col>
             <el-col :span="3" class="text-right">
@@ -265,8 +265,7 @@ export default {
 }
 
 .box-bg {
-  width: 6.9rem;
-  margin: .28rem auto;
+  margin: .18rem;
   padding: .12rem .2rem;
   background-color: #1F2636;
   border-radius: .1rem;
@@ -282,14 +281,14 @@ export default {
 }
 
 .fund-name {
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 28px;
+  display: inline-block;
+  text-align: center;
+  word-wrap: break-word;
 }
 
 .fund-content {
-  font-size: 35px;
+  font-size: 30px;
   color: #1b8e5d;
 }
 

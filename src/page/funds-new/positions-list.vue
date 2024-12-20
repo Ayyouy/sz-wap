@@ -444,11 +444,10 @@ export default {
   flex-direction: column;
 }
 
-
 .account-container {
   // margin: .28rem;
-  width: 6.9rem;
-  margin: 0.28rem auto;
+  //width: 6.9rem;
+  margin: 0 0.2rem;
   border-radius: 5px;
   overflow: hidden;
   background-color: #1f2636;

@@ -244,7 +244,7 @@ export default {
   },
   // 基金详情语言
   fundDetail: {
-    aar: 'AAR:',
+    aar: 'AAR',
     nav: 'NAV:',
     ndp: 'Number of Days Per(NDP):',
     info: 'Fund Information',
