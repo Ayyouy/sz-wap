@@ -1082,5 +1082,18 @@ export default {
   type3: '收款人',
   type4: '匯款人',
   type5: '帳號',
-  type6: '轉帳管道'
+  type6: '轉帳管道',
+  type7: '總手續費',
+  type8: '買入手續費',
+  type9: '總手續費計算規則：',
+  money2: '最小購買金額',
+  money3: '市值',
+  money4: '股',
+  money5: '期貨餘額:',
+  money6: '印花稅',
+  money7: '點差費',
+  money8: '該指數暫不能交易',
+  money9: '深',
+  money0: '滬',
+  money11: '該期貨暫不能交易'
 }

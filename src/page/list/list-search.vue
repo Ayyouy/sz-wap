@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <mt-button slot="right" class="search-btn-list" icon="search" @click="getStock">搜索</mt-button>
+    <mt-button slot="right" class="search-btn-list" icon="search" @click="getStock">{{$t('market.search')}}</mt-button>
     <mt-search
       fixed
       show
@@ -35,7 +35,7 @@
                   <i v-if="item.stock_plate != '科创'"
                      :class="item.stock_type == 'sz'?'iconfont shen-mark hushen-mark':'iconfont hushen-mark'">{{
                       item.stock_type
-                      == 'sz' ? '深' : '沪'
+                      == 'sz' ? $t('money9'):$t('money0')
                     }}</i>
                   <i v-else class="iconfont kechuang-mark">{{ $t('title1') }}</i>
                   {{ item.code }}
@@ -64,7 +64,6 @@
       </ul>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        {{ $t('market.loading') }}
       </div>
       <div v-show="!loading && hasSearch" class="load-all text-center">
         {{ $t('market.loaded') }}

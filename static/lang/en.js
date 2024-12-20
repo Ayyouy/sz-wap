@@ -695,5 +695,18 @@ export default {
   type3: 'recipient',
   type4: 'remitter',
   type5: 'account',
-  type6: 'transfer method'
+  type6: 'transfer method',
+  type7: 'Total handling fee',
+  type8: 'Purchase handling fee',
+  type9: 'Calculation rules for total handling fees:',
+  money2: 'Minimum purchase amount',
+  money3: 'market value',
+  money4: 'stock',
+  money5: 'Futures balance:',
+  money6: 'stamp duty',
+  money7: 'Spread fee',
+  money8: 'This index cannot be traded temporarily',
+  money9: 'Shen',
+  money0: 'Shanghai',
+  money11: 'This futures cannot be traded temporarily'
 }

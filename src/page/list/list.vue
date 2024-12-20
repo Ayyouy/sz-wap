@@ -76,7 +76,6 @@ export default {
   mounted () {
     if (this.$route.query.index) {
       this.selected = this.$route.query.index
-      console.log('list selected：', this.selected)
     }
   },
   methods: {

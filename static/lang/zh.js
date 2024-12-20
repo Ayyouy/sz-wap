@@ -702,5 +702,10 @@ export default {
   money3: '市值',
   money4: '股',
   money5: '期货余额:',
-
+  money6: '印花税',
+  money7: '点差费',
+  money8: '该指数暂不能交易',
+  money9: '深',
+  money0: '沪',
+  money11: '该期货暂不能交易'
 }

@@ -1,5 +1,5 @@
 <template>
-  <div :class="`list-content-wrapper ${      $state.theme === 'red' ? 'red-theme' : 'black-theme'    }`">
+  <div :class="`list-content-wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'    }`">
     <ul class="table-list list-table-title">
       <li class="title">
         <div>

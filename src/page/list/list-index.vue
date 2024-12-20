@@ -4,10 +4,10 @@
       <li class="title">
         <div>
           <ul class='clearfix'>
-            <li class="li-title">指数<img :src="sortIcon" alt=""></li>
-            <li class="li-base">最新<img :src="sortIcon" alt=""></li>
-            <li class="li-base">涨幅<img :src="sortIcon" alt=""></li>
-            <li class="li-base">涨跌<img :src="sortIcon" alt=""></li>
+            <li class="li-title">{{ $t('market.index') }}<img :src="sortIcon" alt=""></li>
+            <li class="li-base">{{ $t('market.price') }}<img :src="sortIcon" alt=""></li>
+            <li class="li-base">{{ $t('market.chg') }}<img :src="sortIcon" alt=""></li>
+            <li class="li-base">{{ $t('market.change') }}<img :src="sortIcon" alt=""></li>
           </ul>
         </div>
       </li>
@@ -40,13 +40,19 @@
               </li>
               <li class="li-base">
                 <span
-                  :style="item.currentPoint>0?'color:green;':'color:red;'">{{ item.currentPoint ? Number(item.currentPoint).toFixed(2) : '-' }}</span>
+                  :style="item.currentPoint>0?'color:green;':'color:red;'">{{
+                    item.currentPoint ? Number(item.currentPoint).toFixed(2) : '-'
+                  }}</span>
               </li>
               <li class="li-base">
-                <span :style="item.floatRate>0?'color:green;':'color:red;'">{{ item.floatRate > 0 ? '+' : '' }} {{ item.floatRate ? Number(item.floatRate).toFixed(2) : '0' }}%</span>
+                <span :style="item.floatRate>0?'color:green;':'color:red;'">{{
+                    item.floatRate > 0 ? '+' : ''
+                  }} {{ item.floatRate ? Number(item.floatRate).toFixed(2) : '0' }}%</span>
               </li>
               <li class="li-base no-bold">
-                <span :style="item.floatPoint>0?'color:green;':'color:red;'">{{ item.floatPoint > 0 ? '+' : '' }}{{ Number(item.floatPoint).toFixed(2) }}</span>
+                <span :style="item.floatPoint>0?'color:green;':'color:red;'">{{
+                    item.floatPoint > 0 ? '+' : ''
+                  }}{{ Number(item.floatPoint).toFixed(2) }}</span>
               </li>
             </ul>
           </div>
@@ -58,10 +64,9 @@
       </div>
       <div v-show="loading" class="load-all text-center">
         <mt-spinner type="fading-circle"></mt-spinner>
-        加载中...
       </div>
       <div v-show="!loading && list.length>0" class="load-all text-center">
-        已全部加载
+        {{ $t('market.loaded') }}
       </div>
       <!-- <div class="footer-btn">
           <p class="red">*注：
@@ -124,7 +129,7 @@ export default {
     async addOptions (val) {
       let data = await api.addOption({code: val.indexCode})
       if (data.status === 0) {
-        Toast('添加自选成功')
+        Toast(this.$t('market.add'))
       } else {
         Toast(data.msg)
       }
@@ -132,7 +137,7 @@ export default {
     async toDeleteMy (val) {
       let data = await api.delOption({code: val.indexCode})
       if (data.status === 0) {
-        Toast('删除自选股成功')
+        Toast(this.$t('market.remove'))
         this.refreshList()
       } else {
         Toast(data.msg)
@@ -203,7 +208,7 @@ export default {
           }
         })
       } else {
-        Toast('该指数暂不能交易!')
+        Toast(this.$t('money8'))
       }
     },
     toSearch () {

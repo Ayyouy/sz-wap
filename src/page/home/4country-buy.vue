@@ -41,28 +41,28 @@
           <ul class="price-detail text-center">
             <li>
               <p :class="detail.hcrate > 0 ? 'number green' : 'number red'">
-                <span class="title">涨跌</span>
+                <span class="title">{{ $t('order.change') }}</span>
                 {{ Number(detail.hcrate * detail.nowPrice).toFixed(2) }}
               </p>
             </li>
             <li style="visibility: hidden">
-              <p class="number red"><span class="title red">涨停限制</span>0</p>
+              <p class="number red"><span class="title red">{{ $t('market.changeLimit1') }}</span>0</p>
             </li>
             <li>
               <p :class="detail.hcrate > 0 ? 'number green' : 'number red'">
-                <span class="title">涨幅</span>
+                <span class="title">{{ $t('market.chg') }}</span>
                 {{ Number(detail.hcrate).toFixed(2) }}%
               </p>
             </li>
             <li style="visibility: hidden">
-              <p class="green"><span class="title green">跌停限制</span>0</p>
+              <p class="green"><span class="title green">{{ $t('market.changeLimit2') }}</span>0</p>
             </li>
           </ul>
         </div>
       </div>
     </div>
     <div class="box-tab">
-      <div class="tab-title"><span class="circle"></span>选择手数</div>
+      <div class="tab-title"><span class="circle"></span>{{ $t('order.select') }}</div>
       <div class="tab-con">
         <ul class="radio-group clearfix">
           <li
@@ -79,27 +79,27 @@
               @keyup="changeAutoNumber"
               v-model="autoNumber"
               type="text"
-            />手
+            />{{ $t('order.ext') }}
           </li>
         </ul>
         <p class="clearfix">
           <span class="pull-left"
-          >最小购买股数{{ Number(settingInfo.buyMinNum) / 100 }}手</span
+          >{{ $t('order.min') }}{{ Number(settingInfo.buyMinNum) / 100 }}{{ $t('order.ext') }}</span
           >
           <span class="protem pull-right"
-          >最大可购买数量{{ Number(settingInfo.buyMaxNum) / 100 }}手</span
+          >{{ $t('order.max') }}{{ Number(settingInfo.buyMaxNum) / 100 }}{{ $t('order.ext') }}</span
           >
         </p>
       </div>
     </div>
     <div class="box-tab" style="padding-top: 0.5rem;border-bottom: none">
       <p style="margin-bottom: 0.5rem">
-        实际购买价：{{ Number(detail.nowPrice).toFixed(2) }}*(1-{{ detail.discount }})=${{
+        {{ $t('order.actual') }}{{ Number(detail.nowPrice).toFixed(2) }}*(1-{{ detail.discount }})=${{
           Number(Number(detail.nowPrice).toFixed(2) * (1 - detail.discount)).toFixed(2)
         }}
       </p>
       <p>
-        需支付：{{ Number(detail.nowPrice).toFixed(2) }}*(1-{{ detail.discount }})*{{
+        {{ $t('order.amount') }}{{ Number(detail.nowPrice).toFixed(2) }}*(1-{{ detail.discount }})*{{
           (selectNumber || autoNumber) * 100
         }}/{{ rate }}=${{ total }}
       </p>
@@ -107,20 +107,20 @@
     <div class="box-tab" style="padding-top: 0.5rem;border-bottom: none">
       <p style="margin-bottom: 0.5rem">
         <!--        todo 等待接口返回 %-->
-        折扣率：
+        {{ $t('order.rate') }}
       </p>
       <p>
         <!--        todo 等待接口返回 天-->
-        封锁期：
+        {{ $t('order.lock') }}
       </p>
     </div>
     <div class="footer-btn">
       <div class="total">
         <p class="pay">
-          需要支付：<span class="protem">{{ total ? total : 0 }}</span>
+          {{ $t('order.purchase') }}<span class="protem">{{ total ? total : 0 }}</span>
         </p>
         <p class="account">
-          (账户余额：${{ $store.state.userInfo.enableAmt }})
+          ({{ $t('order.balance') }}${{ $store.state.userInfo.enableAmt }})
         </p>
       </div>
       <mt-button
@@ -129,7 +129,7 @@
         size="small"
         type="danger"
         @click="toInquiry"
-      >下单
+      >{{ $t('order.place') }}
       </mt-button
       >
     </div>
@@ -144,11 +144,11 @@
         ><i class="iconfont icon-weitongguo"></i
         ></a>
       </div>
-      <p class="font-title">总手续费计算规则：</p>
+      <p class="font-title">{{ $t('type9') }}</p>
       <p class="font-bold">
-        总手续费 = 买入手续费（{{ settingInfo.buyFee * 100 }}%）+ 印花税（{{
+        {{ $t('type7') }} = {{ $t('type8') }}（{{ settingInfo.buyFee * 100 }}%）+ {{ $t('money6') }}（{{
           settingInfo.dutyFee * 100
-        }}%）+ 点差费（{{ settingSpreadRate.spreadRate * 100 }}%）
+        }}%）+ {{ $t('money7') }}（{{ settingSpreadRate.spreadRate * 100 }}%）
       </p>
     </mt-popup>
     <foot></foot>
@@ -160,11 +160,10 @@ import foot from '../../components/foot/foot'
 import {Toast} from 'mint-ui'
 import {isNull} from '@/utils/utils'
 import * as api from '@/axios/api'
-import {getRate} from '../../axios/api'
 
 export default {
   components: {
-    foot,
+    foot
   },
   props: {},
   data () {
@@ -173,30 +172,30 @@ export default {
         name: '',
         code: '',
         gid: '',
-        stockType: '',
+        stockType: ''
       }, //
       cycle: [
         // 杠杆倍数
         {label: '10', value: '10'},
         {label: '20', value: '20'},
-        {label: '30', value: '30'},
+        {label: '30', value: '30'}
       ],
       selectCycle: '1',
       numberList: [
-        {label: '50手', value: '50'},
-        {label: '100手', value: '100'},
-        {label: '150手', value: '150'},
-        {label: '200手', value: '200'},
-        {label: '250手', value: '250'},
-        {label: '300手', value: '300'},
-        {label: '自定义', value: ''},
+        {label: '50' + this.$t('order.ext'), value: '50'},
+        {label: '100' + this.$t('order.ext'), value: '100'},
+        {label: '150' + this.$t('order.ext'), value: '150'},
+        {label: '200' + this.$t('order.ext'), value: '200'},
+        {label: '250' + this.$t('order.ext'), value: '250'},
+        {label: '300' + this.$t('order.ext'), value: '300'},
+        {label: this.$t('order.custom'), value: ''}
       ],
       siteLeverList: [],
       selectNumber: '',
       autoNumber: '',
       type: [
-        {label: '买涨', value: '0'},
-        {label: '买跌', value: '1'},
+        {label: this.$t('market.buyUp'), value: '0'},
+        {label: this.$t('market.buyDown'), value: '1'}
       ],
       selectType: '0',
       // number:0,// 股
@@ -205,14 +204,14 @@ export default {
       agree: true,
       settingInfo: {
         buyMaxNum: 1000, // 最大买入股数
-        buyMinNum: 100, // 最小买入股数
+        buyMinNum: 100 // 最小买入股数
       }, // 设置规则信息
       dialogShow: false,
       timer: null,
       buying: false,
       focePromptPopup: false, // 总手续费提示框
       settingSpreadRate: {spreadRate: 0},
-      rate: 1, //汇率
+      rate: 1 // 汇率
     }
   },
   watch: {},
@@ -288,7 +287,7 @@ export default {
         return 0
       }
       // 市值价 = 现价 * 股（1手 = 100股）
-    },
+    }
   },
   created () {
     this.timer = setInterval(this.getDetail, 5000)
@@ -312,7 +311,6 @@ export default {
       this.getUserInfo()
     }
     this.getRate()
-
   },
   methods: {
     changeAutoNumber () {
@@ -337,19 +335,19 @@ export default {
           this.siteLeverList = []
           for (
             let i = 0;
-            i < this.$store.state.userInfo.siteLever.split("/").length;
+            i < this.$store.state.userInfo.siteLever.split('/').length;
             i++
           ) {
             let val = this.$store.state.userInfo.siteLever.split('/')[i]
-            let item = {label: val + '倍', value: val}
+            let item = {label: val + this.$t('market.bei'), value: val}
             this.siteLeverList.push(item)
           }
         } else {
           // this.selectCycle = data.data.siteLever.split("/")[0];
           this.siteLeverList = []
-          for (let i = 0; i < data.data.siteLever.split("/").length; i++) {
+          for (let i = 0; i < data.data.siteLever.split('/').length; i++) {
             let val = data.data.siteLever.split('/')[i]
-            let item = {label: val + '倍', value: val}
+            let item = {label: val + this.$t('market.bei'), value: val}
             this.siteLeverList.push(item)
           }
         }
@@ -363,12 +361,12 @@ export default {
         applies: this.detail.hcrate, // 涨跌幅
         turnover: this.total, // 成交额
         unitprice: this.detail.nowPrice, // 股票单价
-        code: this.$route.params.code,
+        code: this.$route.params.code
       }
       let data = await api.findSpreadRateOne(opts)
       if (data.status === 0) {
         // 成功
-        if (data.data != undefined) {
+        if (data.data !== undefined) {
           this.settingSpreadRate = data.data
         }
       } else {
@@ -385,7 +383,7 @@ export default {
     },
     async getDetail () {
       let opts = {
-        code: this.$route.params.code,
+        code: this.$route.params.code
       }
       let data = await api.getSingleStock(opts)
       if (data.status === 0) {
@@ -397,7 +395,7 @@ export default {
     },
     async getRate () {
       let opts = {
-        id: this.$route.params.areaId,
+        id: this.$route.params.areaId
       }
       let data = await api.getRate(opts)
       if (data.status === 0) {
@@ -445,33 +443,35 @@ export default {
       // }
       // 下单
       if (!this.$store.state.userInfo.idCard) {
-        Toast('您还未实名认证,请先实名认证了再下单')
+        Toast(this.$t('market.order'))
         this.$router.push('/authentication')
         return
       }
       if (!this.agree) {
-        Toast('需同意合作协议才能交易!')
-      } else if (isNull(this.selectNumber) && isNull(this.autoNumber)) {
-        Toast('请选择购买手数')
+        Toast(this.$t('market.agree'))
+        return
+      }
+      if (isNull(this.selectNumber) && isNull(this.autoNumber)) {
+        Toast(this.$t('market.choiceLot'))
+        return
+      }
+      this.buying = true
+      let opts = {
+        stockId: this.$route.params.gid,
+        buyNum: this.selectNumber
+          ? this.selectNumber * 100
+          : this.autoNumber * 100,
+        buyType: this.selectType,
+        lever: this.selectCycle
+      }
+      let data = await api.buy(opts)
+      this.buying = false
+      if (+data.status === 0) {
+        Toast(data.data)
+        this.getUserInfo()
+        this.$router.push('/orderlist?index=' + this.$route.params.areaId)
       } else {
-        this.buying = true
-        let opts = {
-          stockId: this.$route.params.gid,
-          buyNum: this.selectNumber
-            ? this.selectNumber * 100
-            : this.autoNumber * 100,
-          buyType: this.selectType,
-          lever: this.selectCycle,
-        }
-        let data = await api.buy(opts)
-        this.buying = false
-        if (+data.status === 0) {
-          Toast(data.data)
-          this.getUserInfo()
-          this.$router.push('/orderlist?index=' + this.$route.params.areaId)
-        } else {
-          Toast(data.msg)
-        }
+        Toast(data.msg)
       }
     },
     toDetail () {
@@ -489,8 +489,8 @@ export default {
       } else {
         Toast(data.msg)
       }
-    },
-  },
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
