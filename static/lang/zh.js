@@ -694,5 +694,13 @@ export default {
   type3: '收款人',
   type4: '汇款人',
   type5: '账号',
-  type6: '转账方式'
+  type6: '转账方式',
+  type7: '总手续费',
+  type8: '买入手续费',
+  type9: '总手续费计算规则：',
+  money2: '最小购买金额',
+  money3: '市值',
+  money4: '股',
+  money5: '期货余额:',
+
 }

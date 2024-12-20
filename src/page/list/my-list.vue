@@ -17,7 +17,7 @@
     <ul class="table-list table-list-body"
         v-infinite-scroll="loadMore"
         infinite-scroll-disabled="loading"
-        infinite-scroll-distance="10">
+        infinite-scroll-distance="20">
       <li class="list-body" v-for="item in list" :key="item.key">
         <div>
           <ul class="clearfix" :class="item.nowPrice-item.preclose_px<0?'green':'red'">
@@ -83,9 +83,9 @@ export default {
       timer: '',
       currentNum: 15,
       market: [],
-      changeTextClass: {}
-      // pageNum:1,
-      // pageSize:15
+      changeTextClass: {},
+      pageNum: 1,
+      pageSize: 15
     }
   },
   created () {
@@ -111,7 +111,7 @@ export default {
     async getStock () {
       let opt = {
         pageNum: this.pageNum,
-        pageSize: 15
+        pageSize: this.pageSize
       }
       this.getStatus = true
       let data = await api.getMyList(opt)
@@ -163,7 +163,7 @@ export default {
       let data = await api.queryFuturesByCode(opts)
       if (data.status === 0) {
         this.statusDetail = data.data
-        this.$router.push({
+        await this.$router.push({
           path: '/listdetail2',
           query: {
             code: stockGid,

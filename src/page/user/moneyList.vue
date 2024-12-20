@@ -16,7 +16,7 @@
         <ul
           v-infinite-scroll="loadMore"
           :infinite-scroll-disabled="loading"
-          infinite-scroll-distance="200">
+          infinite-scroll-distance="20">
           <li class="item" v-for="item in list" :key="item.key">
             <div class="title">
               <div class="left">{{ item.orderSn }}</div>
