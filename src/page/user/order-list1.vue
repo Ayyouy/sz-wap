@@ -6,7 +6,7 @@
         </router-link>
     </mt-header> -->
     <mt-navbar class="sub-navbar" v-model="selected">
-      <mt-tab-item id="1"></i>我的持仓</mt-tab-item>
+      <mt-tab-item id="1">我的持仓</mt-tab-item>
       <mt-tab-item id="2">我的平仓</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
@@ -224,6 +224,6 @@ export default {
         }
       }
     }
-    
+
   }
 </style>

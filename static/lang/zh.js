@@ -622,7 +622,7 @@ export default {
     success: '审核通过',
     failed: '审核失败',
     in: '入金金额',
-    inType: '入金金方式',
+    inType: '入金方式',
     card: '银行卡',
     tether: '泰达币',
     rate: '汇率',
@@ -632,7 +632,10 @@ export default {
     report: '出金明细',
     under: '审核中',
     out: '出金金额',
-    outType: '出金方式'
+    outType: '出金方式',
+    inter: '账户互转',
+    other: '与他人转账',
+    ali: '支付宝'
   },
   title: '您确定要平仓吗？',
   title1: '科创',
@@ -684,5 +687,12 @@ export default {
   sell6: '卖②',
   sell7: '卖③',
   sell8: '卖④',
-  sell9: '卖⑤'
+  sell9: '卖⑤',
+  type: '转账类型',
+  type1: '转入',
+  type2: '转出',
+  type3: '收款人',
+  type4: '汇款人',
+  type5: '账号',
+  type6: '转账方式'
 }

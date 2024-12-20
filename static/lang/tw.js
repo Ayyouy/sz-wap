@@ -1000,7 +1000,7 @@ export default {
     in:
       '入金金額',
     inType:
-      '入金金方式',
+      '入金方式',
     card:
       '銀行卡',
     tether:
@@ -1020,7 +1020,10 @@ export default {
     out:
       '出金金額',
     outType:
-      '出金方式'
+      '出金方式',
+    inter: '帳戶互轉',
+    other: '與他人轉帳',
+    ali: '支付寶'
   },
   title: '您確定要平倉嗎？',
   title1: '科創',
@@ -1072,5 +1075,12 @@ export default {
   sell6: '賣②',
   sell7: '賣③',
   sell8: '賣④',
-  sell9: '賣⑤'
+  sell9: '賣⑤',
+  type: '轉帳類型',
+  type1: '轉入',
+  type2: '轉出',
+  type3: '收款人',
+  type4: '匯款人',
+  type5: '帳號',
+  type6: '轉帳管道'
 }

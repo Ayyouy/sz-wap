@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="mint-navbar top-navbar is-fixed" style="top: 1.84rem !important;background-color: #16171d">
       <div class="header-bg">
-        <span class="header-title">资金明细</span>
+        <span class="header-title">{{$t('fundList.report')}}</span>
         <el-image class="header-btn" src="../../static/img/search.png" @click="showDialog"></el-image>
       </div>
     </div>
@@ -190,10 +190,9 @@
           </ul>
           <div v-show="loading" class="load-all text-center">
             <mt-spinner type="fading-circle"></mt-spinner>
-            {{ $t('market.loading') }}
           </div>
           <div v-show="!loading" class="load-all text-center">
-            {{ $t('invitation.all') }}
+            {{ $t('market.loaded') }}
           </div>
         </div>
       </mt-tab-container-item>

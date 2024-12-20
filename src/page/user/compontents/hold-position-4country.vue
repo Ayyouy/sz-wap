@@ -16,14 +16,14 @@
               <span v-if="item.stockPlate == '科创'"
                     :class="item.stockPlate == '科创' ? 'type' : ''">{{ $t('title1') }}</span>
               <span class="direction pull-right big-font" v-show="item.nowPrice">
-                <b v-if="item.now_price == 0">-</b>
+                <b v-if="item.nowPrice == 0">-</b>
                 <b v-else
                    :class="
-                   (item.now_price - item.buyOrderPrice) > 0
+                   (item.nowPrice - item.buyOrderPrice) > 0
                       ? 'space green'
                       : item.now_price - item.buyOrderPrice == 0
                       ? 'space'
-                      : 'space red'">{{ Number(item.now_price).toFixed(2) }}
+                      : 'space red'">{{ Number(item.nowPrice).toFixed(2) }}
                 </b>
               </span>
             </div>

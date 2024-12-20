@@ -1,86 +1,100 @@
 <template>
   <div class="listContainer">
-    <div class="topBtn" @click="searchOpen">筛选</div>
-    <div v-for="item in list" :key="item.id" class="item">
-      <div class="title">
-        <div class="left">{{ item.orderSn }}</div>
-        <div class="right">
-          <el-tag :type="tagTypeArr[item.orderStatus]">{{ tagTextArr[item.orderStatus] }}</el-tag>
-        </div>
-      </div>
-      <div class="content">
-        <div class="left">出金金额</div>
-        <div class="right">${{ item.realAmt }}</div>
-      </div>
-      <div class="content">
-        <div class="left">出金方式</div>
-        <div class="right">{{ payTypeArr[item.payChannel] }}</div>
-      </div>
-      <div class="content">
-        <div class="left">汇率</div>
-        <div class="right">1:
-          {{ item.rate }}
-        </div>
-      </div>
-      <div class="content">
-        <div class="left">出金金额</div>
-        <div class="right">{{ item.symbol }}{{ Number(item.payAmt).toFixed(2) }}</div>
-      </div>
-      <div class="content">
-        <div class="left">现金账户余额</div>
-        <div class="right">${{ item.nowEnableAmt }}</div>
-      </div>
-      <div class="content">
-        <div class="left">说明</div>
-        <!--    todo 等待接口返回 -->
-        <div class="right"></div>
-      </div>
-      <div class="footer">
-        {{ new Date(item.addTime) | timeFormat }}
-      </div>
+    <div class="topBtn">
+      <span class="screen" @click="searchOpen">
+        {{ $t('capital.screen') }}
+      </span>
     </div>
-
+    <div>
+      <ul
+        v-infinite-scroll="loadMore"
+        :infinite-scroll-disabled="loading"
+        infinite-scroll-distance="200">
+        <li class="item" v-for="item in list" :key="item.key">
+<!--          <div class="title">-->
+<!--            <div class="left">{{ item.orderSn }}</div>-->
+<!--            <div class="right">-->
+<!--              <el-tag :type="tagTypeArr[item.orderStatus]">{{ tagTextArr[item.orderStatus] }}</el-tag>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="content">-->
+<!--            <div class="left">{{ $t('to.out') }}</div>-->
+<!--            <div class="right">${{ Number(item.realAmt).toFixed(2) }}</div>-->
+<!--          </div>-->
+<!--          <div class="content">-->
+<!--            <div class="left">{{ $t('to.outType') }}</div>-->
+<!--            <div class="right">{{ payTypeArr[item.payChannel] }}</div>-->
+<!--          </div>-->
+<!--          <div class="content">-->
+<!--            <div class="left">{{ $t('to.rate') }}</div>-->
+<!--            <div class="right">1:-->
+<!--              {{ Number(item.rate).toFixed(2) }}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="content">-->
+<!--            <div class="left">{{ $t('to.out') }}</div>-->
+<!--            <div class="right">{{ item.symbol }}{{ Number(item.payAmt).toFixed(2) }}</div>-->
+<!--          </div>-->
+<!--          <div class="content">-->
+<!--            <div class="left">{{ $t('to.balance') }}</div>-->
+<!--            <div class="right">${{ Number(item.nowEnableAmt).toFixed(2) }}</div>-->
+<!--          </div>-->
+<!--          <div class="content">-->
+<!--            <div class="left">{{ $t('to.explain') }}</div>-->
+<!--            <div class="right"></div>-->
+<!--          </div>-->
+<!--          <div class="footer">-->
+<!--            {{ new Date(item.addTime) | timeFormat }}-->
+<!--          </div>-->
+        </li>
+      </ul>
+    </div>
+    <div v-show="loading" class="load-all text-center">
+      <mt-spinner type="fading-circle"></mt-spinner>
+    </div>
+    <div v-show="loaded && list.length>0" class="load-all text-center">
+      {{ $t('market.loaded') }}
+    </div>
+    <div v-show="loaded && list.length==0" class="load-all text-center">
+      {{ $t('market.empty') }}
+    </div>
     <el-drawer
       size="46%"
-      title="筛选"
+      :title="$t('capital.screen')"
       direction="btt"
-      :visible.sync="drawerShow"
-    >
+      :visible.sync="drawerShow">
       <el-form
         :model="searchForm"
         size="small"
         label-width="80px"
-        label-position="top"
-      >
-        <el-form-item label="状态">
+        label-position="top">
+        <el-form-item :label="$t('capital.state')">
           <el-radio-group v-model="searchForm.orderStatus">
-            <el-radio label="" border style="border: none">全部</el-radio>
-            <el-radio label="1" border style="border: none">审核成功</el-radio>
-            <el-radio label="2" border style="border: none">审核失败</el-radio>
-            <el-radio label="3" border style="border: none">待审核</el-radio>
+            <el-radio label="" border style="border: none">{{ $t('capital.total') }}</el-radio>
+            <el-radio label="1" border style="border: none">{{ $t('capital.success') }}</el-radio>
+            <el-radio label="2" border style="border: none">{{ $t('capital.failed') }}</el-radio>
+            <el-radio label="3" border style="border: none">{{ $t('capital.wait') }}222</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="时间">
+        <el-form-item :label="$t('capital.time')">
           <el-date-picker
             v-model="searchForm.orderDate"
             type="daterange"
             align="right"
             unlink-panels
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            range-separator="-"
+            :start-placeholder="$t('msg8')"
+            :end-placeholder="$t('msg9')"
             value-format="yyyy-MM-dd"
-            :picker-options="pickerOptions"
-            style="border:none"
-          >
+            style="border:none">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="订单编号">
-          <input v-model="searchForm.orderSn" class="el-input__inner" placeholder="请输入"/>
+        <el-form-item :label="$t('capital.order')">
+          <input v-model="searchForm.orderSn" class="el-input__inner" :placeholder="$t('capital.input')"/>
         </el-form-item>
         <el-form-item class="footer">
-          <el-button @click="() => this.drawerShow = false">取消</el-button>
-          <el-button type="primary" @click="searchSubmit">确定</el-button>
+          <el-button @click="clearForm">{{ $t('capital.cancel') }}</el-button>
+          <el-button type="primary" @click="searchSubmit">{{ $t('capital.confirm') }}</el-button>
         </el-form-item>
       </el-form>
     </el-drawer>
@@ -98,73 +112,89 @@ export default {
       default: '0'
     }
   },
+  watch: {
+    selectedNumber (val) {
+      console.log('2selectedNumber', val)
+      if (val === '2') {
+        this.loaded = false
+        this.list = []
+        this.pageNum = 1
+        this.total = 0
+        this.clearForm()
+        this.getList()
+      }
+    }
+  },
+  mounted () {
+    console.log('List2：什么时候执行呢？', this.selectedNumber, this.selectedNumber === '2', this.selectedNumber === 2)
+    if (this.selectedNumber === '2') {
+      console.log('List2-2：什么时候执行呢？', this.selectedNumber)
+      this.loaded = false
+      this.list = []
+      this.pageNum = 1
+      this.total = 0
+      this.clearForm()
+      this.getList()
+    }
+  },
   data () {
     return {
+      loading: false,
+      loaded: false,
       list: [],
+      pageNum: 1,
+      pageSize: 10,
+      total: 0,
       tagTypeArr: ['primary', 'success', 'danger'],
-      tagTextArr: ['审核中', '审核通过', '审核失败'],
-      payTypeArr: ['支付宝', '银行卡', '泰达币'],
+      tagTextArr: [this.$t('to.wait'), this.$t('to.success'), this.$t('to.failed')],
+      payTypeArr: [this.$t('to.ali'), this.$t('withdraw.bank1'), this.$t('withdraw.tether1')],
       drawerShow: false,
       searchForm: {
         orderStatus: '',
         orderDate: '',
         orderSn: ''
-      },
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: '最近一周',
-            onClick (picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近一个月',
-            onClick (picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-              picker.$emit('pick', [start, end])
-            }
-          },
-          {
-            text: '最近三个月',
-            onClick (picker) {
-              const end = new Date()
-              const start = new Date()
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-              picker.$emit('pick', [start, end])
-            }
-          }
-        ]
       }
     }
   },
   methods: {
+    async loadMore () {
+      console.log('2:',this.loaded)
+      if (this.loaded) {
+        return
+      }
+      this.pageNum++
+      await this.getList()
+    },
     async getList () {
-      console.log('有没有走这个方法?')
       let opt = {
         payChannel: '', // 支付方式
         orderStatus: this.searchForm.orderStatus, // 订单状态
-        orderSn: this.searchForm.orderSn
+        orderSn: this.searchForm.orderSn,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
       }
       if (this.searchForm.orderDate) {
         opt.beginTime = new Date(this.searchForm.orderDate[0])
         opt.endTime = new Date(this.searchForm.orderDate[1])
       }
+      this.loading = true
       let data = await api.rechargeList(opt)
       if (data.status === 0) {
-        this.list = data.data.list
+        if (data.data.list.length > 0) {
+          data.data.list.forEach(item => {
+            this.list.push(item)
+          })
+        }
         this.total = data.data.total
+        this.loaded = this.pageNum * this.pageSize >= this.total
       } else {
         Toast(data.msg)
       }
+      this.loading = false
       this.clearForm()
     },
     clearForm () {
+      this.drawerShow = false
       this.searchForm.orderStatus = ''
       this.searchForm.orderDate = ''
       this.searchForm.orderSn = ''
@@ -174,6 +204,10 @@ export default {
     },
     searchSubmit () {
       this.list = []
+      this.total = 0
+      this.pageNum = 1
+      this.loaded = false
+      this.loading = false
       this.drawerShow = false
       this.getList()
     }
@@ -182,6 +216,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.load-all {
+  margin-top: .1rem;
+}
+
 .el-input__inner {
   border: none !important;
   box-shadow: none !important;
@@ -204,18 +242,25 @@ export default {
 
 .listContainer {
   font-size: 0.28rem;
-  margin: 0 0.2rem;
+  margin: 0 0.1rem;
 
   .topBtn {
+    line-height: 1rem;
+    height: 1rem;
     text-align: right;
-    margin-bottom: 0.3rem;
+  }
+
+  .screen {
+    padding-left: 0.4rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
   }
 
   .item {
+    background-color: #1f2636;
     padding: 0.2rem;
-    border: 1px solid #eee;
-    border-radius: 0.1rem;
     margin-bottom: 0.2rem;
+    border-radius: 0.1rem;
     background-color: #1f2636;
 
     > div {
@@ -249,7 +294,7 @@ export default {
       }
 
       .left {
-        width: 1.8rem;
+        width: auto;
       }
 
       .right {
@@ -306,5 +351,9 @@ export default {
       }
     }
   }
+}
+
+.el-radio__label {
+  padding-left: 2px;
 }
 </style>

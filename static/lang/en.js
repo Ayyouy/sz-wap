@@ -373,11 +373,11 @@ export default {
     cancel: 'Cancel',
     confirm: 'Confirm',
     all: 'All',
-    state: '',
+    state: 'State',
     total: 'All',
     success: 'Approved',
     failed: 'Approval failed',
-    wait: ''
+    wait: 'Approving'
   },
   // 我的邀请语言
   invitation: {
@@ -633,7 +633,10 @@ export default {
     report: 'Withdrawal report',
     under: 'Under review',
     out: 'Withdrawal amount',
-    outType: 'Withdrawal type'
+    outType: 'Withdrawal type',
+    inter: 'Account transfer',
+    other: 'Transfer money with others',
+    ali: 'Alipay'
   },
   title: 'Are you sure you want to close your position?',
   title1: 'Science and Technology Innovation',
@@ -685,5 +688,12 @@ export default {
   sell6: 'Sell②',
   sell7: 'Sell③',
   sell8: 'Sell④',
-  sell9: 'Sell⑤'
+  sell9: 'Sell⑤',
+  type: 'Transfer type',
+  type1: 'transfer into',
+  type2: 'transfer out',
+  type3: 'recipient',
+  type4: 'remitter',
+  type5: 'account',
+  type6: 'transfer method'
 }

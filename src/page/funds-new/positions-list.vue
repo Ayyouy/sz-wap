@@ -175,7 +175,6 @@
           </ul>
           <div v-show="loading2" class="load-all text-center">
             <mt-spinner type="fading-circle"></mt-spinner>
-            {{ $t('market.loading') }}
           </div>
           <div v-show="!loading2" class="load-all text-center">
             {{ $t('market.loaded') }}
