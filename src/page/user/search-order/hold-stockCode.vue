@@ -20,16 +20,16 @@
               <span class="secondary">({{ item.stockName }})</span>
               <span v-if="item.stockPlate=='科创'"
                     :class="item.stockPlate=='科创'?'type':''">{{ $t('title1') }}</span>
-              <span class="direction pull-right big-font">
-                <b v-if="item.now_price == 0">-</b>
-                <b v-else :class="
-                   (item.now_price-item.buyOrderPrice)>0
-                   ?'space green'
-                   :(item.now_price-item.buyOrderPrice)==0
-                   ?'space'
-                   :'space red'">{{ Number(item.now_price).toFixed(2) }}
-                </b>
-              </span>
+<!--              <span class="direction pull-right big-font">-->
+<!--                <b v-if="item.now_price == 0">-</b>-->
+<!--                <b v-else :class="-->
+<!--                   (item.now_price-item.buyOrderPrice)>0-->
+<!--                   ?'space green'-->
+<!--                   :(item.now_price-item.buyOrderPrice)==0-->
+<!--                   ?'space'-->
+<!--                   :'space red'">{{ Number(item.now_price).toFixed(2) }}-->
+<!--                </b>-->
+<!--              </span>-->
             </div>
             <div class="order-info">
               <p class="clearfix">

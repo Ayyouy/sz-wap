@@ -9,7 +9,7 @@
           {{ $t('my.account') }}{{ $store.state.userInfo.phone }}
         </div>
         <div class="account-name">
-          {{ $t('my.nick') }}{{ $store.state.userInfo.nickName }}
+          {{ $t('my.nick') }}{{ $store.state.userInfo.realName }}
         </div>
       </div>
       <div class="account-info_ctl" @click="$store.state.hide = !$store.state.hide">
