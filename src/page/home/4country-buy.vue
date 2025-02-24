@@ -296,21 +296,24 @@ export default {
     clearInterval(this.timer)
   },
   mounted () {
-    //   this.getDetail()
-    this.detail.gid = this.$route.params.gid
-    this.detail.name = this.$route.params.name
-    this.detail.code = this.$route.params.code
-    this.detail.stockType = this.$route.params.stockType
-    this.detail.hcrate = this.$route.params.hcrate
-    this.detail.nowPrice = this.$route.params.nowPrice
-    this.detail.discount = this.$route.params.discount
-    this.selectNumber = 0
-    //   this.selectCycle = 10
-    this.getSettingInfo()
-    if (!this.$store.state.userInfo.enableAmt) {
-      this.getUserInfo()
+    if (this.$route.params.gid === undefined) {
+      this.goBack()
+    } else {
+      this.detail.gid = this.$route.params.gid
+      this.detail.name = this.$route.params.name
+      this.detail.code = this.$route.params.code
+      this.detail.stockType = this.$route.params.stockType
+      this.detail.hcrate = this.$route.params.hcrate
+      this.detail.nowPrice = this.$route.params.nowPrice
+      this.detail.discount = this.$route.params.discount
+      this.selectNumber = 0
+      this.getSettingInfo()
+      if (!this.$store.state.userInfo.enableAmt) {
+        this.getUserInfo()
+      }
+      this.getRate()
     }
-    this.getRate()
+    console.log(this.$route.params.gid, 'this.$route.params.gid')
   },
   methods: {
     changeAutoNumber () {
@@ -444,7 +447,10 @@ export default {
       // 下单
       if (!this.$store.state.userInfo.idCard) {
         Toast(this.$t('market.order'))
-        this.$router.push('/authentication')
+        await this.$router.push({
+          path: '/authentication',
+          replace: true
+        })
         return
       }
       if (!this.agree) {
@@ -468,8 +474,8 @@ export default {
       this.buying = false
       if (+data.status === 0) {
         Toast(data.data)
-        this.getUserInfo()
-        this.$router.push('/orderlist?index=' + this.$route.params.areaId)
+        await this.getUserInfo()
+        await this.$router.push('/orderlist?index=' + this.$route.params.areaId)
       } else {
         Toast(data.msg)
       }

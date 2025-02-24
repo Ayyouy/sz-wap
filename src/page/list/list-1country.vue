@@ -136,7 +136,7 @@ export default {
   },
   watch: {
     selectedNumber (val) {
-      if (val === '4') {
+      if (val === '1') {
         this.refreshList()
         clearInterval(this.timer)
         this.timer = setInterval(this.refreshList, 5000)
@@ -221,7 +221,6 @@ export default {
       this.timer = setInterval(this.refreshList, 5000)
     },
     toDetail (val) {
-      clearInterval(this.timer)
       this.$router.push({
         path: '/list4countryDetail',
         query: {

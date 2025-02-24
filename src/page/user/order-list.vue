@@ -120,8 +120,16 @@ export default {
 <style lang="less" scoped>
 .wrapper {
   background-color: #16171d;
+  //width: 100%;
+  //height: 100%;
+  //position: relative;
+  //box-sizing: border-box;
+  //padding-top: 1rem;
 
   .top-navbar {
+    //width: 100%;
+    //position: absolute;
+    //top: 0;
     background: none;
     box-shadow: none;
 
@@ -277,6 +285,7 @@ export default {
     font-size: 0.24rem;
     color: #ccc;
   }
+
   //
   //.order-foot {
   //  padding: 0;

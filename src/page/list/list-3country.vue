@@ -136,7 +136,7 @@ export default {
   },
   watch: {
     selectedNumber (val) {
-      if (val === '4') {
+      if (val === '3') {
         this.refreshList()
         clearInterval(this.timer)
         this.timer = setInterval(this.refreshList, 5000)

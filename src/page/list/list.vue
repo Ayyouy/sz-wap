@@ -1,114 +1,48 @@
 <template>
-  <div :class="`wrapper ${$state.theme === 'red' ? 'red-theme' : 'black-theme'}`">
-    <mt-navbar class="top-navbar" v-model="selected" :fixed="selected != '2' ? true : false">
-      <mt-tab-item class="long" v-if="stockDisplay" id="6">{{$t('market.us')}}</mt-tab-item>
-      <mt-tab-item class="long" v-if="stockDisplay" id="8">{{$t('market.jp')}}</mt-tab-item>
-      <mt-tab-item class="long" v-if="stockDisplay" id="5">{{$t('market.hk')}}</mt-tab-item>
-      <mt-tab-item class="long" v-if="stockDisplay" id="7">{{$t('market.in')}}</mt-tab-item>
-      <mt-tab-item v-if="futureDisplay" id="4">{{ $t('market.future') }}</mt-tab-item>
-      <mt-tab-item v-if="indexDisplay" id="1">{{ $t('market.index') }}</mt-tab-item>
+  <div class="wrapper">
+    <mt-navbar class="top-navbar" v-model="selected">
+      <mt-tab-item class="long" id='2'>{{ $t('market.us') }}</mt-tab-item>
+      <mt-tab-item class="long" id='3'>{{ $t('market.jp') }}</mt-tab-item>
+      <mt-tab-item class="long" id='1'>{{ $t('market.hk') }}</mt-tab-item>
+      <mt-tab-item class="long" id='4'>{{ $t('market.in') }}</mt-tab-item>
     </mt-navbar>
     <mt-tab-container class="order-list" v-model="selected">
-      <mt-tab-container-item v-if="indexDisplay" id="1">
+      <mt-tab-container-item id="1">
         <List1 :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item v-if="stockDisplay" id="2">
+      <mt-tab-container-item id="2">
         <List2 :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item v-if="kcDisplay" id="3">
+      <mt-tab-container-item id="3">
         <List3 :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item v-if="futureDisplay" id="4">
+      <mt-tab-container-item id="4">
         <List4 :selectedNumber="selected"/>
       </mt-tab-container-item>
-      <mt-tab-container-item v-if="stockDisplay" id="5">
-        <List5 selectedNumber="1"/>
-      </mt-tab-container-item>
-      <mt-tab-container-item v-if="stockDisplay" id="6">
-        <List5 selectedNumber="2"/>
-      </mt-tab-container-item>
-      <mt-tab-container-item v-if="stockDisplay" id="7">
-        <List5 selectedNumber="4"/>
-      </mt-tab-container-item>
-      <mt-tab-container-item v-if="stockDisplay" id="8">
-        <List5 selectedNumber="3"/>
-      </mt-tab-container-item>
     </mt-tab-container>
-    <foot></foot>
+    <Foot></Foot>
   </div>
 </template>
 
 <script>
-import foot from '@/components/foot/foot'
-import List1 from './list-index'
-import List2 from './list-stock'
-import List3 from './list-kechuang'
-import List4 from './list-futures'
-import List5 from './list-4country'
+import Foot from '@/components/foot/foot'
+import List1 from './list-1country'
+import List2 from './list-2country'
+import List3 from './list-3country'
+import List4 from './list-4country'
 import * as api from '@/axios/api'
-import {Toast} from 'mint-ui'
 
 export default {
   components: {
-    foot,
+    Foot,
     List1,
     List2,
     List3,
-    List4,
-    List5
+    List4
   },
-  props: {},
   data () {
     return {
-      selected: '', // 选中
-      stockDisplay: this.$store.state.settingForm.stockDisplay,
-      futureDisplay: this.$store.state.settingForm.futuresDisplay,
-      indexDisplay: this.$store.state.settingForm.indexDisplay,
-      kcDisplay: this.$store.state.settingForm.kcStockDisplay
-    }
-  },
-  created () {
-    this.getProductSetting()
-    if (!this.$store.state.userInfo.phone) {
-      this.getUserInfo()
-    }
-  },
-  mounted () {
-    if (this.$route.query.index) {
-      this.selected = this.$route.query.index
-    }
-  },
-  methods: {
-    async getUserInfo () {
-      // 获取用户信息
-      let data = await api.getUserInfo()
-      if (data.status === 0) {
-        this.$store.state.userInfo = data.data
-      } else {
-        Toast(data.msg)
-      }
-    },
-    async getProductSetting () {
-      let data = await api.getProductSetting()
-      if (data.status === 0) {
-        this.$store.state.settingForm = data.data
-        this.stockDisplay = this.$store.state.settingForm.stockDisplay
-        this.futureDisplay = this.$store.state.settingForm.futuresDisplay
-        this.indexDisplay = this.$store.state.settingForm.indexDisplay
-        this.kcDisplay = this.$store.state.settingForm.kcStockDisplay
-        // 1 指数 2 沪深 3科创 4 期货
-        if (this.stockDisplay) {
-          this.selected = '5'
-        } else if (this.indexDisplay) {
-          this.selected = '1'
-        } else if (this.kcDisplay) {
-          this.selected = '3'
-        } else {
-          this.selected = '4'
-        }
-      } else {
-        this.$message.error(data.msg)
-      }
+      selected: '1'
     }
   }
 }
@@ -170,6 +104,7 @@ export default {
 }
 
 .top-navbar {
+
   .mint-tab-item {
     padding: 0.2rem 0;
     width: 1.42rem;
@@ -187,15 +122,17 @@ export default {
 }
 
 .wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  box-sizing: border-box;
-  padding-top: 1rem;
+  background-color: #16171d;
+  //width: 100%;
+  //height: 100%;
+  //position: relative;
+  //box-sizing: border-box;
+  //padding-top: 1rem;
 
   .top-navbar {
-    position: absolute;
-    top: 0;
+    //width: 100%;
+    //position: absolute;
+    //top: 0;
     background: none;
     box-shadow: none;
 

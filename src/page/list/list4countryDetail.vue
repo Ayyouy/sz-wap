@@ -138,7 +138,6 @@ export default {
   components: {
     imgBox
   },
-  props: {},
   data () {
     return {
       detail: {
@@ -194,10 +193,10 @@ export default {
     }
   },
   created () {
-    this.timer = setInterval(this.refreshList, 5000)
+    // this.timer = setInterval(this.refreshList, 5000)
   },
   beforeDestroy () {
-    clearInterval(this.timer)
+    // clearInterval(this.timer)
   },
   mounted () {
     this.getDetail()
